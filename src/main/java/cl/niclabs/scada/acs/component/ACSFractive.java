@@ -4,7 +4,7 @@ import cl.niclabs.scada.acs.component.factory.ACSTypeFactory;
 import cl.niclabs.scada.acs.component.factory.ACSTypeFactoryImpl;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.Type;
-import org.objectweb.fractal.api.factory.*;
+import org.objectweb.fractal.api.factory.GenericFactory;
 import org.objectweb.fractal.api.factory.InstantiationException;
 import org.objectweb.fractal.api.type.InterfaceType;
 import org.objectweb.fractal.api.type.TypeFactory;
@@ -34,11 +34,11 @@ public class ACSFractive extends Fractive {
     public Type getFcType() {
         if (type == null) {
             try {
-                return type = typeFactory.createFcType(new InterfaceType[] {
+                return type = typeFactory.createFcType(new InterfaceType[]{
                         typeFactory.createFcItfType(Constants.GENERIC_FACTORY,
                                 GenericFactory.class.getName(), false, false, false),
                         typeFactory.createFcItfType(Constants.TYPE_FACTORY, TypeFactory.class.getName(),
-                                false, false, false) });
+                                false, false, false)});
             } catch (InstantiationException e) {
                 // logger.error(e.getMessage());
                 return null;

@@ -1,14 +1,14 @@
 package cl.niclabs.scada.acs.component.factory;
 
-import cl.niclabs.scada.acs.component.controllers.MonitorController;
 import cl.niclabs.scada.acs.component.utils.ACSBuildHelper;
-import org.apache.log4j.Logger;
 import org.etsi.uri.gcm.api.type.GCMTypeFactory;
 import org.objectweb.fractal.api.factory.InstantiationException;
 import org.objectweb.fractal.api.type.ComponentType;
 import org.objectweb.fractal.api.type.InterfaceType;
 import org.objectweb.proactive.core.component.type.PAComponentTypeImpl;
 import org.objectweb.proactive.core.component.type.PAGCMInterfaceTypeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ACSTypeFactoryImpl implements ACSTypeFactory {
 
-    private static final Logger logger = Logger.getLogger(ACSTypeFactoryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ACSTypeFactoryImpl.class);
     private static ACSTypeFactory instance;
 
     private ACSTypeFactoryImpl() {
@@ -59,9 +59,9 @@ public class ACSTypeFactoryImpl implements ACSTypeFactory {
         }
 
         nfList.addAll(ACSBuildHelper.getStandardNfInterfaces(this));
-        nfList.add(createGCMItfType("monitor-controller", MonitorController.class.getName(), false, true, "singleton"));
         nfList.addAll(ACSBuildHelper.getAcsNfInterfaces(this, fInterfaceTypes));
 
+        // check for conflicts between acs nf interfaces and custom defined nf interfaces
         if (nfInterfaceTypes != null) {
             for (InterfaceType userItfType : nfInterfaceTypes) {
                 for (InterfaceType acsItfType : nfList) {
@@ -80,6 +80,14 @@ public class ACSTypeFactoryImpl implements ACSTypeFactory {
     @Override
     public ComponentType createFcType(InterfaceType[] fInterfaceTypes) throws InstantiationException {
         return createFcType(fInterfaceTypes, null);
+    }
+
+    @Override
+    public ComponentType createNfFcType(InterfaceType[] interfaceTypes) throws InstantiationException {
+        if (interfaceTypes == null) {
+            interfaceTypes = new InterfaceType[]{};
+        }
+        return new PAComponentTypeImpl(interfaceTypes, new InterfaceType[]{});
     }
 
 }
