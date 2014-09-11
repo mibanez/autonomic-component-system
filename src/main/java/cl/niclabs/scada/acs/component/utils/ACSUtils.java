@@ -12,11 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by mibanez on 09-09-14.
+ * Utility methods for BuildHelper
+ *
+ * Created by mibanez
  */
 class ACSUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(ACSBuildHelper.class);
+    private static Logger logger = LoggerFactory.getLogger(BuildHelper.class);
 
     protected static String getComponentName(Component component) {
         if (component instanceof PAComponent) {

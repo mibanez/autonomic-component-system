@@ -27,9 +27,10 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * Created by mibanez on 08-09-14.
+ * BuildHelper unit test
+ * Created by mibanez
  */
-public class ACSBuildHelperTest {
+public class BuildHelperTest {
 
     private static ACSTypeFactory typeFactory;
     private static PAGenericFactory genericFactory;
@@ -40,7 +41,7 @@ public class ACSBuildHelperTest {
     public static void setUp() throws org.objectweb.fractal.api.factory.InstantiationException, NoSuchInterfaceException, IOException {
 
         oldPolicy = System.getProperty("java.security.policy");
-        System.setProperty("java.security.policy", ACSBuildHelperTest.class.getResource("/proactive.java.policy").getPath());
+        System.setProperty("java.security.policy", BuildHelperTest.class.getResource("/proactive.java.policy").getPath());
         System.setSecurityManager(new SecurityManager());
 
         oldGcmProvider = System.getProperty("gcm.provider");
@@ -76,13 +77,13 @@ public class ACSBuildHelperTest {
 
         List<InterfaceType> acsNfInterfaces = null;
         try {
-            acsNfInterfaces = ACSBuildHelper.getAcsNfInterfaces(typeFactory, interfaceTypes);
+            acsNfInterfaces = BuildHelper.getAcsNfInterfaces(typeFactory, interfaceTypes);
         } catch (InstantiationException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());
         }
 
-        HashSet<String> set = new HashSet<String>();
+        HashSet<String> set = new HashSet<>();
         for (InterfaceType itfType : acsNfInterfaces) {
             set.add(itfType.getFcItfName());
             boolean isMon = itfType.getFcItfSignature().equals(MonitorController.class.getName());
@@ -112,14 +113,14 @@ public class ACSBuildHelperTest {
         }
 
         try {
-            ACSBuildHelper.addObjectControllers(foo);
+            BuildHelper.addObjectControllers(foo);
         } catch (ACSIntegrationException e) {
             e.printStackTrace();
             Assert.fail("addObjectControllers: " + e.getMessage());
         }
 
         try {
-            ACSBuildHelper.addACSControllers(typeFactory, genericFactory, foo);
+            BuildHelper.addACSControllers(typeFactory, genericFactory, foo);
         } catch (ACSIntegrationException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());
@@ -136,12 +137,9 @@ public class ACSBuildHelperTest {
         Assert.assertTrue(monitorObj instanceof MonitorController);
     }
 
-    public static interface FooInterface {
-        public int fooMethod(String fooParameter);
-    }
+    public static interface FooInterface { }
 
     public static class FooComponent implements FooInterface, BindingController {
-        public int fooMethod(String fooParameter) { return 0; }
         public String[] listFc() { return new String[0]; }
         public Object lookupFc(String s) throws NoSuchInterfaceException { return null; }
         public void bindFc(String s, Object o) throws NoSuchInterfaceException, IllegalBindingException, IllegalLifeCycleException {}

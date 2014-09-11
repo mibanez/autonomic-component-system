@@ -1,24 +1,23 @@
 package cl.niclabs.scada.acs.component.factory;
 
-import cl.niclabs.scada.acs.component.utils.ACSBuildHelper;
+import cl.niclabs.scada.acs.component.utils.BuildHelper;
 import org.etsi.uri.gcm.api.type.GCMTypeFactory;
 import org.objectweb.fractal.api.factory.InstantiationException;
 import org.objectweb.fractal.api.type.ComponentType;
 import org.objectweb.fractal.api.type.InterfaceType;
 import org.objectweb.proactive.core.component.type.PAComponentTypeImpl;
 import org.objectweb.proactive.core.component.type.PAGCMInterfaceTypeImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by mibanez on 07-09-14.
+ * ACS TypeFactory version. This TypeFactory will add automatically the extra nf interfaces.
+ *
+ * Created by mibanez
  */
 public class ACSTypeFactoryImpl implements ACSTypeFactory {
 
-    private static final Logger logger = LoggerFactory.getLogger(ACSTypeFactoryImpl.class);
     private static ACSTypeFactory instance;
 
     private ACSTypeFactoryImpl() {
@@ -53,13 +52,13 @@ public class ACSTypeFactoryImpl implements ACSTypeFactory {
 
     @Override
     public ComponentType createFcType(InterfaceType[] fInterfaceTypes, InterfaceType[] nfInterfaceTypes) throws InstantiationException {
-        List<InterfaceType> nfList = new ArrayList<InterfaceType>();
+        List<InterfaceType> nfList = new ArrayList<>();
         if (fInterfaceTypes == null) {
             fInterfaceTypes = new InterfaceType[]{};
         }
 
-        nfList.addAll(ACSBuildHelper.getStandardNfInterfaces(this));
-        nfList.addAll(ACSBuildHelper.getAcsNfInterfaces(this, fInterfaceTypes));
+        nfList.addAll(BuildHelper.getStandardNfInterfaces(this));
+        nfList.addAll(BuildHelper.getAcsNfInterfaces(this, fInterfaceTypes));
 
         // check for conflicts between acs nf interfaces and custom defined nf interfaces
         if (nfInterfaceTypes != null) {
