@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class BuildHelper {
 
-    public static final Logger logger = LoggerFactory.getLogger(BuildHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(BuildHelper.class);
     private static final String CONTROLLER_CONFIG = "/org/objectweb/proactive/core/component/componentcontroller/config/default-component-controller-config.xml";
 
     // Normally, the NF interfaces mentioned here should be those that are going to be implemented by NF component,

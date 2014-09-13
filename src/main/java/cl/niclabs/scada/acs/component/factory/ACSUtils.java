@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 class ACSUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(BuildHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(BuildHelper.class);
 
     protected static String getComponentName(Component component) {
         if (component instanceof PAComponent) {

@@ -15,8 +15,8 @@ import java.io.IOException;
 public abstract class AbstractComponentTest {
 
     protected static ACSFactory factory;
-    protected static String oldGcmProvider;
-    protected static String oldPolicy;
+    private static String oldGcmProvider;
+    private static String oldPolicy;
 
     @BeforeClass
     public static void setUp() throws org.objectweb.fractal.api.factory.InstantiationException, NoSuchInterfaceException, IOException {

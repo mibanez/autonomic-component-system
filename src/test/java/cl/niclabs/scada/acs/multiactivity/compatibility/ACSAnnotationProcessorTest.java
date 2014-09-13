@@ -14,7 +14,7 @@ public class ACSAnnotationProcessorTest {
     @Test
     public void groupsGeneration() {
 
-        @SuppressWarnings("UnusedDeclaration")
+        @SuppressWarnings({"UnusedDeclaration", "EmptyMethod"})
         class A {
             public void a() {}
             public void b() {}

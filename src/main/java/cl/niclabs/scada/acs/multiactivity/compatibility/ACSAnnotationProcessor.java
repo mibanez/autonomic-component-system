@@ -3,6 +3,8 @@ package cl.niclabs.scada.acs.multiactivity.compatibility;
 import org.objectweb.proactive.annotation.multiactivity.MemberOf;
 import org.objectweb.proactive.multiactivity.compatibility.AnnotationProcessor;
 import org.objectweb.proactive.multiactivity.compatibility.MethodGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -15,11 +17,13 @@ import java.util.Map;
  */
 public class ACSAnnotationProcessor extends AnnotationProcessor {
 
+    private static final Logger logger = LoggerFactory.getLogger(ACSAnnotationProcessor.class);
+
     public static final String DEFAULT_GROUP_NAME = "__UnlabeledMethods__";
     public static final String ACS_GROUP_NAME = "__AcsControllers__";
 
-    private Map<String, MethodGroup> acsGroups = new HashMap<>();
-    private Map<String, MethodGroup> acsMemberships = new HashMap<>();
+    private final Map<String, MethodGroup> acsGroups = new HashMap<>();
+    private final Map<String, MethodGroup> acsMemberships = new HashMap<>();
 
     public ACSAnnotationProcessor(Class<?> clazz) {
         super(clazz);
@@ -47,8 +51,9 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
 
             // if it isn't member of a group, add it to the __UnlabeledMethods__ groups
             if (method.getAnnotation(MemberOf.class) == null) {
-                String methodSignature = method.toString();
-                acsMemberships.put(methodSignature.substring(methodSignature.indexOf(method.getName() + "(")), mg);
+                String methodName = method.toString().substring(method.toString().indexOf(method.getName() + "("));
+                acsMemberships.put(methodName, mg);
+                logger.debug("Adding {} interface to {} group.", methodName, DEFAULT_GROUP_NAME);
             }
         }
     }
