@@ -1,28 +1,19 @@
 package cl.niclabs.scada.acs.component.utils;
 
-import cl.niclabs.scada.acs.component.ACSFractive;
+import cl.niclabs.scada.acs.AbstractComponentTest;
 import cl.niclabs.scada.acs.component.controllers.MonitorController;
 import cl.niclabs.scada.acs.component.controllers.MonitorControllerMulticast;
 import cl.niclabs.scada.acs.component.controllers.exceptions.ACSIntegrationException;
-import cl.niclabs.scada.acs.component.factory.ACSTypeFactory;
-import org.etsi.uri.gcm.util.GCM;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
-import org.objectweb.fractal.api.control.BindingController;
-import org.objectweb.fractal.api.control.IllegalBindingException;
-import org.objectweb.fractal.api.control.IllegalLifeCycleException;
 import org.objectweb.fractal.api.factory.InstantiationException;
 import org.objectweb.fractal.api.type.ComponentType;
 import org.objectweb.fractal.api.type.InterfaceType;
 import org.objectweb.proactive.core.component.ContentDescription;
 import org.objectweb.proactive.core.component.ControllerDescription;
-import org.objectweb.proactive.core.component.factory.PAGenericFactory;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
@@ -30,40 +21,11 @@ import java.util.List;
  * BuildHelper unit test
  * Created by mibanez
  */
-public class BuildHelperTest {
-
-    private static ACSTypeFactory typeFactory;
-    private static PAGenericFactory genericFactory;
-    private static String oldGcmProvider;
-    private static String oldPolicy;
-
-    @BeforeClass
-    public static void setUp() throws org.objectweb.fractal.api.factory.InstantiationException, NoSuchInterfaceException, IOException {
-
-        oldPolicy = System.getProperty("java.security.policy");
-        System.setProperty("java.security.policy", BuildHelperTest.class.getResource("/proactive.java.policy").getPath());
-        System.setSecurityManager(new SecurityManager());
-
-        oldGcmProvider = System.getProperty("gcm.provider");
-        System.setProperty("gcm.provider", ACSFractive.class.getName());
-
-        Component boot = GCM.getBootstrapComponent();
-        typeFactory = (ACSTypeFactory) GCM.getTypeFactory(boot);
-        genericFactory = (PAGenericFactory) GCM.getGenericFactory(boot);
-    }
-
-    @AfterClass
-    public static void setDown() {
-        if (oldPolicy != null) {
-            System.setProperty("java.security.policy", oldPolicy);
-        }
-        if (oldGcmProvider != null) {
-            System.setProperty("gcm.provider", oldGcmProvider);
-        }
-    }
+public class BuildHelperTest extends AbstractComponentTest {
 
     @Test
     public void getAcsNfInterfaces() {
+
         InterfaceType[] interfaceTypes = null;
         try {
             interfaceTypes = new InterfaceType[]{
@@ -98,6 +60,7 @@ public class BuildHelperTest {
 
     @Test
     public void addACSControllers() {
+
         Component foo = null;
         try {
             ComponentType componentType = typeFactory.createFcType(new InterfaceType[]{
@@ -135,15 +98,6 @@ public class BuildHelperTest {
         }
 
         Assert.assertTrue(monitorObj instanceof MonitorController);
-    }
-
-    public static interface FooInterface { }
-
-    public static class FooComponent implements FooInterface, BindingController {
-        public String[] listFc() { return new String[0]; }
-        public Object lookupFc(String s) throws NoSuchInterfaceException { return null; }
-        public void bindFc(String s, Object o) throws NoSuchInterfaceException, IllegalBindingException, IllegalLifeCycleException {}
-        public void unbindFc(String s) throws NoSuchInterfaceException, IllegalBindingException, IllegalLifeCycleException {}
     }
 
 }
