@@ -1,14 +1,11 @@
 package cl.niclabs.scada.acs;
 
-import cl.niclabs.scada.acs.component.ACSFractive;
-import cl.niclabs.scada.acs.component.factory.ACSTypeFactory;
-import org.etsi.uri.gcm.util.GCM;
+import cl.niclabs.scada.acs.component.factory.ACSFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
-import org.objectweb.proactive.core.component.factory.PAGenericFactory;
+import org.objectweb.proactive.core.component.Fractive;
 
 import java.io.IOException;
 
@@ -17,8 +14,7 @@ import java.io.IOException;
  */
 public abstract class AbstractComponentTest {
 
-    protected static ACSTypeFactory typeFactory;
-    protected static PAGenericFactory genericFactory;
+    protected static ACSFactory factory;
     protected static String oldGcmProvider;
     protected static String oldPolicy;
 
@@ -30,11 +26,9 @@ public abstract class AbstractComponentTest {
         System.setSecurityManager(new SecurityManager());
 
         oldGcmProvider = System.getProperty("gcm.provider");
-        System.setProperty("gcm.provider", ACSFractive.class.getName());
+        System.setProperty("gcm.provider", Fractive.class.getName());
 
-        Component boot = GCM.getBootstrapComponent();
-        typeFactory = (ACSTypeFactory) GCM.getTypeFactory(boot);
-        genericFactory = (PAGenericFactory) GCM.getGenericFactory(boot);
+        factory = new ACSFactory();
     }
 
     @AfterClass
@@ -47,9 +41,22 @@ public abstract class AbstractComponentTest {
         }
     }
 
-    public static interface FooInterface {}
+    public static interface FooInterface {
+        public String foo();
+    }
 
     public static class FooComponent implements FooInterface, BindingController {
+        public String foo() {
+            for (int c = 5; c > 0; c--) {
+                System.out.println("FooComponent.foo() -> " + c);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return "OK";
+        }
         public String[] listFc() { return new String[0]; }
         public Object lookupFc(String s) { return null; }
         public void bindFc(String s, Object o) {}

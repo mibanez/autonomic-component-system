@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
+import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -11,19 +12,19 @@ import org.objectweb.proactive.core.component.type.PAComponentType;
 /**
  * Created by mibanez
  */
-public class ACSTypeFactoryImplTest extends AbstractComponentTest {
+public class ACSFactoryTest extends AbstractComponentTest {
 
     @Test
-    public void hostComponentACSInterfacesWithFactory() {
+    public void acsExtraNfInterfacesOnHost() {
 
         ComponentType componentType = null;
         try {
             InterfaceType[] interfaceTypes = new InterfaceType[]{
-                    typeFactory.createGCMItfType("server-itf", FooInterface.class.getName(), false, false, "singleton"),
-                    typeFactory.createGCMItfType("client-itf", FooInterface.class.getName(), true, true, "singleton")
+                    factory.createInterfaceType("server-itf", FooInterface.class.getName(), false, false),
+                    factory.createInterfaceType("client-itf", FooInterface.class.getName(), true, true)
             };
-            componentType = typeFactory.createFcType(interfaceTypes);
-        } catch (org.objectweb.fractal.api.factory.InstantiationException e) {
+            componentType = factory.createComponentType(interfaceTypes);
+        } catch (ACSFactoryException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());
         }

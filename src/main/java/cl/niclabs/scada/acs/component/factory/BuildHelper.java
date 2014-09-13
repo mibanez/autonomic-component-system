@@ -1,10 +1,8 @@
-package cl.niclabs.scada.acs.component.utils;
+package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.component.controllers.MonitorController;
 import cl.niclabs.scada.acs.component.controllers.MonitorControllerImpl;
-import cl.niclabs.scada.acs.component.controllers.MonitorControllerMulticast;
-import cl.niclabs.scada.acs.component.controllers.exceptions.ACSIntegrationException;
-import cl.niclabs.scada.acs.component.factory.ACSTypeFactory;
+import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.IllegalBindingException;
@@ -49,16 +47,19 @@ public class BuildHelper {
     // so I better put all the NF interfaces here.
     // That means that I need another method to add the object controllers for the (not yet created) controllers.
     // -- cruz
-    public static List<InterfaceType> getStandardNfInterfaces(PAGCMTypeFactory tf) throws InstantiationException {
+    public static List<InterfaceType> getStandardNfInterfaces(PAGCMTypeFactory tf) throws ACSFactoryException {
         ArrayList<InterfaceType> nfInterfaces = new ArrayList<>();
-        logger.info("generating standard nf interfaces...");
-        nfInterfaces.add(tf.createGCMItfType(Constants.CONTENT_CONTROLLER, PAContentController.class.getName(), false, false, "singleton"));
-        nfInterfaces.add(tf.createGCMItfType(Constants.BINDING_CONTROLLER, PABindingController.class.getName(), false, false, "singleton"));
-        nfInterfaces.add(tf.createGCMItfType(Constants.LIFECYCLE_CONTROLLER, PAGCMLifeCycleController.class.getName(), false, false, "singleton"));
-        nfInterfaces.add(tf.createGCMItfType(Constants.SUPER_CONTROLLER, PASuperController.class.getName(), false, false, "singleton"));
-        nfInterfaces.add(tf.createGCMItfType(Constants.NAME_CONTROLLER, NameController.class.getName(), false, false, "singleton"));
-        nfInterfaces.add(tf.createGCMItfType(Constants.MEMBRANE_CONTROLLER, PAMembraneController.class.getName(), false, false, "singleton"));
-        nfInterfaces.add(tf.createGCMItfType(Constants.MULTICAST_CONTROLLER, PAMulticastController.class.getName(), false, true, "singleton"));
+        try {
+            nfInterfaces.add(tf.createGCMItfType(Constants.CONTENT_CONTROLLER, PAContentController.class.getName(), false, false, "singleton"));
+            nfInterfaces.add(tf.createGCMItfType(Constants.BINDING_CONTROLLER, PABindingController.class.getName(), false, false, "singleton"));
+            nfInterfaces.add(tf.createGCMItfType(Constants.LIFECYCLE_CONTROLLER, PAGCMLifeCycleController.class.getName(), false, false, "singleton"));
+            nfInterfaces.add(tf.createGCMItfType(Constants.SUPER_CONTROLLER, PASuperController.class.getName(), false, false, "singleton"));
+            nfInterfaces.add(tf.createGCMItfType(Constants.NAME_CONTROLLER, NameController.class.getName(), false, false, "singleton"));
+            nfInterfaces.add(tf.createGCMItfType(Constants.MEMBRANE_CONTROLLER, PAMembraneController.class.getName(), false, false, "singleton"));
+            nfInterfaces.add(tf.createGCMItfType(Constants.MULTICAST_CONTROLLER, PAMulticastController.class.getName(), false, true, "singleton"));
+        } catch (InstantiationException e) {
+            throw new ACSFactoryException("Couldn't create standard NF interfaces", e);
+        }
         return nfInterfaces;
     }
 
@@ -66,10 +67,12 @@ public class BuildHelper {
     // Normally, PAComponentImpl.addMandatoryControllers should have added already the mandatory
     // MEMBRANE, LIFECYCLE and NAME controllers. Interfaces like BINDING and CONTENT, which are not
     // supposed to be in all components, should have been removed from the component NFType in the appropriate cases.
-    public static void addObjectControllers(Component component) throws ACSIntegrationException {
+    public static void addObjectControllers(Component component) throws ACSFactoryException {
+
         if (!(component instanceof PAComponent)) {
-            throw new ACSIntegrationException("the component must be a PAComponent instance");
+            throw new ACSFactoryException("the component must be a PAComponent instance");
         }
+
         logger.debug("addObjectControllers: adding object controllers on {}",
                 ((PAComponent) component).getComponentParameters().getName());
 
@@ -115,42 +118,49 @@ public class BuildHelper {
      * Generates the extra NF interfaces needed by every ACS component.
      */
     public static List<InterfaceType> getAcsNfInterfaces(PAGCMTypeFactory tf, InterfaceType[] fnInterfaceTypes)
-            throws InstantiationException {
+            throws ACSFactoryException {
 
-        logger.debug("getAcsNfInterfaces: adding acs nf interfaces...");
+        String monClazz = MonitorController.class.getName();
         ArrayList<InterfaceType> acsInterfaces = new ArrayList<>();
-        acsInterfaces.add(tf.createGCMItfType("monitor-controller", MonitorController.class.getName(), false, true, "singleton"));
 
-        for (InterfaceType itf : fnInterfaceTypes) {
+        try {
+            // Add monitor-controller main nf interface
+            acsInterfaces.add(tf.createGCMItfType("monitor-controller", monClazz, false, true, "singleton"));
 
-            if (!itf.isFcClientItf() && isSingleton(itf)) {
-                acsInterfaces.add(tf.createGCMItfType(itf.getFcItfName() + "-internal-monitor-controller",
-                        MonitorController.class.getName(), true, true, "singleton", true));
-                logger.debug("getAcsNfInterfaces: -- " + itf.getFcItfName() + "-internal-monitor-controller generated");
-            }
+            // Add extra nf interfaces based of the f interfaces
+            for (InterfaceType itf : fnInterfaceTypes) {
 
-            if (itf.isFcClientItf()) {
-                if (isSingleton(itf)) {
-                    acsInterfaces.add(tf.createGCMItfType(itf.getFcItfName() + "-external-monitor-controller",
-                            MonitorController.class.getName(), true, true, "singleton"));
-                    logger.debug("getAcsNfInterfaces: -- " + itf.getFcItfName() + "-external-monitor-controller generated [from singleton]");
-                } else if (itf instanceof PAGCMInterfaceType) {
-                    if (((PAGCMInterfaceType) itf).isGCMGathercastItf()) {
-                        acsInterfaces.add(tf.createGCMItfType(itf.getFcItfName() + "-external-monitor-controller",
-                                MonitorController.class.getName(), true, true, "singleton"));
-                        logger.debug("getAcsNfInterfaces: -- " + itf.getFcItfName() + "-external-monitor-controller generated [from gathercast]");
-                    } else if (((PAGCMInterfaceType) itf).isGCMMulticastItf()) {
-                        acsInterfaces.add(tf.createGCMItfType(itf.getFcItfName() + "-external-monitor-controller",
-                                MonitorControllerMulticast.class.getName(), true, true, "multicast"));
-                        logger.debug("getAcsNfInterfaces: -- " + itf.getFcItfName() + "-external-monitor-controller generated [from multicast]");
+                if (itf.isFcClientItf()) {
+                    // client interfaces needs an external monitor connection
+                    String name = String.format("%s-external-monitor-controller", itf.getFcItfName());
+
+                    if (isSingleton(itf)) {
+                        acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
+                    }
+                    else if (itf instanceof PAGCMInterfaceType) {
+                        // gcm special interfaces
+                        if (((PAGCMInterfaceType) itf).isGCMGathercastItf()) {
+                            acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
+                        }
+                        if (((PAGCMInterfaceType) itf).isGCMMulticastItf()) {
+                            acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "multicast"));
+                        }
                     }
                 }
+                else if (isSingleton(itf)) {
+                    // server interfaces needs an internal monitor connection
+                    String name = String.format("%s-internal-monitor-controller", itf.getFcItfName());
+                    acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton", true));
+                }
             }
-        }
 
-        acsInterfaces.add(tf.createGCMItfType("internal-server-monitor-controller",
-                MonitorController.class.getName(), false, true, "singleton", true));
-        logger.debug("getAcsNfInterfaces: -- internal-monitor-controller generated");
+            // composite components needs and internal server monitor connection [does it?]
+            String name = "internal-server-monitor-controller";
+            acsInterfaces.add(tf.createGCMItfType(name, monClazz, false, true, "singleton", true));
+
+        } catch(InstantiationException e) {
+            throw new ACSFactoryException("Couldn't create nf interface", e);
+        }
 
         return acsInterfaces;
     }
@@ -159,7 +169,7 @@ public class BuildHelper {
      * Instantiates the component controllers and attaches them inside the host component membrane
      */
     public static void addACSControllers(PAGCMTypeFactory tf, PAGenericFactory gf, Component host)
-            throws ACSIntegrationException {
+            throws ACSFactoryException {
 
         // component name for debugging purposes
         String hostName = ACSUtils.getComponentName(host);
@@ -173,7 +183,7 @@ public class BuildHelper {
         } catch (NoSuchInterfaceException e) {
             String msg = "Membrane or LifeCycle interfaces not found on component " + host;
             logger.error(msg);
-            throw new ACSIntegrationException(msg, e);
+            throw new ACSFactoryException(msg, e);
         }
 
         // To verify if the component has a STOPPED life-cycle we need a STARTED membrane
@@ -204,13 +214,13 @@ public class BuildHelper {
     }
 
 
-    private static void bindControllers(PAMembraneController membrane, Component host) throws ACSIntegrationException {
+    private static void bindControllers(PAMembraneController membrane, Component host) throws ACSFactoryException {
         try {
             logger.debug("bindingControllers: binding controllers on component {}", ACSUtils.getComponentName(host));
             membrane.nfBindFc("monitor-controller", "MonitorController.monitor-controller-nf");
         } catch (NoSuchInterfaceException | IllegalLifeCycleException |
                 IllegalBindingException | NoSuchComponentException e) {
-            throw new ACSIntegrationException("Controllers binding fail", e);
+            throw new ACSFactoryException("Controllers binding fail", e);
         }
     }
 
@@ -218,7 +228,7 @@ public class BuildHelper {
      * Instantiates MonitorController and attaches it to the host component membrane
      */
     private static void addMonitor(PAGCMTypeFactory tf, PAGenericFactory gf, PAMembraneController m, Component host)
-            throws ACSIntegrationException {
+            throws ACSFactoryException {
 
         logger.debug("addMonitor: adding monitor controller on component {}", ACSUtils.getComponentName(host));
         try {
@@ -228,11 +238,11 @@ public class BuildHelper {
                     new ContentDescription(MonitorControllerImpl.class.getName()),
                     getNode(host)));
         } catch (InstantiationException e) {
-            throw new ACSIntegrationException("ComponentType generation for monitor controller fail", e);
+            throw new ACSFactoryException("ComponentType generation for monitor controller fail", e);
         } catch (NodeException e) {
-            throw new ACSIntegrationException("Couldn't get the host component deployment node", e);
+            throw new ACSFactoryException("Couldn't get the host component deployment node", e);
         } catch (IllegalLifeCycleException | IllegalContentException e) {
-            throw new ACSIntegrationException("Couldn't add the monitor controller into the host component", e);
+            throw new ACSFactoryException("Couldn't add the monitor controller into the host component", e);
         }
     }
 
@@ -240,48 +250,59 @@ public class BuildHelper {
      * Generates a monitor controller ComponentType based on the host component attributes
      */
     private static ComponentType getMonitorComponentType(PAGCMTypeFactory tf, Component host)
-            throws InstantiationException {
+            throws ACSFactoryException {
 
+        String monClazz = MonitorController.class.getName();
         ArrayList<InterfaceType> monItfTypes = new ArrayList<>();
-        monItfTypes.add(tf.createGCMItfType("monitor-controller-nf", MonitorController.class.getName(),
-                false, false, "singleton"));
 
-        // external client interfaces
-        for (InterfaceType itf : ((ComponentType) host.getFcType()).getFcInterfaceTypes()) {
-            if (!itf.isFcClientItf()) {
-                continue;
-            }
-            if (isSingleton(itf)) {
-                monItfTypes.add(tf.createGCMItfType(itf.getFcItfName() + "-external-monitor-controller-nf",
-                        MonitorController.class.getName(), true, true, "singleton"));
-            } else if (itf instanceof PAGCMInterfaceType) {
-                if (((PAGCMInterfaceType) itf).isGCMGathercastItf()) {
-                    monItfTypes.add(tf.createGCMItfType(itf.getFcItfName() + "-external-monitor-controller-nf",
-                            MonitorController.class.getName(), true, true, "singleton"));
-                } else if (((PAGCMInterfaceType) itf).isGCMMulticastItf()) {
-                    monItfTypes.add(tf.createGCMItfType(itf.getFcItfName() + "-external-monitor-controller-nf",
-                            MonitorControllerMulticast.class.getName(), true, true, "singleton")); // TODO: Singleton??
+        try {
+            // Add monitor-controller main nf interface
+            monItfTypes.add(tf.createGCMItfType("monitor-controller-nf", monClazz, false, false, "singleton"));
 
-                }
-            }
-        }
-
-        // composites also require internal client interfaces
-        if (Constants.COMPOSITE.equals(((PAComponent) host).getComponentParameters().getHierarchicalType())) {
+            // Add extra nf interfaces based of the host's f interfaces
             for (InterfaceType itf : ((ComponentType) host.getFcType()).getFcInterfaceTypes()) {
-                if (!itf.isFcClientItf() && isSingleton(itf)) {
-                    monItfTypes.add(tf.createGCMItfType(itf.getFcItfName() + "-internal-monitor-controller-nf",
-                            MonitorController.class.getName(), true, true, "singleton"));
+
+                // Ignore server interfaces
+                if (!itf.isFcClientItf()) {
+                    continue;
+                }
+
+                // Add communication with the external monitors
+                String name = itf.getFcItfName() + "-external-monitor-controller-nf";
+
+                if (isSingleton(itf)) {
+                    monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
+                }
+                else if (itf instanceof PAGCMInterfaceType) {
+                    // gcm special interfaces
+                    if (((PAGCMInterfaceType) itf).isGCMGathercastItf()) {
+                        monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
+                    } else if (((PAGCMInterfaceType) itf).isGCMMulticastItf()) {
+                        monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton")); // TODO: Singleton??
+                    }
                 }
             }
+
+            // Composite also require internal client interfaces communication
+            if (Constants.COMPOSITE.equals(((PAComponent) host).getComponentParameters().getHierarchicalType())) {
+                for (InterfaceType itf : ((ComponentType) host.getFcType()).getFcInterfaceTypes()) {
+                    if (!itf.isFcClientItf() && isSingleton(itf)) {
+                        String name = itf.getFcItfName() + "-internal-monitor-controller-nf";
+                        monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
+                    }
+                }
+            }
+
+        } catch (InstantiationException e) {
+            throw new ACSFactoryException("Couldn't create interface for the monitor controller", e);
         }
 
-        if (tf instanceof ACSTypeFactory) {
-            // ACSTypeFactory adds nf extra interfaces by default, so we use the createNfFcType() method instead
-            return ((ACSTypeFactory) tf).createNfFcType(monItfTypes.toArray(new InterfaceType[monItfTypes.size()]));
+        try {
+            // Create the monitor controller component Type
+            return tf.createFcType(monItfTypes.toArray(new InterfaceType[monItfTypes.size()]));
+        } catch (InstantiationException e) {
+            throw new ACSFactoryException("Couldn't create monitor controller component type", e);
         }
-
-        return tf.createFcType(monItfTypes.toArray(new InterfaceType[monItfTypes.size()]));
     }
 
     /**

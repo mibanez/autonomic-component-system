@@ -1,6 +1,6 @@
-package cl.niclabs.scada.acs.component.utils;
+package cl.niclabs.scada.acs.component.factory;
 
-import cl.niclabs.scada.acs.component.controllers.exceptions.ACSIntegrationException;
+import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -32,50 +32,50 @@ class ACSUtils {
     }
 
     protected static void startLifeCycle(PAGCMLifeCycleController lifeCycle, String where, String who)
-            throws ACSIntegrationException {
+            throws ACSFactoryException {
         try {
             logger.debug("{}: starting the life-cycle on component {}", where, who);
             lifeCycle.startFc();
         } catch (IllegalLifeCycleException e) {
             String msg = where + ": LifeCycle cannot be started on component " + who;
             logger.error(msg);
-            throw new ACSIntegrationException(msg, e);
+            throw new ACSFactoryException(msg, e);
         }
     }
 
     protected static void startMembrane(PAMembraneController membrane, String where, String who)
-            throws ACSIntegrationException {
+            throws ACSFactoryException {
         try {
             logger.debug("{}: starting the membrane on component {}", where, who);
             membrane.startMembrane();
         } catch (IllegalLifeCycleException e) {
             String msg = where + ": Membrane cannot be started on component " + who;
             logger.error(msg);
-            throw new ACSIntegrationException(msg, e);
+            throw new ACSFactoryException(msg, e);
         }
     }
 
     protected static void stopLifeCycle(PAGCMLifeCycleController lifeCycle, String where, String who)
-            throws ACSIntegrationException {
+            throws ACSFactoryException {
         try {
             logger.debug("{}: stopping the life-cycle on component {}", where, who);
             lifeCycle.stopFc();
         } catch (IllegalLifeCycleException e) {
             String msg = where + ": LifeCycle cannot be stopped on component " + who;
             logger.error(msg);
-            throw new ACSIntegrationException(msg, e);
+            throw new ACSFactoryException(msg, e);
         }
     }
 
     protected static void stopMembrane(PAMembraneController membrane, String where, String who)
-            throws ACSIntegrationException {
+            throws ACSFactoryException {
         try {
             logger.debug("{}: stopping the membrane on component {}", where, who);
             membrane.stopMembrane();
         } catch (NoSuchInterfaceException | IllegalLifeCycleException e) {
             String msg = where + ": Membrane cannot be stopped on component " + who;
             logger.error(msg);
-            throw new ACSIntegrationException(msg, e);
+            throw new ACSFactoryException(msg, e);
         }
     }
 

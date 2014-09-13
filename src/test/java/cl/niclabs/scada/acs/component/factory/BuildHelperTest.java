@@ -1,9 +1,9 @@
-package cl.niclabs.scada.acs.component.utils;
+package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
 import cl.niclabs.scada.acs.component.controllers.MonitorController;
 import cl.niclabs.scada.acs.component.controllers.MonitorControllerMulticast;
-import cl.niclabs.scada.acs.component.controllers.exceptions.ACSIntegrationException;
+import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.objectweb.fractal.api.Component;
@@ -29,18 +29,18 @@ public class BuildHelperTest extends AbstractComponentTest {
         InterfaceType[] interfaceTypes = null;
         try {
             interfaceTypes = new InterfaceType[]{
-                    typeFactory.createGCMItfType("server-itf", FooInterface.class.getName(), false, false, "singleton"),
-                    typeFactory.createGCMItfType("client-itf", FooInterface.class.getName(), true, true, "singleton")
+                    factory.createInterfaceType("server-itf", FooInterface.class.getName(), false, false),
+                    factory.createInterfaceType("client-itf", FooInterface.class.getName(), true, true)
             };
-        } catch (InstantiationException e) {
+        } catch (ACSFactoryException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());
         }
 
         List<InterfaceType> acsNfInterfaces = null;
         try {
-            acsNfInterfaces = BuildHelper.getAcsNfInterfaces(typeFactory, interfaceTypes);
-        } catch (InstantiationException e) {
+            acsNfInterfaces = BuildHelper.getAcsNfInterfaces(factory.getTypeFactory(), interfaceTypes);
+        } catch (ACSFactoryException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());
         }
@@ -63,28 +63,28 @@ public class BuildHelperTest extends AbstractComponentTest {
 
         Component foo = null;
         try {
-            ComponentType componentType = typeFactory.createFcType(new InterfaceType[]{
-                    typeFactory.createGCMItfType("server-itf", FooInterface.class.getName(), false, false, "singleton"),
-                    typeFactory.createGCMItfType("client-itf", FooInterface.class.getName(), true, true, "singleton")
+            ComponentType componentType = factory.createComponentType(new InterfaceType[]{
+                    factory.createInterfaceType("server-itf", FooInterface.class.getName(), false, false),
+                    factory.createInterfaceType("client-itf", FooInterface.class.getName(), true, true)
             });
-            foo = genericFactory.newFcInstance(componentType,
+            foo = factory.getGenericFactory().newFcInstance(componentType,
                     new ControllerDescription("FooComponent", "primitive"),
                     new ContentDescription(FooComponent.class.getName()), null);
-        } catch (InstantiationException e) {
+        } catch (ACSFactoryException | InstantiationException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());
         }
 
         try {
             BuildHelper.addObjectControllers(foo);
-        } catch (ACSIntegrationException e) {
+        } catch (ACSFactoryException e) {
             e.printStackTrace();
             Assert.fail("addObjectControllers: " + e.getMessage());
         }
 
         try {
-            BuildHelper.addACSControllers(typeFactory, genericFactory, foo);
-        } catch (ACSIntegrationException e) {
+            BuildHelper.addACSControllers(factory.getTypeFactory(), factory.getGenericFactory(), foo);
+        } catch (ACSFactoryException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());
         }
