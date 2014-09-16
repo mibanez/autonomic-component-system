@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers;
 
 /**
- * Created by mibanez on 07-09-14.
+ * Created by mibanez
  */
 public interface MonitorControllerMulticast {
 
