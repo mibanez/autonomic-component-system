@@ -27,17 +27,18 @@ public class ACSAnnotationProcessorTest {
         // Groups
         Map<String, MethodGroup> groups = processor.getMethodGroups();
         Assert.assertTrue(groups.containsKey(ACSAnnotationProcessor.DEFAULT_GROUP_NAME));
-        MethodGroup defaultGroup = groups.get(ACSAnnotationProcessor.DEFAULT_GROUP_NAME);
+
+        MethodGroup defaultGroup, acsGroup;
+        Assert.assertNotNull((defaultGroup = groups.get(ACSAnnotationProcessor.DEFAULT_GROUP_NAME)));
+        Assert.assertNotNull((acsGroup = groups.get(ACSAnnotationProcessor.ACS_GROUP_NAME)));
 
         Assert.assertTrue(defaultGroup.name.equals(ACSAnnotationProcessor.DEFAULT_GROUP_NAME));
-        Assert.assertTrue(defaultGroup.getCompatibleWith().isEmpty());
+        Assert.assertTrue(defaultGroup.isCompatibleWith(acsGroup));
         Assert.assertFalse(defaultGroup.isSelfCompatible());
 
-        Assert.assertTrue(groups.containsKey(ACSAnnotationProcessor.ACS_GROUP_NAME));
-        MethodGroup acsGroup = groups.get(ACSAnnotationProcessor.ACS_GROUP_NAME);
-
-        Assert.assertTrue(acsGroup.isSelfCompatible());
+        Assert.assertTrue(acsGroup.name.equals(ACSAnnotationProcessor.ACS_GROUP_NAME));
         Assert.assertTrue(acsGroup.isCompatibleWith(defaultGroup));
+        Assert.assertFalse(acsGroup.isSelfCompatible());
 
         // Methods
         Map<String, MethodGroup> membership = processor.getMethodMemberships();

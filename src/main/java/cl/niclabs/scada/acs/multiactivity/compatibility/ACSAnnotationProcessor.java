@@ -1,5 +1,6 @@
 package cl.niclabs.scada.acs.multiactivity.compatibility;
 
+import cl.niclabs.scada.acs.component.controllers.MonitorControllerImpl;
 import org.objectweb.proactive.annotation.multiactivity.MemberOf;
 import org.objectweb.proactive.multiactivity.compatibility.AnnotationProcessor;
 import org.objectweb.proactive.multiactivity.compatibility.MethodGroup;
@@ -8,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -25,16 +25,36 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
     private final Map<String, MethodGroup> acsGroups = new HashMap<>();
     private final Map<String, MethodGroup> acsMemberships = new HashMap<>();
 
+    // indicate if the groups/memberships was already mixed with the user defined groups/membership
+    private boolean groupsMixed = false;
+    private boolean membershipsMixed = false;
+
+
     public ACSAnnotationProcessor(Class<?> clazz) {
         super(clazz);
+
+        MethodGroup defaultGroup = new MethodGroup(DEFAULT_GROUP_NAME, false);
+        MethodGroup acsGroup = new MethodGroup(ACS_GROUP_NAME, false);
+
+        defaultGroup.addCompatibleWith(acsGroup);
+        acsGroup.addCompatibleWith(defaultGroup);
+
+        acsGroups.put(DEFAULT_GROUP_NAME, defaultGroup);
+        acsGroups.put(ACS_GROUP_NAME, acsGroup);
+
+        // fill default group
         processUnlabeledMethods(clazz);
 
-        MethodGroup acsControllers = new MethodGroup(ACS_GROUP_NAME, true);
-        acsControllers.addCompatibleWith(new HashSet<>(getMethodGroups().values()));
-        acsControllers.addCompatibleWith(new HashSet<>(acsGroups.values()));
+        // fill acs group
+        processAcsMethods();
+    }
 
-        acsGroups.put(ACS_GROUP_NAME, acsControllers);
-        acsMemberships.put("monitor-controller", acsControllers);
+    private void processAcsMethods() {
+        for (Method method : MonitorControllerImpl.class.getDeclaredMethods()) {
+            String methodName = method.toString().substring(method.toString().indexOf(method.getName() + "("));
+            logger.debug("adding [MonitorController.]{} method to group {}", methodName, ACS_GROUP_NAME);
+            acsMemberships.put(methodName, acsGroups.get(ACS_GROUP_NAME));
+        }
     }
 
     /**
@@ -43,8 +63,6 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
      * @param processedClass class to process
      */
     private void processUnlabeledMethods(Class<?> processedClass) {
-        MethodGroup mg = new MethodGroup(DEFAULT_GROUP_NAME, false);
-        acsGroups.put(DEFAULT_GROUP_NAME, mg);
 
         // go through each public method of a class
         for (Method method : processedClass.getMethods()) {
@@ -52,7 +70,7 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
             // if it isn't member of a group, add it to the __UnlabeledMethods__ groups
             if (method.getAnnotation(MemberOf.class) == null) {
                 String methodName = method.toString().substring(method.toString().indexOf(method.getName() + "("));
-                acsMemberships.put(methodName, mg);
+                acsMemberships.put(methodName, acsGroups.get(DEFAULT_GROUP_NAME));
                 logger.debug("Adding {} interface to {} group.", methodName, DEFAULT_GROUP_NAME);
             }
         }
@@ -60,16 +78,33 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
 
     @Override
     public Map<String, MethodGroup> getMethodGroups() {
-        Map<String, MethodGroup> groups = super.getMethodGroups();
-        groups.putAll(acsGroups);
-        return groups;
+
+        if (!groupsMixed) {
+            Map<String, MethodGroup> groups = super.getMethodGroups();
+            MethodGroup acsGroup = acsGroups.get(ACS_GROUP_NAME);
+
+            // add compatibility to acs group with the user defined groups
+            for (MethodGroup mg : groups.values()) {
+                acsGroup.addCompatibleWith(mg);
+                mg.addCompatibleWith(acsGroup);
+            }
+
+            acsGroups.putAll(groups);
+            groupsMixed = true;
+        }
+
+        return acsGroups;
     }
 
     @Override
     public Map<String, MethodGroup> getMethodMemberships() {
-        Map<String, MethodGroup> memberships = super.getMethodMemberships();
-        memberships.putAll(acsMemberships);
-        return memberships;
+
+        if (!membershipsMixed) {
+            acsMemberships.putAll(super.getMethodMemberships());
+            membershipsMixed = true;
+        }
+
+        return acsMemberships;
     }
 
 }
