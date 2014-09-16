@@ -40,6 +40,21 @@ public class BuildHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(BuildHelper.class);
     private static final String CONTROLLER_CONFIG = "/org/objectweb/proactive/core/component/componentcontroller/config/default-component-controller-config.xml";
+    private final PAGCMTypeFactory tf;
+    private final PAGenericFactory gf;
+
+    public BuildHelper(ACSFactory factory) throws ACSFactoryException {
+      this(factory.getTypeFactory(), factory.getGenericFactory());
+    }
+
+    public BuildHelper(PAGCMTypeFactory typeFactory, PAGenericFactory genericFactory) throws ACSFactoryException {
+        tf = typeFactory;
+        gf = genericFactory;
+        if (tf == null || gf == null) {
+            String msg = "typeFactory and genericFactory for BuildHelper constructor can't be null";
+            throw new ACSFactoryException(msg, new NullPointerException());
+        }
+    }
 
     // Normally, the NF interfaces mentioned here should be those that are going to be implemented by NF component,
     // and the rest of the NF interfaces (that are going to be implemented by object controller) should be in a
@@ -47,7 +62,7 @@ public class BuildHelper {
     // so I better put all the NF interfaces here.
     // That means that I need another method to add the object controllers for the (not yet created) controllers.
     // -- cruz
-    public static List<InterfaceType> getStandardNfInterfaces(PAGCMTypeFactory tf) throws ACSFactoryException {
+    public List<InterfaceType> getStandardNfInterfaces() throws ACSFactoryException {
         ArrayList<InterfaceType> nfInterfaces = new ArrayList<>();
         try {
             nfInterfaces.add(tf.createGCMItfType(Constants.CONTENT_CONTROLLER, PAContentController.class.getName(), false, false, "singleton"));
@@ -67,7 +82,7 @@ public class BuildHelper {
     // Normally, PAComponentImpl.addMandatoryControllers should have added already the mandatory
     // MEMBRANE, LIFECYCLE and NAME controllers. Interfaces like BINDING and CONTENT, which are not
     // supposed to be in all components, should have been removed from the component NFType in the appropriate cases.
-    public static void addObjectControllers(Component component) throws ACSFactoryException {
+    public void addObjectControllers(Component component) throws ACSFactoryException {
 
         if (!(component instanceof PAComponent)) {
             throw new ACSFactoryException("the component must be a PAComponent instance");
@@ -117,7 +132,7 @@ public class BuildHelper {
     /**
      * Generates the extra NF interfaces needed by every ACS component.
      */
-    public static List<InterfaceType> getAcsNfInterfaces(PAGCMTypeFactory tf, InterfaceType[] fnInterfaceTypes)
+    public List<InterfaceType> getAcsNfInterfaces(InterfaceType[] fnInterfaceTypes)
             throws ACSFactoryException {
 
         String monClazz = MonitorController.class.getName();
@@ -168,11 +183,7 @@ public class BuildHelper {
     /**
      * Instantiates the component controllers and attaches them inside the host component membrane
      */
-    public static void addACSControllers(PAGCMTypeFactory tf, PAGenericFactory gf, Component host)
-            throws ACSFactoryException {
-
-        // component name for debugging purposes
-        String hostName = ACSUtils.getComponentName(host);
+    public void addACSControllers(Component host) throws ACSFactoryException {
 
         PAMembraneController membrane;
         PAGCMLifeCycleController lifeCycle;
@@ -189,32 +200,32 @@ public class BuildHelper {
         // To verify if the component has a STOPPED life-cycle we need a STARTED membrane
         String membraneState = membrane.getMembraneState();
         if (membraneState.equals(PAMembraneController.MEMBRANE_STOPPED)) {
-            ACSUtils.startMembrane(membrane, "addACSControllers", hostName);
+            ACSUtils.startMembrane(host, "addACSControllers");
         }
 
         // Stopping everything
         String lifeCycleState = lifeCycle.getFcState();
         if (lifeCycleState.equals(PAGCMLifeCycleController.STARTED)) {
-            ACSUtils.stopLifeCycle(lifeCycle, "addACSControllers", hostName);
+            ACSUtils.stopLifeCycle(host, "addACSControllers");
         }
         if (membrane.getMembraneState().equals(PAMembraneController.MEMBRANE_STARTED)) {
-            ACSUtils.stopMembrane(membrane, "addACSControllers", hostName);
+            ACSUtils.stopMembrane(host, "addACSControllers");
         }
 
-        addMonitor(tf, gf, membrane, host);
+        addMonitor(membrane, host);
         bindControllers(membrane, host);
 
         // Restoring old states
         if (membraneState.equals(PAMembraneController.MEMBRANE_STARTED)) {
-            ACSUtils.startMembrane(membrane, "addACSControllers", hostName);
+            ACSUtils.startMembrane(host, "addACSControllers");
         }
         if (lifeCycleState.equals(PAGCMLifeCycleController.STARTED)) {
-            ACSUtils.startLifeCycle(lifeCycle, "addACSControllers", hostName);
+            ACSUtils.startLifeCycle(host, "addACSControllers");
         }
     }
 
 
-    private static void bindControllers(PAMembraneController membrane, Component host) throws ACSFactoryException {
+    private void bindControllers(PAMembraneController membrane, Component host) throws ACSFactoryException {
         try {
             logger.debug("bindingControllers: binding controllers on component {}", ACSUtils.getComponentName(host));
             membrane.nfBindFc("monitor-controller", "MonitorController.monitor-controller-nf");
@@ -227,13 +238,13 @@ public class BuildHelper {
     /**
      * Instantiates MonitorController and attaches it to the host component membrane
      */
-    private static void addMonitor(PAGCMTypeFactory tf, PAGenericFactory gf, PAMembraneController m, Component host)
+    private void addMonitor(PAMembraneController m, Component host)
             throws ACSFactoryException {
 
         logger.debug("addMonitor: adding monitor controller on component {}", ACSUtils.getComponentName(host));
         try {
             m.nfAddFcSubComponent(gf.newNfFcInstance(
-                    getMonitorComponentType(tf, host),
+                    getMonitorComponentType(host),
                     new ControllerDescription("MonitorController", Constants.PRIMITIVE, CONTROLLER_CONFIG),
                     new ContentDescription(MonitorControllerImpl.class.getName()),
                     getNode(host)));
@@ -249,8 +260,7 @@ public class BuildHelper {
     /**
      * Generates a monitor controller ComponentType based on the host component attributes
      */
-    private static ComponentType getMonitorComponentType(PAGCMTypeFactory tf, Component host)
-            throws ACSFactoryException {
+    private ComponentType getMonitorComponentType(Component host) throws ACSFactoryException {
 
         String monClazz = MonitorController.class.getName();
         ArrayList<InterfaceType> monItfTypes = new ArrayList<>();
@@ -308,7 +318,7 @@ public class BuildHelper {
     /**
      * Returns the deployment node of the component
      */
-    private static Node getNode(Component component) throws NodeException {
+    private Node getNode(Component component) throws NodeException {
         UniversalBodyProxy ubProxy = (UniversalBodyProxy) ((PAComponentRepresentative) component).getProxy();
         return NodeFactory.getNode(ubProxy.getBody().getNodeURL());
     }
@@ -316,7 +326,7 @@ public class BuildHelper {
     /**
      * Returns true if the interface is a singleton interface
      */
-    private static boolean isSingleton(InterfaceType itf) {
+    private boolean isSingleton(InterfaceType itf) {
         boolean isSingleton = !itf.isFcCollectionItf();
         if (itf instanceof PAGCMInterfaceType) {
             isSingleton = isSingleton && ((PAGCMInterfaceType) itf).isGCMSingletonItf();

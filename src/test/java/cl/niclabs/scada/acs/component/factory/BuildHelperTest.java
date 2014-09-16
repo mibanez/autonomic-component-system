@@ -39,7 +39,7 @@ public class BuildHelperTest extends AbstractComponentTest {
 
         List<InterfaceType> acsNfInterfaces = null;
         try {
-            acsNfInterfaces = BuildHelper.getAcsNfInterfaces(factory.getTypeFactory(), interfaceTypes);
+            acsNfInterfaces = (new BuildHelper(factory)).getAcsNfInterfaces(interfaceTypes);
         } catch (ACSFactoryException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());
@@ -75,15 +75,23 @@ public class BuildHelperTest extends AbstractComponentTest {
             Assert.fail(e.getMessage());
         }
 
+        BuildHelper buildHelper = null;
         try {
-            BuildHelper.addObjectControllers(foo);
+            buildHelper = new BuildHelper(factory);
+        } catch (ACSFactoryException e) {
+            e.printStackTrace();
+            Assert.fail(e.getMessage());
+        }
+
+        try {
+            buildHelper.addObjectControllers(foo);
         } catch (ACSFactoryException e) {
             e.printStackTrace();
             Assert.fail("addObjectControllers: " + e.getMessage());
         }
 
         try {
-            BuildHelper.addACSControllers(factory.getTypeFactory(), factory.getGenericFactory(), foo);
+            buildHelper.addACSControllers(foo);
         } catch (ACSFactoryException e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());

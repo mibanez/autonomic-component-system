@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs;
 
 import cl.niclabs.scada.acs.component.factory.ACSFactory;
+import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -19,7 +20,7 @@ public abstract class AbstractComponentTest {
     private static String oldPolicy;
 
     @BeforeClass
-    public static void setUp() throws org.objectweb.fractal.api.factory.InstantiationException, NoSuchInterfaceException, IOException {
+    public static void setUp() throws ACSFactoryException, NoSuchInterfaceException, IOException {
 
         oldPolicy = System.getProperty("java.security.policy");
         System.setProperty("java.security.policy", AbstractComponentTest.class.getResource("/proactive.java.policy").getPath());
@@ -42,20 +43,19 @@ public abstract class AbstractComponentTest {
     }
 
     public static interface FooInterface {
-        public String foo();
+        public void foo();
     }
 
     public static class FooComponent implements FooInterface, BindingController {
-        public String foo() {
-            for (int c = 5; c > 0; c--) {
+        public void foo() {
+            for (int c = 10; c > 0; c--) {
                 System.out.println("FooComponent.foo() -> " + c);
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            return "OK";
         }
         public String[] listFc() { return new String[0]; }
         public Object lookupFc(String s) { return null; }
