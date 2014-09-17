@@ -12,9 +12,6 @@ public class MonitorControllerImpl extends AbstractPAComponentController impleme
 
     private final Map<String, Metric> metrics = new HashMap<>();
 
-    public MonitorControllerImpl() {
-
-    }
 
     @Override
     public Wrapper<Boolean> addMetric(String name, Metric metric) {
@@ -26,11 +23,37 @@ public class MonitorControllerImpl extends AbstractPAComponentController impleme
     }
 
     @Override
-    public <TYPE extends Serializable> Wrapper<TYPE> getValue(String name) {
+    public Wrapper<Boolean> removeMetric(String name) {
+        if (metrics.containsKey(name)) {
+            metrics.remove(name);
+            return new Wrapper<>(true);
+        }
+        return new Wrapper<>(false, String.format("no metric with name %s found", name));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <VALUE extends Serializable> Wrapper<VALUE> getValue(String name) {
         if (metrics.containsKey(name)) {
             return metrics.get(name).getWrappedValue();
         }
-        return new Wrapper<>(null, String.format("no metric found with name %s", name));
+        return new Wrapper(null, String.format("no metric found with name %s", name));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <VALUE extends Serializable> Wrapper<VALUE> measure(String name) {
+        if (metrics.containsKey(name)) {
+            Metric metric = metrics.get(name);
+            metric.measure();
+            return metric.getWrappedValue();
+        }
+        return new Wrapper<>(null, String.format("no metric with name %s found", name));
+    }
+
+    @Override
+    public Wrapper<String[]> getMetricNames() {
+        return new Wrapper<>(metrics.keySet().toArray(new String[metrics.size()]));
     }
 
 }

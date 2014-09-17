@@ -14,12 +14,13 @@ import org.objectweb.fractal.api.type.InterfaceType;
 import org.objectweb.proactive.core.component.Utils;
 
 /**
- * Created by mibanez
+ * A copy of ComponentMultiActiveService, using the custom ACS extensions.
+ * 
  */
 public class ACSMultiActiveServiceTest extends AbstractComponentTest {
 
     @Test
-    public void multiactiveServiceTest() {
+    public void multiActiveServiceTest() {
 
         Component foo = null;
         try {
@@ -63,6 +64,11 @@ public class ACSMultiActiveServiceTest extends AbstractComponentTest {
     }
 
     public static class FooMetric extends Metric<String> {
+
+        @Override
+        public void measure() {
+            // nothing
+        }
 
         @Override
         public String getValue() {
