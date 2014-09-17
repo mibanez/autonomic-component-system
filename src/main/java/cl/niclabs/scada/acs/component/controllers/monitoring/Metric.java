@@ -7,8 +7,12 @@ import java.io.Serializable;
 /**
  * Created by mibanez
  */
-public abstract class Metric<TYPE> implements Serializable {
+public abstract class Metric<TYPE extends Serializable> implements Serializable {
 
-    public abstract Wrapper<TYPE> getValue();
+    public abstract TYPE getValue();
+
+    public Wrapper<TYPE> getWrappedValue() {
+        return new Wrapper<>(getValue());
+    }
 
 }

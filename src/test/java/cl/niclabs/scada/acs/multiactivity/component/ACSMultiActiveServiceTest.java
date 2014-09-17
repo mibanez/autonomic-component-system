@@ -3,7 +3,6 @@ package cl.niclabs.scada.acs.multiactivity.component;
 import cl.niclabs.scada.acs.AbstractComponentTest;
 import cl.niclabs.scada.acs.component.controllers.MonitorController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
-import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -66,8 +65,9 @@ public class ACSMultiActiveServiceTest extends AbstractComponentTest {
     public static class FooMetric extends Metric<String> {
 
         @Override
-        public Wrapper<String> getValue() {
-            return new Wrapper<>("Foo Foo Foo !!");
+        public String getValue() {
+            return "Foo Foo Foo !!";
         }
+
     }
 }

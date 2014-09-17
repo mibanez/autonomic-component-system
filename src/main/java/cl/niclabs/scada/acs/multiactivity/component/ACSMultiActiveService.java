@@ -40,7 +40,6 @@ public class ACSMultiActiveService extends Service {
     public int activeServes = 0;
     public LinkedList<Integer> serveHistory = new LinkedList<>();
     public LinkedList<Integer> serveTsts = new LinkedList<>();
-    private CompatibilityTracker compatibility;
     private RequestExecutor executor = null;
 
     /**
@@ -73,7 +72,7 @@ public class ACSMultiActiveService extends Service {
 
         ACSAnnotationProcessor annotationProcessor = new ACSAnnotationProcessor(body.getReifiedObject().getClass());
 
-        compatibility = new CompatibilityTracker(annotationProcessor, requestQueue);
+        CompatibilityTracker compatibility = new CompatibilityTracker(annotationProcessor, requestQueue);
 
         if (priorityConstraints != null) {
             annotationProcessor.getPriorityConstraints().addAll(priorityConstraints);
@@ -145,7 +144,7 @@ public class ACSMultiActiveService extends Service {
      *
      * @return The serving policy to use to schedule requests.
      */
-    protected ServingPolicy createServingPolicy() {
+    ServingPolicy createServingPolicy() {
         return wrapServingPolicy(new DefaultServingPolicy());
     }
 
@@ -208,7 +207,7 @@ public class ACSMultiActiveService extends Service {
         executor.execute(wrapServingPolicy(policy));
     }
 
-    protected ServingPolicy wrapServingPolicy(ServingPolicy delegate) {
+    ServingPolicy wrapServingPolicy(ServingPolicy delegate) {
         PAComponentImpl componentImpl = ((ComponentBody) body).getPAComponentImpl();
         PAGCMLifeCycleController lifeCycleController;
 //        PriorityController priorityController;

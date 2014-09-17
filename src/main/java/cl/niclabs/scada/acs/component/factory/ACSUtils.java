@@ -23,7 +23,7 @@ class ACSUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(BuildHelper.class);
 
-    protected static String getComponentName(Component component) {
+    static String getComponentName(Component component) {
         if (component instanceof PAComponent) {
             return ((PAComponent) component).getComponentParameters().getName();
         }
@@ -34,7 +34,7 @@ class ACSUtils {
         }
     }
 
-    protected static void startLifeCycle(Component component, String where)
+    static void startLifeCycle(Component component, String where)
             throws ACSFactoryException {
         try {
             logger.debug("{}: starting the life-cycle on component {}", where, getComponentName(component));
@@ -46,7 +46,7 @@ class ACSUtils {
         }
     }
 
-    protected static void startMembrane(Component component, String where)
+    static void startMembrane(Component component, String where)
             throws ACSFactoryException {
         try {
             logger.debug("{}: starting the membrane on component {}", where, getComponentName(component));
@@ -58,7 +58,7 @@ class ACSUtils {
         }
     }
 
-    protected static void stopLifeCycle(Component component, String where)
+    static void stopLifeCycle(Component component, String where)
             throws ACSFactoryException {
         try {
             logger.debug("{}: stopping the life-cycle on component {}", where, getComponentName(component));
@@ -70,7 +70,7 @@ class ACSUtils {
         }
     }
 
-    protected static void stopMembrane(Component component, String where)
+    static void stopMembrane(Component component, String where)
             throws ACSFactoryException {
         try {
             logger.debug("{}: stopping the membrane on component {}", where, getComponentName(component));
@@ -91,7 +91,7 @@ class ACSUtils {
      * @param nfList            list of nf interfaces
      * @param acsNfInterface    nf interfaces to check its uniqueness
      */
-    protected static boolean checkUnique(List<InterfaceType> nfList, InterfaceType acsNfInterface)
+    static boolean checkUnique(List<InterfaceType> nfList, InterfaceType acsNfInterface)
             throws ACSFactoryException {
 
         for (InterfaceType nfInterface : nfList) {

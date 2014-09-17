@@ -17,7 +17,7 @@ public class ACSServingPolicy extends ServingPolicy {
 
     private final PAGCMLifeCycleController lifeCycleController;
     private final RequestFilter acsNfRequestFilter;
-    protected final ServingPolicy delegate;
+    private final ServingPolicy delegate;
 
     /**
      * @return the delegate

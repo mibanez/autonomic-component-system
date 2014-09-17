@@ -4,6 +4,7 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,9 +26,9 @@ public class MonitorControllerImpl extends AbstractPAComponentController impleme
     }
 
     @Override
-    public <TYPE> Wrapper<TYPE> getValue(String name) {
+    public <TYPE extends Serializable> Wrapper<TYPE> getValue(String name) {
         if (metrics.containsKey(name)) {
-            return metrics.get(name).getValue();
+            return metrics.get(name).getWrappedValue();
         }
         return new Wrapper<>(null, String.format("no metric found with name %s", name));
     }
