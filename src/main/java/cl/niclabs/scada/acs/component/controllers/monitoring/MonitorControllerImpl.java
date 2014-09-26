@@ -1,17 +1,23 @@
-package cl.niclabs.scada.acs.component.controllers;
+package cl.niclabs.scada.acs.component.controllers.monitoring;
 
-import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
+import cl.niclabs.scada.acs.component.controllers.MonitorController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
+import org.objectweb.fractal.api.control.IllegalLifeCycleException;
+import org.objectweb.fractal.api.control.LifeCycleController;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
+import org.objectweb.proactive.core.runtime.ProActiveRuntimeImpl;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MonitorControllerImpl extends AbstractPAComponentController implements MonitorController {
+public class MonitorControllerImpl extends AbstractPAComponentController
+        implements MonitorController, MonitorNotifier, LifeCycleController {
 
     private final Map<String, Metric> metrics = new HashMap<>();
-
+    private final RecordStore recordStore = new RecordStore();
+    private ACSEventListener eventListener;
 
     @Override
     public Wrapper<Boolean> addMetric(String name, Metric metric) {
@@ -56,4 +62,26 @@ public class MonitorControllerImpl extends AbstractPAComponentController impleme
         return new Wrapper<>(metrics.keySet().toArray(new String[metrics.size()]));
     }
 
+    @Override
+    public String getFcState() {
+        return null; // never used on
+    }
+
+    @Override
+    public void startFc() throws IllegalLifeCycleException {
+        if (eventListener == null) {
+            String runtimeURL = ProActiveRuntimeImpl.getProActiveRuntime().getURL();
+            eventListener = new ACSEventListener(this, recordStore, hostComponent.getID(), runtimeURL);
+        }
+    }
+
+    @Override
+    public void stopFc() throws IllegalLifeCycleException {
+        // nothing
+    }
+
+    @Override
+    public void notifyACSEvent(ACSEventType eventType) {
+        //logger.debug("record notification {}", eventType);
+    }
 }
