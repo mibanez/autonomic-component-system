@@ -19,6 +19,11 @@ import org.objectweb.proactive.core.component.Utils;
  */
 public class ACSMultiActiveServiceTest extends AbstractComponentTest {
 
+    private static class FooMetric extends Metric<String> {
+        public void measure() {}
+        public String getValue() { return "Foo Foo Foo !!"; }
+    }
+
     @Test
     public void multiActiveServiceTest() {
 
@@ -45,7 +50,7 @@ public class ACSMultiActiveServiceTest extends AbstractComponentTest {
 
             FooInterface fooItf = (FooInterface) foo.getFcInterface("server-itf");
             MonitorController monitorController = (MonitorController) foo.getFcInterface("monitor-controller");
-            monitorController.addMetric("foo-metric", new FooMetric());
+            monitorController.addMetric("foo-metric", FooMetric.class);
             fooItf.foo();
 
             try {
@@ -63,17 +68,4 @@ public class ACSMultiActiveServiceTest extends AbstractComponentTest {
         }
     }
 
-    public static class FooMetric extends Metric<String> {
-
-        @Override
-        public void measure() {
-            // nothing
-        }
-
-        @Override
-        public String getValue() {
-            return "Foo Foo Foo !!";
-        }
-
-    }
 }

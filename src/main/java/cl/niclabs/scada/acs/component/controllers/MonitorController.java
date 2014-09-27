@@ -11,10 +11,19 @@ public interface MonitorController {
      * Adds a new metric to the monitor controller.<br>
      * The name of the metric must be unique.
      * @param name      Name of the new metric
-     * @param metric    The new metric
+     * @param className Name of the class implementing the metric
      * @return          A wrapped boolean value.<br> True if it was correctly added, False otherwise.
      */
-    public Wrapper<Boolean> addMetric(String name, Metric metric);
+    public Wrapper<Boolean> addMetric(String name, String className);
+
+    /**
+     * Adds a new metric to the monitor controller.<br>
+     * The name of the metric must be unique.
+     * @param name  Name of the new metric
+     * @param clazz Class implementing the metric
+     * @return      A wrapped boolean value.<br> True if it was correctly added, False otherwise.
+     */
+    public <METRIC extends Metric> Wrapper<Boolean> addMetric(String name, Class<METRIC> clazz);
 
     /**
      * Removes a registered metric.

@@ -19,13 +19,34 @@ public class MonitorControllerImpl extends AbstractPAComponentController
     private final RecordStore recordStore = new RecordStore();
     private ACSEventListener eventListener;
 
+
     @Override
-    public Wrapper<Boolean> addMetric(String name, Metric metric) {
-        if (metrics.containsKey(name)) {
-            return new Wrapper<>(false, String.format("the metric name %s already exists", name));
+    @SuppressWarnings("unchecked")
+    public Wrapper<Boolean> addMetric(String name, String className) {
+        try {
+            Class<?> clazz = Class.forName(className);
+            if (Metric.class.isAssignableFrom(clazz)) {
+                return addMetric(name, (Class<Metric>) clazz);
+            }
+            return new Wrapper<>(false, "Metric class is not assignable from the found class " + clazz.getName());
         }
-        metrics.put(name, metric);
-        return new Wrapper<>(true, String.format("metric %s added correctly", name));
+        catch (Exception e) {
+            return new Wrapper<>(false, "Fail to get metric class " + className, e);
+        }
+    }
+
+    @Override
+    public <METRIC extends Metric> Wrapper<Boolean> addMetric(String name, Class<METRIC> clazz) {
+        try {
+            if (metrics.containsKey(name)) {
+                return new Wrapper<>(false, "The metric name " + name + " already exists");
+            }
+            metrics.put(name, clazz.newInstance());
+            return new Wrapper<>(true, "Metric " + name + " added correctly");
+        }
+        catch (Exception e) {
+            return new Wrapper<>(false, "Fail to instantiate metric " + clazz.getName(), e);
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ public class Wrapper<TYPE extends Serializable> implements Serializable {
 
     private final TYPE value;
     private final String msg;
+    private final Exception cause;
 
     /**
      * Wrapper constructor
@@ -19,8 +20,13 @@ public class Wrapper<TYPE extends Serializable> implements Serializable {
     }
 
     public Wrapper(TYPE object, String message) {
+        this(object, message, null);
+    }
+
+    public Wrapper(TYPE object, String message, Exception throwable) {
         value = object;
         msg = message;
+        cause = throwable;
     }
 
     /**
@@ -38,6 +44,14 @@ public class Wrapper<TYPE extends Serializable> implements Serializable {
      */
     public String getMessage() {
         return msg;
+    }
+
+    /**
+     * Returns the exception thrown, if any.
+     * @return the caught exception if any, null otherwise
+     */
+    public Exception getException() {
+        return cause;
     }
 
 }
