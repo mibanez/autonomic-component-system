@@ -1,6 +1,6 @@
-package cl.niclabs.scada.acs.component.controllers;
+package cl.niclabs.scada.acs.component.controllers.monitoring;
 
-import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
+import cl.niclabs.scada.acs.component.controllers.MonitorController;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.junit.Test;
 
@@ -43,7 +43,7 @@ public class MonitorControllerImplTest {
 
         Wrapper<Integer> fake = monitorController.getValue("foo");
         try {
-            //noinspection UnusedAssignment
+            @SuppressWarnings("UnusedDeclaration")
             int x = fake.unwrap();
             fail("ClassCastException expected");
         } catch (ClassCastException e) {

@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.multiactivity.compatibility;
 
-import cl.niclabs.scada.acs.component.controllers.MonitorControllerImpl;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitorControllerImpl;
 import org.objectweb.proactive.annotation.multiactivity.MemberOf;
 import org.objectweb.proactive.multiactivity.compatibility.AnnotationProcessor;
 import org.objectweb.proactive.multiactivity.compatibility.MethodGroup;
