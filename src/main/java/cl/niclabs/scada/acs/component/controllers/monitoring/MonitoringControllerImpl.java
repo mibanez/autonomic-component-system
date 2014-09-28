@@ -17,7 +17,8 @@ import java.util.Map;
 public class MonitoringControllerImpl extends AbstractPAComponentController
         implements MonitoringController, ACSEventListener, LifeCycleController, BindingController {
 
-    public static final String MONITOR_CONTROLLER_SERVER_ITF = "monitor-controller-server-itf";
+    public static final String CONTROLLER_NAME = "MonitorController";
+    public static final String MONITORING_CONTROLLER_SERVER_ITF = "monitoring-controller-server-itf";
     public static final String METRIC_EVENT_LISTENER_CLIENT_ITF = "metric-event-listener-client-itf-nf";
 
     private MetricEventListener metricEventListener;

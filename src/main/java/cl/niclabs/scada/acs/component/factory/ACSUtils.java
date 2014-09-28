@@ -1,5 +1,8 @@
 package cl.niclabs.scada.acs.component.factory;
 
+import cl.niclabs.scada.acs.component.controllers.AnalysisController;
+import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.PlanningController;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
@@ -22,6 +25,27 @@ import java.util.List;
 class ACSUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(BuildHelper.class);
+
+    public static final String MONITORING_CONTROLLER = "monitor-controller";
+    public static final String ANALYSIS_CONTROLLER  = "analysis-controller";
+    public static final String PLANNING_CONTROLLER  = "planning-controller";
+    public static final String EXECUTION_CONTROLLER = "execution-controller";
+
+    public MonitoringController getMonitoringController(Component host) throws NoSuchInterfaceException {
+        return (MonitoringController) host.getFcInterface(MONITORING_CONTROLLER);
+    }
+
+    public AnalysisController getAnalysisController(Component host) throws NoSuchInterfaceException {
+        return (AnalysisController) host.getFcInterface(ANALYSIS_CONTROLLER);
+    }
+
+    public PlanningController getPlanningController(Component host) throws NoSuchInterfaceException {
+        return (PlanningController) host.getFcInterface(PLANNING_CONTROLLER);
+    }
+
+    //public ExecutionController getMonitoringController(Component host) throws NoSuchInterfaceException {
+    //    return (ExecutionController) host.getFcInterface(MONITORING_CONTROLLER);
+    //}
 
     static String getComponentName(Component component) {
         if (component instanceof PAComponent) {

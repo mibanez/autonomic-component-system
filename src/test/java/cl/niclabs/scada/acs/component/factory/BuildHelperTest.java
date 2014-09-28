@@ -1,9 +1,7 @@
 package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
-import cl.niclabs.scada.acs.component.controllers.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.MonitoringController;
-import cl.niclabs.scada.acs.component.controllers.MulticastMonitoringController;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,18 +44,19 @@ public class BuildHelperTest extends AbstractComponentTest {
             Assert.fail(e.getMessage());
         }
 
-        HashSet<String> set = new HashSet<>();
+        HashSet<String> nameSet = new HashSet<>();
         for (InterfaceType itfType : acsNfInterfaces) {
-            set.add(itfType.getFcItfName());
-            boolean isMon = itfType.getFcItfSignature().equals(MonitoringController.class.getName());
-            boolean isMonMulticast = itfType.getFcItfSignature().equals(MulticastMonitoringController.class.getName());
-            boolean isAnalysis = itfType.getFcItfSignature().equals(AnalysisController.class.getName());
-            Assert.assertTrue(isMon || isMonMulticast || isAnalysis);
+            nameSet.add(itfType.getFcItfName());
         }
 
-        Assert.assertTrue(set.contains("client-itf-external-monitor-controller"));
-        Assert.assertTrue(set.contains("server-itf-internal-monitor-controller"));
-        Assert.assertTrue(set.contains("internal-server-monitor-controller"));
+        Assert.assertTrue(nameSet.contains(ACSUtils.MONITORING_CONTROLLER));
+        Assert.assertTrue(nameSet.contains(ACSUtils.ANALYSIS_CONTROLLER));
+        Assert.assertTrue(nameSet.contains(ACSUtils.PLANNING_CONTROLLER));
+
+        Assert.assertTrue(nameSet.contains("client-itf-external-monitor-controller"));
+        Assert.assertTrue(nameSet.contains("server-itf-internal-monitor-controller"));
+        Assert.assertTrue(nameSet.contains("internal-server-monitor-controller"));
+
     }
 
     @Test

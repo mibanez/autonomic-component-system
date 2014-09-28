@@ -18,11 +18,14 @@ import java.util.HashMap;
 public class AnalysisControllerImpl extends AbstractPAComponentController
         implements AnalysisController, MetricEventListener, BindingController {
 
+    public static final String CONTROLLER_NAME = "AnalysisController";
     public static final String ANALYSIS_CONTROLLER_SERVER_ITF = "analysis-controller-server-itf-nf";
     public static final String METRIC_EVENT_LISTENER_SERVER_ITF = "metric-event-listener-server-itf-nf";
-    public static final String MONITOR_CONTROLLER_CLIENT_ITF = "monitor-controller-client-itf-nf";
+    public static final String MONITORING_CONTROLLER_CLIENT_ITF = "monitoring-controller-client-itf-nf";
+    public static final String RULE_EVENT_LISTENER_CLIENT_ITF = "rule-event-listener-client-itf-nf";
 
     private MonitoringController monitoringController;
+    private RuleEventListener ruleEventListener;
 
     private final HashMap<String, Rule> rules = new HashMap<>();
 
@@ -86,13 +89,14 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
 
     @Override
     public String[] listFc() {
-        return new String[] { MONITOR_CONTROLLER_CLIENT_ITF };
+        return new String[] {MONITORING_CONTROLLER_CLIENT_ITF, RULE_EVENT_LISTENER_CLIENT_ITF };
     }
 
     @Override
     public Object lookupFc(String name) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITOR_CONTROLLER_CLIENT_ITF: return monitoringController;
+            case MONITORING_CONTROLLER_CLIENT_ITF: return monitoringController;
+            case RULE_EVENT_LISTENER_CLIENT_ITF: return ruleEventListener;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -100,7 +104,8 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     @Override
     public void bindFc(String name, Object o) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITOR_CONTROLLER_CLIENT_ITF: monitoringController = (MonitoringController) o; break;
+            case MONITORING_CONTROLLER_CLIENT_ITF: monitoringController = (MonitoringController) o; break;
+            case RULE_EVENT_LISTENER_CLIENT_ITF: ruleEventListener = (RuleEventListener) o; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -108,8 +113,10 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     @Override
     public void unbindFc(String name) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITOR_CONTROLLER_CLIENT_ITF: monitoringController = null; break;
+            case MONITORING_CONTROLLER_CLIENT_ITF: monitoringController = null; break;
+            case RULE_EVENT_LISTENER_CLIENT_ITF: ruleEventListener = null; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }
+
 }

@@ -42,7 +42,7 @@ public class AnalysisControllerImplTest {
         AnalysisControllerImpl analysisController = new AnalysisControllerImpl();
         try {
             MonitoringController monitoringController = mock(MonitoringController.class);
-            analysisController.bindFc(AnalysisControllerImpl.MONITOR_CONTROLLER_CLIENT_ITF, monitoringController);
+            analysisController.bindFc(AnalysisControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF, monitoringController);
         }
         catch (NoSuchInterfaceException e) {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
@@ -92,7 +92,7 @@ public class AnalysisControllerImplTest {
         AnalysisControllerImpl analysisController = new AnalysisControllerImpl();
         try {
             MonitoringController monitoringController = mock(MonitoringController.class);
-            analysisController.bindFc(AnalysisControllerImpl.MONITOR_CONTROLLER_CLIENT_ITF, monitoringController);
+            analysisController.bindFc(AnalysisControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF, monitoringController);
         }
         catch (NoSuchInterfaceException e) {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
