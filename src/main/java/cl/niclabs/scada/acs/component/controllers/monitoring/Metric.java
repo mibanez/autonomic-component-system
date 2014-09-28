@@ -1,5 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 
 import java.io.Serializable;
@@ -10,10 +11,12 @@ import java.io.Serializable;
  */
 public abstract class Metric<TYPE extends Serializable> implements Serializable {
 
+    private RecordStore recordStore;
+
     /**
      * Called to recalculate the value
      */
-    public abstract void measure();
+    public abstract void measure(RecordStore recordStore);
 
     /**
      * Returns the actual value

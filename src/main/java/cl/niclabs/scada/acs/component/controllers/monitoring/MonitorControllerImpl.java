@@ -72,7 +72,7 @@ public class MonitorControllerImpl extends AbstractPAComponentController
     public <VALUE extends Serializable> Wrapper<VALUE> measure(String name) {
         if (metrics.containsKey(name)) {
             Metric metric = metrics.get(name);
-            metric.measure();
+            metric.measure(recordStore);
             return metric.getWrappedValue();
         }
         return new Wrapper<>(null, String.format("no metric with name %s found", name));

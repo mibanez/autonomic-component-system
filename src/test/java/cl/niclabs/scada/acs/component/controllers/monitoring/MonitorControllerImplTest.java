@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 import cl.niclabs.scada.acs.component.controllers.MonitorController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class MonitorControllerImplTest {
     private static class FakeMetric implements Serializable { }
     public static class FooMetric extends Metric<String> {
         private int counter = 0;
-        public void measure() { counter++; }
+        public void measure(RecordStore store) { counter++; }
         public String getValue() { return "foo-" + counter; }
     }
 

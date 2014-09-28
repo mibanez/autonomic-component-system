@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 public abstract class AbstractRecord {
 
     // The ? is a "reluctant" quantifier, to make the .* to match the smallest possible string.
-    private Pattern pattern = Pattern.compile("\\[TAG\\](.*?)\\[DATA\\](.*?)\\[END\\]");
-    private Pattern inner = Pattern.compile("\\[(.*?)\\]");
+    private final static Pattern pattern = Pattern.compile("\\[TAG\\](.*?)\\[DATA\\](.*?)\\[END\\]");
+    private final static Pattern inner = Pattern.compile("\\[(.*?)\\]");
 
     private long currentId; // Id of this request
     private long parentId;  // Id of the parent request

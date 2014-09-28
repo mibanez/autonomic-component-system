@@ -3,6 +3,7 @@ package cl.niclabs.scada.acs.multiactivity.component;
 import cl.niclabs.scada.acs.AbstractComponentTest;
 import cl.niclabs.scada.acs.component.controllers.MonitorController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,7 +21,7 @@ import org.objectweb.proactive.core.component.Utils;
 public class ACSMultiActiveServiceTest extends AbstractComponentTest {
 
     private static class FooMetric extends Metric<String> {
-        public void measure() {}
+        public void measure(RecordStore record) {}
         public String getValue() { return "Foo Foo Foo !!"; }
     }
 
