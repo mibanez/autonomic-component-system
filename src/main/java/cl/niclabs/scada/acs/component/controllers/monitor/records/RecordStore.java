@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.component.controllers.monitoring.records;
+package cl.niclabs.scada.acs.component.controllers.monitor.records;
 
 import org.objectweb.proactive.core.util.CircularArrayList;
 import org.slf4j.Logger;

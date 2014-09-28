@@ -1,7 +1,7 @@
-package cl.niclabs.scada.acs.component.controllers.monitoring;
+package cl.niclabs.scada.acs.component.controllers.monitor;
 
 import cl.niclabs.scada.acs.component.controllers.MonitorController;
-import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.monitor.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.objectweb.fractal.api.control.IllegalLifeCycleException;
 import org.objectweb.fractal.api.control.LifeCycleController;

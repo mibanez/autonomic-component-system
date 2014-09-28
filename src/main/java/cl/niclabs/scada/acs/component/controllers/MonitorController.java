@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers;
 
-import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
+import cl.niclabs.scada.acs.component.controllers.monitor.Metric;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 
 import java.io.Serializable;
