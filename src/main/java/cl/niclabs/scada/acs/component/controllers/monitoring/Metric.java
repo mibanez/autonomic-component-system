@@ -1,6 +1,6 @@
-package cl.niclabs.scada.acs.component.controllers.monitor;
+package cl.niclabs.scada.acs.component.controllers.monitoring;
 
-import cl.niclabs.scada.acs.component.controllers.monitor.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 
 import java.io.Serializable;

@@ -1,7 +1,7 @@
-package cl.niclabs.scada.acs.component.controllers.monitor;
+package cl.niclabs.scada.acs.component.controllers.monitoring;
 
-import cl.niclabs.scada.acs.component.controllers.MonitorController;
-import cl.niclabs.scada.acs.component.controllers.monitor.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
@@ -14,8 +14,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MonitorControllerImpl extends AbstractPAComponentController
-        implements MonitorController, ACSEventListener, LifeCycleController, BindingController {
+public class MonitoringControllerImpl extends AbstractPAComponentController
+        implements MonitoringController, ACSEventListener, LifeCycleController, BindingController {
 
     public static final String MONITOR_CONTROLLER_SERVER_ITF = "monitor-controller-server-itf";
     public static final String METRIC_EVENT_LISTENER_CLIENT_ITF = "metric-event-listener-client-itf-nf";

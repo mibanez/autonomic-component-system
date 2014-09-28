@@ -1,10 +1,10 @@
-package cl.niclabs.scada.acs.component.controllers.monitor;
+package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
-import cl.niclabs.scada.acs.component.controllers.monitor.records.IncomingRequestRecord;
-import cl.niclabs.scada.acs.component.controllers.monitor.records.OutgoingRequestRecord;
-import cl.niclabs.scada.acs.component.controllers.monitor.records.OutgoingVoidRequestRecord;
-import cl.niclabs.scada.acs.component.controllers.monitor.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.IncomingRequestRecord;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.OutgoingRequestRecord;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.OutgoingVoidRequestRecord;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.factory.BuildHelper;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import cl.niclabs.scada.acs.multiactivity.component.ACSMultiActiveService;

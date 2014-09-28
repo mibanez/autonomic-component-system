@@ -1,9 +1,9 @@
 package cl.niclabs.scada.acs.multiactivity.component;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
-import cl.niclabs.scada.acs.component.controllers.MonitorController;
-import cl.niclabs.scada.acs.component.controllers.monitor.Metric;
-import cl.niclabs.scada.acs.component.controllers.monitor.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -50,13 +50,13 @@ public class ACSMultiActiveServiceTest extends AbstractComponentTest {
             }
 
             FooInterface fooItf = (FooInterface) foo.getFcInterface("server-itf");
-            MonitorController monitorController = (MonitorController) foo.getFcInterface("monitor-controller");
-            monitorController.addMetric("foo-metric", FooMetric.class);
+            MonitoringController monitoringController = (MonitoringController) foo.getFcInterface("monitor-controller");
+            monitoringController.addMetric("foo-metric", FooMetric.class);
             fooItf.foo();
 
             try {
                 for (int i = 0; i < 10; i++) {
-                    System.out.println(monitorController.getValue("foo-metric").getMessage());
+                    System.out.println(monitoringController.getValue("foo-metric").getMessage());
                     Thread.sleep(100);
                 }
             } catch (InterruptedException e) {

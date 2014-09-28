@@ -1,6 +1,6 @@
-package cl.niclabs.scada.acs.component.controllers.monitor;
+package cl.niclabs.scada.acs.component.controllers.monitoring;
 
-import cl.niclabs.scada.acs.component.controllers.monitor.records.*;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.*;
 import org.objectweb.proactive.core.ProActiveRuntimeException;
 import org.objectweb.proactive.core.UniqueID;
 import org.objectweb.proactive.core.jmx.naming.FactoryName;

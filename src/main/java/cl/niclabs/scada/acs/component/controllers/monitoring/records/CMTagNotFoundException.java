@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.component.controllers.monitor.records;
+package cl.niclabs.scada.acs.component.controllers.monitoring.records;
 
 /**
  * Created by mibanez

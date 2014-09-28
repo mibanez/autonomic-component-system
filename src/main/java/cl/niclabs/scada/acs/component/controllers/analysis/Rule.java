@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers.analysis;
 
-import cl.niclabs.scada.acs.component.controllers.MonitorController;
+import cl.niclabs.scada.acs.component.controllers.MonitoringController;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ public abstract class Rule implements Serializable {
 
     private final HashSet<String> subscriptions = new HashSet<>();
 
-    public abstract ACSAlarm verify(MonitorController monitorController);
+    public abstract ACSAlarm verify(MonitoringController monitoringController);
 
     public void subscribeTo(String metricName) {
         subscriptions.add(metricName);

@@ -1,10 +1,10 @@
 package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.component.controllers.AnalysisController;
-import cl.niclabs.scada.acs.component.controllers.MonitorController;
+import cl.niclabs.scada.acs.component.controllers.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisControllerImpl;
-import cl.niclabs.scada.acs.component.controllers.monitor.MetricEventListener;
-import cl.niclabs.scada.acs.component.controllers.monitor.MonitorControllerImpl;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -138,7 +138,7 @@ public class BuildHelper {
     public List<InterfaceType> getAcsNfInterfaces(InterfaceType[] fnInterfaceTypes)
             throws ACSFactoryException {
 
-        String monClazz = MonitorController.class.getName();
+        String monClazz = MonitoringController.class.getName();
         ArrayList<InterfaceType> acsInterfaces = new ArrayList<>();
 
         try {
@@ -233,13 +233,13 @@ public class BuildHelper {
     private void bindControllers(PAMembraneController membrane, Component host) throws ACSFactoryException {
         try {
             logger.debug("bindingControllers: binding controllers on component {}", ACSUtils.getComponentName(host));
-            membrane.nfBindFc("monitor-controller", "MonitorController." + MonitorControllerImpl.MONITOR_CONTROLLER_SERVER_ITF);
-            membrane.nfBindFc("MonitorController." + MonitorControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF,
+            membrane.nfBindFc("monitor-controller", "MonitorController." + MonitoringControllerImpl.MONITOR_CONTROLLER_SERVER_ITF);
+            membrane.nfBindFc("MonitorController." + MonitoringControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF,
                     "AnalysisController." + AnalysisControllerImpl.METRIC_EVENT_LISTENER_SERVER_ITF);
 
             membrane.nfBindFc("analysis-controller", "AnalysisController." + AnalysisControllerImpl.ANALYSIS_CONTROLLER_SERVER_ITF);
             membrane.nfBindFc("AnalysisController." + AnalysisControllerImpl.MONITOR_CONTROLLER_CLIENT_ITF,
-                    "MonitorController." + MonitorControllerImpl.MONITOR_CONTROLLER_SERVER_ITF);
+                    "MonitorController." + MonitoringControllerImpl.MONITOR_CONTROLLER_SERVER_ITF);
 
         } catch (NoSuchInterfaceException | IllegalLifeCycleException |
                 IllegalBindingException | NoSuchComponentException e) {
@@ -274,7 +274,7 @@ public class BuildHelper {
             itfTypes.add(tf.createGCMItfType(AnalysisControllerImpl.METRIC_EVENT_LISTENER_SERVER_ITF,
                     MetricEventListener.class.getName(), false, false, "singleton"));
             itfTypes.add(tf.createGCMItfType(AnalysisControllerImpl.MONITOR_CONTROLLER_CLIENT_ITF,
-                    MonitorController.class.getName(), true, false, "singleton"));
+                    MonitoringController.class.getName(), true, false, "singleton"));
 
             return tf.createFcType(itfTypes.toArray(new InterfaceType[itfTypes.size()]));
         }
@@ -293,7 +293,7 @@ public class BuildHelper {
             m.nfAddFcSubComponent(gf.newNfFcInstance(
                     getMonitorComponentType(host),
                     new ControllerDescription("MonitorController", Constants.PRIMITIVE, CONTROLLER_CONFIG),
-                    new ContentDescription(MonitorControllerImpl.class.getName()),
+                    new ContentDescription(MonitoringControllerImpl.class.getName()),
                     getNode(host)));
         } catch (InstantiationException e) {
             throw new ACSFactoryException("ComponentType generation for monitor controller fail", e);
@@ -309,13 +309,13 @@ public class BuildHelper {
      */
     private ComponentType getMonitorComponentType(Component host) throws ACSFactoryException {
 
-        String monClazz = MonitorController.class.getName();
+        String monClazz = MonitoringController.class.getName();
         ArrayList<InterfaceType> monItfTypes = new ArrayList<>();
 
         try {
             // Add monitor-controller main nf interfaces
-            monItfTypes.add(tf.createGCMItfType(MonitorControllerImpl.MONITOR_CONTROLLER_SERVER_ITF, monClazz, false, false, "singleton"));
-            monItfTypes.add(tf.createGCMItfType(MonitorControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF,
+            monItfTypes.add(tf.createGCMItfType(MonitoringControllerImpl.MONITOR_CONTROLLER_SERVER_ITF, monClazz, false, false, "singleton"));
+            monItfTypes.add(tf.createGCMItfType(MonitoringControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF,
                     MetricEventListener.class.getName(), true, false, "singleton"));
 
             // Add extra nf interfaces based of the host's f interfaces

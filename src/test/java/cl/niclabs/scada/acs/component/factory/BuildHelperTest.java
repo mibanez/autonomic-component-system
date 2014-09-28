@@ -2,8 +2,8 @@ package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
 import cl.niclabs.scada.acs.component.controllers.AnalysisController;
-import cl.niclabs.scada.acs.component.controllers.MonitorController;
-import cl.niclabs.scada.acs.component.controllers.MonitorControllerMulticast;
+import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.MulticastMonitoringController;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,8 +49,8 @@ public class BuildHelperTest extends AbstractComponentTest {
         HashSet<String> set = new HashSet<>();
         for (InterfaceType itfType : acsNfInterfaces) {
             set.add(itfType.getFcItfName());
-            boolean isMon = itfType.getFcItfSignature().equals(MonitorController.class.getName());
-            boolean isMonMulticast = itfType.getFcItfSignature().equals(MonitorControllerMulticast.class.getName());
+            boolean isMon = itfType.getFcItfSignature().equals(MonitoringController.class.getName());
+            boolean isMonMulticast = itfType.getFcItfSignature().equals(MulticastMonitoringController.class.getName());
             boolean isAnalysis = itfType.getFcItfSignature().equals(AnalysisController.class.getName());
             Assert.assertTrue(isMon || isMonMulticast || isAnalysis);
         }
@@ -107,7 +107,7 @@ public class BuildHelperTest extends AbstractComponentTest {
             Assert.fail(e.getMessage());
         }
 
-        Assert.assertTrue(monitorObj instanceof MonitorController);
+        Assert.assertTrue(monitorObj instanceof MonitoringController);
     }
 
 }

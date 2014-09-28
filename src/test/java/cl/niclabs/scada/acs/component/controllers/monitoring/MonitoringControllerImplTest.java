@@ -1,6 +1,6 @@
-package cl.niclabs.scada.acs.component.controllers.monitor;
+package cl.niclabs.scada.acs.component.controllers.monitoring;
 
-import cl.niclabs.scada.acs.component.controllers.monitor.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.junit.Test;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
  * Test for MonitorControllerImpl
  *
  */
-public class MonitorControllerImplTest {
+public class MonitoringControllerImplTest {
 
     private static class FakeMetric implements Serializable { }
     public static class FooMetric extends Metric<String> {
@@ -40,12 +40,12 @@ public class MonitorControllerImplTest {
     @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     public void metrics() {
 
-        MonitorControllerImpl monitorController = new MonitorControllerImpl();
+        MonitoringControllerImpl monitorController = new MonitoringControllerImpl();
 
         try {
             MetricEventListener metricEventListener = mock(MetricEventListener.class);
             doNothing().when(metricEventListener).notifyUpdate(any(MetricEvent.class));
-            monitorController.bindFc(MonitorControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF, metricEventListener);
+            monitorController.bindFc(MonitoringControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF, metricEventListener);
         }
         catch (NoSuchInterfaceException e) {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
@@ -100,11 +100,11 @@ public class MonitorControllerImplTest {
     @Test
     public void subscriptions() {
 
-        MonitorControllerImpl monitorController = new MonitorControllerImpl();
+        MonitoringControllerImpl monitorController = new MonitoringControllerImpl();
         FooMetricEventListener metricEventListener = new FooMetricEventListener();
 
         try {
-            monitorController.bindFc(MonitorControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF, metricEventListener);
+            monitorController.bindFc(MonitoringControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF, metricEventListener);
         } catch (NoSuchInterfaceException e) {
             e.printStackTrace();
             fail();

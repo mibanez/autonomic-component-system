@@ -1,9 +1,9 @@
 package cl.niclabs.scada.acs.component.controllers.analysis;
 
 import cl.niclabs.scada.acs.component.controllers.AnalysisController;
-import cl.niclabs.scada.acs.component.controllers.MonitorController;
-import cl.niclabs.scada.acs.component.controllers.monitor.MetricEvent;
-import cl.niclabs.scada.acs.component.controllers.monitor.MetricEventListener;
+import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
@@ -22,7 +22,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     public static final String METRIC_EVENT_LISTENER_SERVER_ITF = "metric-event-listener-server-itf-nf";
     public static final String MONITOR_CONTROLLER_CLIENT_ITF = "monitor-controller-client-itf-nf";
 
-    private MonitorController monitorController;
+    private MonitoringController monitoringController;
 
     private final HashMap<String, Rule> rules = new HashMap<>();
 
@@ -67,7 +67,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     @Override
     public Wrapper<ACSAlarm> verify(String name) {
         if (rules.containsKey(name)) {
-            return new Wrapper<>(rules.get(name).verify(monitorController), "Alarm wrapped correctly");
+            return new Wrapper<>(rules.get(name).verify(monitoringController), "Alarm wrapped correctly");
         }
         return new Wrapper<>(null, "No rule found with name " + name);
     }
@@ -80,7 +80,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     @Override
     public void notifyUpdate(MetricEvent event) {
         for (Rule rule: rules.values()) {
-            rule.verify(monitorController);
+            rule.verify(monitoringController);
         }
     }
 
@@ -92,7 +92,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     @Override
     public Object lookupFc(String name) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITOR_CONTROLLER_CLIENT_ITF: return monitorController;
+            case MONITOR_CONTROLLER_CLIENT_ITF: return monitoringController;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -100,7 +100,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     @Override
     public void bindFc(String name, Object o) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITOR_CONTROLLER_CLIENT_ITF: monitorController = (MonitorController) o; break;
+            case MONITOR_CONTROLLER_CLIENT_ITF: monitoringController = (MonitoringController) o; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -108,7 +108,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     @Override
     public void unbindFc(String name) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITOR_CONTROLLER_CLIENT_ITF: monitorController = null; break;
+            case MONITOR_CONTROLLER_CLIENT_ITF: monitoringController = null; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }

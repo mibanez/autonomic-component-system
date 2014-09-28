@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.analysis;
 
-import cl.niclabs.scada.acs.component.controllers.MonitorController;
-import cl.niclabs.scada.acs.component.controllers.monitor.MetricEvent;
+import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.junit.Test;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -24,7 +24,7 @@ public class AnalysisControllerImplTest {
         public FooRule() {
             subscribeTo("foo");
         }
-        public ACSAlarm verify(MonitorController monitorController) {
+        public ACSAlarm verify(MonitoringController monitoringController) {
             counter = (counter + 1) % 4;
             switch (counter) {
                 case 0: return ACSAlarm.OK;
@@ -41,8 +41,8 @@ public class AnalysisControllerImplTest {
 
         AnalysisControllerImpl analysisController = new AnalysisControllerImpl();
         try {
-            MonitorController monitorController = mock(MonitorController.class);
-            analysisController.bindFc(AnalysisControllerImpl.MONITOR_CONTROLLER_CLIENT_ITF, monitorController);
+            MonitoringController monitoringController = mock(MonitoringController.class);
+            analysisController.bindFc(AnalysisControllerImpl.MONITOR_CONTROLLER_CLIENT_ITF, monitoringController);
         }
         catch (NoSuchInterfaceException e) {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
@@ -91,8 +91,8 @@ public class AnalysisControllerImplTest {
 
         AnalysisControllerImpl analysisController = new AnalysisControllerImpl();
         try {
-            MonitorController monitorController = mock(MonitorController.class);
-            analysisController.bindFc(AnalysisControllerImpl.MONITOR_CONTROLLER_CLIENT_ITF, monitorController);
+            MonitoringController monitoringController = mock(MonitoringController.class);
+            analysisController.bindFc(AnalysisControllerImpl.MONITOR_CONTROLLER_CLIENT_ITF, monitoringController);
         }
         catch (NoSuchInterfaceException e) {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());

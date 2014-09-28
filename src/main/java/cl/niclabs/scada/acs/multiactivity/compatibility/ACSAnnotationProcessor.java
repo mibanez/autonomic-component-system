@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.multiactivity.compatibility;
 
-import cl.niclabs.scada.acs.component.controllers.monitor.MonitorControllerImpl;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
 import org.objectweb.proactive.annotation.multiactivity.MemberOf;
 import org.objectweb.proactive.multiactivity.compatibility.AnnotationProcessor;
 import org.objectweb.proactive.multiactivity.compatibility.MethodGroup;
@@ -50,7 +50,7 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
     }
 
     private void processAcsMethods() {
-        for (Method method : MonitorControllerImpl.class.getDeclaredMethods()) {
+        for (Method method : MonitoringControllerImpl.class.getDeclaredMethods()) {
             String methodName = method.toString().substring(method.toString().indexOf(method.getName() + "("));
             logger.debug("adding [MonitorController.]{} method to group {}", methodName, ACS_GROUP_NAME);
             acsMemberships.put(methodName, acsGroups.get(ACS_GROUP_NAME));
