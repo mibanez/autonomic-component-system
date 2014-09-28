@@ -18,4 +18,6 @@ public interface AnalysisController {
 
     public Wrapper<ACSAlarm> verify(String name);
 
+    public Wrapper<String[]> getRuleNames();
+
 }

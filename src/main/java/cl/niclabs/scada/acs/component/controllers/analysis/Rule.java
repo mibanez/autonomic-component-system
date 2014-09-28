@@ -2,13 +2,14 @@ package cl.niclabs.scada.acs.component.controllers.analysis;
 
 import cl.niclabs.scada.acs.component.controllers.MonitorController;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 /**
  * Rule
  *
  */
-public abstract class Rule {
+public abstract class Rule implements Serializable {
 
     private final HashSet<String> subscriptions = new HashSet<>();
 

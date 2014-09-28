@@ -7,8 +7,6 @@ import cl.niclabs.scada.acs.component.controllers.monitor.MetricEventListener;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
-import org.objectweb.fractal.api.control.IllegalBindingException;
-import org.objectweb.fractal.api.control.IllegalLifeCycleException;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
 
 import java.util.HashMap;
@@ -75,6 +73,11 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     }
 
     @Override
+    public Wrapper<String[]> getRuleNames() {
+        return new Wrapper<>(rules.keySet().toArray(new String[rules.size()]));
+    }
+
+    @Override
     public void notifyUpdate(MetricEvent event) {
         for (Rule rule: rules.values()) {
             rule.verify(monitorController);
@@ -95,7 +98,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     }
 
     @Override
-    public void bindFc(String name, Object o) throws NoSuchInterfaceException, IllegalBindingException, IllegalLifeCycleException {
+    public void bindFc(String name, Object o) throws NoSuchInterfaceException {
         switch (name) {
             case MONITOR_CONTROLLER_CLIENT_ITF: monitorController = (MonitorController) o; break;
             default: throw new NoSuchInterfaceException(name);
@@ -103,7 +106,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     }
 
     @Override
-    public void unbindFc(String name) throws NoSuchInterfaceException, IllegalBindingException, IllegalLifeCycleException {
+    public void unbindFc(String name) throws NoSuchInterfaceException {
         switch (name) {
             case MONITOR_CONTROLLER_CLIENT_ITF: monitorController = null; break;
             default: throw new NoSuchInterfaceException(name);
