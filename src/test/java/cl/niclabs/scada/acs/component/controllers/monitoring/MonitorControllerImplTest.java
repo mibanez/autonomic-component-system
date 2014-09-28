@@ -20,6 +20,7 @@ public class MonitorControllerImplTest {
     private static class FakeMetric implements Serializable { }
     public static class FooMetric extends Metric<String> {
         private int counter = 0;
+        public FooMetric() { subscribeTo(ACSEventType.VOID_REQUEST_SENT); }
         public void measure(RecordStore store) { counter++; }
         public String getValue() { return "foo-" + counter; }
     }
@@ -85,4 +86,18 @@ public class MonitorControllerImplTest {
         assertNull(wrapper.getException());
     }
 
+    @Test
+    public void metricSubscription() {
+
+        MonitorController monitorController = new MonitorControllerImpl();
+
+        monitorController.addMetric("foo", FooMetric.class);
+        assertEquals("foo-0", monitorController.getValue("foo").unwrap());
+
+        ((MonitorNotifier) monitorController).notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
+        ((MonitorNotifier) monitorController).notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
+        ((MonitorNotifier) monitorController).notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
+
+        assertEquals("foo-3", monitorController.getValue("foo").unwrap());
+    }
 }

@@ -84,6 +84,15 @@ public class MonitorControllerImpl extends AbstractPAComponentController
     }
 
     @Override
+    public void notifyACSEvent(ACSEventType eventType) {
+        for (Metric metric : metrics.values()) {
+            if (metric.isSubscribedTo(eventType)) {
+                metric.measure(recordStore);
+            }
+        }
+    }
+
+    @Override
     public String getFcState() {
         return null; // never used on
     }
@@ -101,8 +110,4 @@ public class MonitorControllerImpl extends AbstractPAComponentController
         // nothing
     }
 
-    @Override
-    public void notifyACSEvent(ACSEventType eventType) {
-        //logger.debug("record notification {}", eventType);
-    }
 }

@@ -4,6 +4,8 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The ACS Metric, it measures the system!
@@ -11,7 +13,7 @@ import java.io.Serializable;
  */
 public abstract class Metric<TYPE extends Serializable> implements Serializable {
 
-    private RecordStore recordStore;
+    private final Set<ACSEventType> subscriptions = new HashSet<>();
 
     /**
      * Called to recalculate the value
@@ -30,6 +32,18 @@ public abstract class Metric<TYPE extends Serializable> implements Serializable 
      */
     public Wrapper<TYPE> getWrappedValue() {
         return new Wrapper<>(getValue());
+    }
+
+    public void subscribeTo(ACSEventType eventType) {
+        subscriptions.add(eventType);
+    }
+
+    public void unsubscribeFrom(ACSEventType eventType) {
+        subscriptions.remove(eventType);
+    }
+
+    public boolean isSubscribedTo(ACSEventType eventType) {
+        return subscriptions.contains(eventType);
     }
 
 }
