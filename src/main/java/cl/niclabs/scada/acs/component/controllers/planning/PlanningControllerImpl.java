@@ -1,5 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers.planning;
 
+import cl.niclabs.scada.acs.component.controllers.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.PlanningController;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
@@ -23,8 +24,10 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     public static final String PLANNING_CONTROLLER_SERVER_ITF = "planning-controller-server-itf-nf";
     public static final String RULE_EVENT_LISTENER_SERVER_ITF = "rule-event-listener-server-itf-nf";
     public static final String MONITORING_CONTROLLER_CLIENT_ITF = "monitor-controller-client-itf-nf";
+    public static final String EXECUTION_CONTROLLER_CLIENT_ITF = "execution-controller-client-itf-nf";
 
     private MonitoringController monitoringController;
+    private ExecutionController executionController;
     private final HashMap<String, Plan> plans = new HashMap<>();
 
     @Override
@@ -86,13 +89,14 @@ public class PlanningControllerImpl extends AbstractPAComponentController
 
     @Override
     public String[] listFc() {
-        return new String[] { MONITORING_CONTROLLER_CLIENT_ITF };
+        return new String[] { MONITORING_CONTROLLER_CLIENT_ITF, EXECUTION_CONTROLLER_CLIENT_ITF };
     }
 
     @Override
     public Object lookupFc(String name) throws NoSuchInterfaceException {
         switch (name) {
             case MONITORING_CONTROLLER_CLIENT_ITF: return monitoringController;
+            case EXECUTION_CONTROLLER_CLIENT_ITF: return executionController;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -101,6 +105,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     public void bindFc(String name, Object o) throws NoSuchInterfaceException {
         switch (name) {
             case MONITORING_CONTROLLER_CLIENT_ITF: monitoringController = (MonitoringController) o; break;
+            case EXECUTION_CONTROLLER_CLIENT_ITF: executionController = (ExecutionController) o; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -109,6 +114,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     public void unbindFc(String name) throws NoSuchInterfaceException {
         switch (name) {
             case MONITORING_CONTROLLER_CLIENT_ITF: monitoringController = null; break;
+            case EXECUTION_CONTROLLER_CLIENT_ITF: executionController = null; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }

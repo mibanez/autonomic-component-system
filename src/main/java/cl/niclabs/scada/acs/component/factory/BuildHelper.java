@@ -1,10 +1,12 @@
 package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.component.controllers.AnalysisController;
+import cl.niclabs.scada.acs.component.controllers.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.PlanningController;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisControllerImpl;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
+import cl.niclabs.scada.acs.component.controllers.execution.ExecutionControllerImpl;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningControllerImpl;
@@ -146,6 +148,7 @@ public class BuildHelper {
 
         try {
             // Add controller main nf interface
+            acsInterfaces.add(tf.createGCMItfType(ACSUtils.EXECUTION_CONTROLLER, ExecutionController.class.getName(), false, true, "singleton"));
             acsInterfaces.add(tf.createGCMItfType(ACSUtils.PLANNING_CONTROLLER, PlanningController.class.getName(), false, true, "singleton"));
             acsInterfaces.add(tf.createGCMItfType(ACSUtils.ANALYSIS_CONTROLLER, AnalysisController.class.getName(), false, true, "singleton"));
             acsInterfaces.add(tf.createGCMItfType(ACSUtils.MONITORING_CONTROLLER, monClazz, false, true, "singleton"));
@@ -220,6 +223,7 @@ public class BuildHelper {
             ACSUtils.stopMembrane(host, "addACSControllers");
         }
 
+        addController(ExecutionControllerImpl.CONTROLLER_NAME, ExecutionControllerImpl.class.getName(), getExecutionComponentType(), host);
         addController(PlanningControllerImpl.CONTROLLER_NAME, PlanningControllerImpl.class.getName(), getPlanningComponentType(), host);
         addController(AnalysisControllerImpl.CONTROLLER_NAME, AnalysisControllerImpl.class.getName(), getAnalysisComponentType(), host);
         addController(MonitoringControllerImpl.CONTROLLER_NAME, MonitoringControllerImpl.class.getName(), getMonitorComponentType(host), host);
@@ -238,23 +242,29 @@ public class BuildHelper {
     private void bindControllers(Component host) throws ACSFactoryException {
         try {
             PAMembraneController m = Utils.getPAMembraneController(host);
+            String hostName = ACSUtils.getComponentName(host);
 
-            logger.trace("Binding monitoring on {}", ACSUtils.getComponentName(host));
+            logger.trace("Binding monitoring on {}", hostName);
             m.nfBindFc(ACSUtils.MONITORING_CONTROLLER, MonitoringControllerImpl.CONTROLLER_NAME + "." + MonitoringControllerImpl.MONITORING_CONTROLLER_SERVER_ITF);
             m.nfBindFc(MonitoringControllerImpl.CONTROLLER_NAME + "." + MonitoringControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF,
                     AnalysisControllerImpl.CONTROLLER_NAME + "." + AnalysisControllerImpl.METRIC_EVENT_LISTENER_SERVER_ITF);
 
-            logger.trace("Binding analysis on {}", ACSUtils.getComponentName(host));
+            logger.trace("Binding analysis on {}", hostName);
             m.nfBindFc(ACSUtils.ANALYSIS_CONTROLLER, AnalysisControllerImpl.CONTROLLER_NAME + "." + AnalysisControllerImpl.ANALYSIS_CONTROLLER_SERVER_ITF);
             m.nfBindFc(AnalysisControllerImpl.CONTROLLER_NAME + "." + AnalysisControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF,
                     MonitoringControllerImpl.CONTROLLER_NAME + "." + MonitoringControllerImpl.MONITORING_CONTROLLER_SERVER_ITF);
             m.nfBindFc(AnalysisControllerImpl.CONTROLLER_NAME + "." + AnalysisControllerImpl.RULE_EVENT_LISTENER_CLIENT_ITF,
                     PlanningControllerImpl.CONTROLLER_NAME + "." + PlanningControllerImpl.RULE_EVENT_LISTENER_SERVER_ITF);
 
-            logger.trace("Binding planning on {}", ACSUtils.getComponentName(host));
+            logger.trace("Binding planning on {}", hostName);
             m.nfBindFc(ACSUtils.PLANNING_CONTROLLER, PlanningControllerImpl.CONTROLLER_NAME + "." + PlanningControllerImpl.PLANNING_CONTROLLER_SERVER_ITF);
             m.nfBindFc(PlanningControllerImpl.CONTROLLER_NAME + "." + PlanningControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF,
                     MonitoringControllerImpl.CONTROLLER_NAME + "." + MonitoringControllerImpl.MONITORING_CONTROLLER_SERVER_ITF);
+            m.nfBindFc(PlanningControllerImpl.CONTROLLER_NAME + "." + PlanningControllerImpl.EXECUTION_CONTROLLER_CLIENT_ITF,
+                    ExecutionControllerImpl.CONTROLLER_NAME + "." + ExecutionControllerImpl.EXECUTION_CONTROLLER_SERVER_ITF);
+
+            logger.trace("Binding execution on {}", hostName);
+            m.nfBindFc(ACSUtils.EXECUTION_CONTROLLER, ExecutionControllerImpl.CONTROLLER_NAME + "." + ExecutionControllerImpl.EXECUTION_CONTROLLER_SERVER_ITF);
         }
         catch (NoSuchInterfaceException | IllegalLifeCycleException |
                 IllegalBindingException | NoSuchComponentException e) {
@@ -278,6 +288,19 @@ public class BuildHelper {
             throw new ACSFactoryException("Fail when adding controller to its host component", e);
         } catch (NoSuchInterfaceException e) {
             throw new ACSFactoryException("Fail when getting the host component membrane controller", e);
+        }
+    }
+
+    private ComponentType getExecutionComponentType() throws ACSFactoryException {
+        try {
+            ArrayList<InterfaceType> itfTypes = new ArrayList<>();
+            itfTypes.add(tf.createGCMItfType(ExecutionControllerImpl.EXECUTION_CONTROLLER_SERVER_ITF,
+                    ExecutionController.class.getName(), false, false, "singleton"));
+
+            return tf.createFcType(itfTypes.toArray(new InterfaceType[itfTypes.size()]));
+        }
+        catch (InstantiationException e) {
+            throw new ACSFactoryException("Fail when instantiating an interface for execution controller", e);
         }
     }
 
