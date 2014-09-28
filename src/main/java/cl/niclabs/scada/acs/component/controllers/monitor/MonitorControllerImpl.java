@@ -3,6 +3,8 @@ package cl.niclabs.scada.acs.component.controllers.monitor;
 import cl.niclabs.scada.acs.component.controllers.MonitorController;
 import cl.niclabs.scada.acs.component.controllers.monitor.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
+import org.objectweb.fractal.api.NoSuchInterfaceException;
+import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.fractal.api.control.IllegalLifeCycleException;
 import org.objectweb.fractal.api.control.LifeCycleController;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
@@ -13,12 +15,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MonitorControllerImpl extends AbstractPAComponentController
-        implements MonitorController, ACSEventListener, LifeCycleController {
+        implements MonitorController, ACSEventListener, LifeCycleController, BindingController {
+
+    public static final String MONITOR_CONTROLLER_SERVER_ITF = "monitor-controller-server-itf";
+    public static final String METRIC_EVENT_LISTENER_CLIENT_ITF = "metric-event-listener-client-itf-nf";
+
+    private MetricEventListener metricEventListener;
 
     private final Map<String, Metric> metrics = new HashMap<>();
     private final RecordStore recordStore = new RecordStore();
     private PAEventListener eventListener;
-
 
     @Override
     @SuppressWarnings("unchecked")
@@ -73,6 +79,7 @@ public class MonitorControllerImpl extends AbstractPAComponentController
         if (metrics.containsKey(name)) {
             Metric metric = metrics.get(name);
             metric.measure(recordStore);
+            metricEventListener.notifyUpdate(new MetricEvent(name, metric));
             return metric.getWrappedValue();
         }
         return new Wrapper<>(null, String.format("no metric with name %s found", name));
@@ -85,9 +92,10 @@ public class MonitorControllerImpl extends AbstractPAComponentController
 
     @Override
     public void notifyACSEvent(ACSEventType eventType) {
-        for (Metric metric : metrics.values()) {
-            if (metric.isSubscribedTo(eventType)) {
-                metric.measure(recordStore);
+        for (Map.Entry<String, Metric> entry : metrics.entrySet()) {
+            if (entry.getValue().isSubscribedTo(eventType)) {
+                entry.getValue().measure(recordStore);
+                metricEventListener.notifyUpdate(new MetricEvent(entry.getKey(), entry.getValue()));
             }
         }
     }
@@ -110,4 +118,32 @@ public class MonitorControllerImpl extends AbstractPAComponentController
         // nothing
     }
 
+    @Override
+    public String[] listFc() {
+        return new String[] { METRIC_EVENT_LISTENER_CLIENT_ITF };
+    }
+
+    @Override
+    public Object lookupFc(String name) throws NoSuchInterfaceException {
+        switch (name) {
+            case METRIC_EVENT_LISTENER_CLIENT_ITF: return metricEventListener;
+        }
+        throw new NoSuchInterfaceException(name);
+    }
+
+    @Override
+    public void bindFc(String name, Object o) throws NoSuchInterfaceException {
+        switch (name) {
+            case METRIC_EVENT_LISTENER_CLIENT_ITF: metricEventListener = (MetricEventListener) o; break;
+            default: throw new NoSuchInterfaceException(name);
+        }
+    }
+
+    @Override
+    public void unbindFc(String name) throws NoSuchInterfaceException {
+        switch (name) {
+            case METRIC_EVENT_LISTENER_CLIENT_ITF: metricEventListener = null; break;
+            default: throw new NoSuchInterfaceException(name);
+        }
+    }
 }

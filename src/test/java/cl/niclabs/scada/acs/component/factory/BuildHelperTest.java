@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
+import cl.niclabs.scada.acs.component.controllers.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.MonitorController;
 import cl.niclabs.scada.acs.component.controllers.MonitorControllerMulticast;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
@@ -50,7 +51,8 @@ public class BuildHelperTest extends AbstractComponentTest {
             set.add(itfType.getFcItfName());
             boolean isMon = itfType.getFcItfSignature().equals(MonitorController.class.getName());
             boolean isMonMulticast = itfType.getFcItfSignature().equals(MonitorControllerMulticast.class.getName());
-            Assert.assertTrue(isMon || isMonMulticast);
+            boolean isAnalysis = itfType.getFcItfSignature().equals(AnalysisController.class.getName());
+            Assert.assertTrue(isMon || isMonMulticast || isAnalysis);
         }
 
         Assert.assertTrue(set.contains("client-itf-external-monitor-controller"));
