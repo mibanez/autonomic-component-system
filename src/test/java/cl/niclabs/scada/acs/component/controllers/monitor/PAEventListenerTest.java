@@ -37,10 +37,10 @@ import static org.mockito.Mockito.mock;
  * ACSEventListenerTest
  *
  */
-public class ACSEventListenerTest extends AbstractComponentTest {
+public class PAEventListenerTest extends AbstractComponentTest {
 
     // Special monitor notifier for testing purposes
-    interface TestingMonitorNotifier extends MonitorNotifier {
+    interface TestingMonitorNotifier extends ACSEventListener {
         long getCheckNumber();
     }
 
@@ -183,7 +183,7 @@ public class ACSEventListenerTest extends AbstractComponentTest {
 
         // Definition of real ACSEventListener class to test
         String runtimeURL = ProActiveRuntimeImpl.getProActiveRuntime().getURL();
-        new ACSEventListener(monitorNotifier, recordStore, ((PAComponent) subordinate).getID(), runtimeURL);
+        new PAEventListener(monitorNotifier, recordStore, ((PAComponent) subordinate).getID(), runtimeURL);
 
         // Testing ....
         try {

@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MonitorControllerImpl extends AbstractPAComponentController
-        implements MonitorController, MonitorNotifier, LifeCycleController {
+        implements MonitorController, ACSEventListener, LifeCycleController {
 
     private final Map<String, Metric> metrics = new HashMap<>();
     private final RecordStore recordStore = new RecordStore();
-    private ACSEventListener eventListener;
+    private PAEventListener eventListener;
 
 
     @Override
@@ -101,7 +101,7 @@ public class MonitorControllerImpl extends AbstractPAComponentController
     public void startFc() throws IllegalLifeCycleException {
         if (eventListener == null) {
             String runtimeURL = ProActiveRuntimeImpl.getProActiveRuntime().getURL();
-            eventListener = new ACSEventListener(this, recordStore, hostComponent.getID(), runtimeURL);
+            eventListener = new PAEventListener(this, recordStore, hostComponent.getID(), runtimeURL);
         }
     }
 

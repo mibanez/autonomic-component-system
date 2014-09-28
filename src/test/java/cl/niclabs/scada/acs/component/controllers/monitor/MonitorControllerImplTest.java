@@ -94,9 +94,9 @@ public class MonitorControllerImplTest {
         monitorController.addMetric("foo", FooMetric.class);
         assertEquals("foo-0", monitorController.getValue("foo").unwrap());
 
-        ((MonitorNotifier) monitorController).notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
-        ((MonitorNotifier) monitorController).notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
-        ((MonitorNotifier) monitorController).notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
+        ((ACSEventListener) monitorController).notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
+        ((ACSEventListener) monitorController).notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
+        ((ACSEventListener) monitorController).notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
 
         assertEquals("foo-3", monitorController.getValue("foo").unwrap());
     }
