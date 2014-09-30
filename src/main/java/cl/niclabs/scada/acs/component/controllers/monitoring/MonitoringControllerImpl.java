@@ -101,7 +101,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
             metrics.get(metricId).enable();
             return new ValidWrapper<>(true);
         }
-        return new ValidWrapper<>(false, "No metric found with id " + metricId);
+        return new WrongWrapper<>("No metric found with id " + metricId);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
             metrics.get(metricId).disable();
             return new ValidWrapper<>(true);
         }
-        return new ValidWrapper<>(false, "No metric found with id " + metricId);
+        return new WrongWrapper<>("No metric found with id " + metricId);
     }
 
     @Override
