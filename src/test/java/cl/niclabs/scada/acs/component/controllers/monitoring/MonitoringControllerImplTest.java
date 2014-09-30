@@ -2,6 +2,7 @@ package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.WrongValueException;
 import org.junit.Test;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 
@@ -51,50 +52,58 @@ public class MonitoringControllerImplTest {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
-        // wrong class path
-        Wrapper<Boolean> wrapper = monitorController.addMetric("foo", "not.a.real.path.metric");
-        assertEquals(false, wrapper.unwrap());
-        assertNotNull(wrapper.getException());
-
-        // class is not a metric
-        wrapper = monitorController.addMetric("foo", FakeMetric.class.getName());
-        assertEquals(false, wrapper.unwrap());
-        assertNull(wrapper.getException());
-
-        // a correct one
-        wrapper = monitorController.addMetric("foo", FooMetric.class.getName());
-        assertTrue(wrapper.unwrap());
-        assertTrue(monitorController.getValue("foo").unwrap().equals("foo-0"));
-        assertTrue(monitorController.measure("foo").unwrap().equals("foo-1"));
-        assertTrue(monitorController.measure("foo").unwrap().equals("foo-2"));
-        assertTrue(monitorController.measure("foo").unwrap().equals("foo-3"));
-        assertTrue(monitorController.getValue("foo").unwrap().equals("foo-3"));
-
-        // bad value cast
         try {
-            Wrapper<Integer> fake = monitorController.getValue("foo");
-            @SuppressWarnings("UnusedAssignment") int x = fake.unwrap();
-            fail("ClassCastException expected");
-        } catch (ClassCastException ignored) {}
+            // wrong class path
+            Wrapper<Boolean> wrapper = monitorController.add("foo", "not.a.real.path.metric");
+            assertEquals(false, wrapper.unwrap());
+            fail("WrongValueException excepted");
+        } catch (WrongValueException ignored) {}
+        try {
+            // class is not a metric
+            Wrapper<Boolean> wrapper = monitorController.add("foo", FakeMetric.class.getName());
+            assertEquals(false, wrapper.unwrap());
+            fail("WrongValueException excepted");
+        } catch (WrongValueException ignored) {}
 
-        // add multiple metrics
-        assertTrue(monitorController.addMetric("foo2", FooMetric.class).unwrap());
-        assertTrue(monitorController.addMetric("foo3", FooMetric.class).unwrap());
+        try {
+            // a correct one
+            Wrapper<Boolean> wrapper = monitorController.add("foo", FooMetric.class.getName());
+            assertTrue(wrapper.unwrap());
+            assertTrue(monitorController.getValue("foo").unwrap().equals("foo-0"));
+            assertTrue(monitorController.measure("foo").unwrap().equals("foo-1"));
+            assertTrue(monitorController.measure("foo").unwrap().equals("foo-2"));
+            assertTrue(monitorController.measure("foo").unwrap().equals("foo-3"));
+            assertTrue(monitorController.getValue("foo").unwrap().equals("foo-3"));
 
-        HashSet<String> nameSet = new HashSet<>();
-        Collections.addAll(nameSet, monitorController.getMetricNames().unwrap());
-        assertTrue(nameSet.contains("foo"));
-        assertTrue(nameSet.contains("foo2"));
-        assertTrue(nameSet.contains("foo3"));
+            // bad value cast
+            try {
+                Wrapper<Integer> fake = monitorController.getValue("foo");
+                @SuppressWarnings("UnusedAssignment") int x = fake.unwrap();
+                fail("ClassCastException expected");
+            } catch (ClassCastException ignored) {
+            }
 
-        // removing a metric
-        assertTrue(monitorController.removeMetric("foo2").unwrap());
+            // add multiple metrics
+            assertTrue(monitorController.add("foo2", FooMetric.class).unwrap());
+            assertTrue(monitorController.add("foo3", FooMetric.class).unwrap());
 
-        nameSet.clear();
-        Collections.addAll(nameSet, monitorController.getMetricNames().unwrap());
-        assertTrue(nameSet.contains("foo"));
-        assertFalse(nameSet.contains("foo2"));
-        assertTrue(nameSet.contains("foo3"));
+            HashSet<String> nameSet = new HashSet<>();
+            Collections.addAll(nameSet, monitorController.getRegisteredIds().unwrap());
+            assertTrue(nameSet.contains("foo"));
+            assertTrue(nameSet.contains("foo2"));
+            assertTrue(nameSet.contains("foo3"));
+
+            // removing a metric
+            assertTrue(monitorController.remove("foo2").unwrap());
+
+            nameSet.clear();
+            Collections.addAll(nameSet, monitorController.getRegisteredIds().unwrap());
+            assertTrue(nameSet.contains("foo"));
+            assertFalse(nameSet.contains("foo2"));
+            assertTrue(nameSet.contains("foo3"));
+        } catch (WrongValueException e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
@@ -110,17 +119,21 @@ public class MonitoringControllerImplTest {
             fail();
         }
 
-        monitorController.addMetric("foo", FooMetric.class);
-        assertEquals("foo-0", monitorController.getValue("foo").unwrap());
+        try {
+            monitorController.add("foo", FooMetric.class);
+            assertEquals("foo-0", monitorController.getValue("foo").unwrap());
 
-        monitorController.notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
-        monitorController.notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
-        monitorController.notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
+            monitorController.notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
+            monitorController.notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
+            monitorController.notifyACSEvent(ACSEventType.VOID_REQUEST_SENT);
 
-        assertEquals("foo-3", monitorController.getValue("foo").unwrap());
-        assertEquals("foo", metricEventListener.name);
-        assertEquals("foo-3", metricEventListener.value);
-        assertEquals(FooMetric.class.getName(), metricEventListener.clazzName);
+            assertEquals("foo-3", monitorController.getValue("foo").unwrap());
+            assertEquals("foo", metricEventListener.name);
+            assertEquals("foo-3", metricEventListener.value);
+            assertEquals(FooMetric.class.getName(), metricEventListener.clazzName);
+        } catch (WrongValueException e) {
+            fail(e.getMessage());
+        }
     }
 
 }

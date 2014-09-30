@@ -10,14 +10,14 @@ import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
  */
 public interface PlanningController {
 
-    public Wrapper<Boolean> addPlan(String name, String className);
+    public Wrapper<Boolean> add(String planId, String className);
 
-    public <PLAN extends Plan> Wrapper<Boolean> addPlan(String name, Class<PLAN> clazz);
+    public <PLAN extends Plan> Wrapper<Boolean> add(String planId, Class<PLAN> clazz);
 
-    public Wrapper<Boolean> removePlan(String planName);
+    public Wrapper<Boolean> remove(String planId);
 
-    public void doPlanFor(String ruleName, ACSAlarm alarm);
+    public void doPlanFor(String planId, ACSAlarm alarm);
 
-    public Wrapper<String[]> getPlanNames();
+    public Wrapper<String[]> getRegisteredIds();
 
 }

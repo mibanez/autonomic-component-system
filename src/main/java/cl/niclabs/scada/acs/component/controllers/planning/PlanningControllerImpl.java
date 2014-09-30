@@ -6,7 +6,9 @@ import cl.niclabs.scada.acs.component.controllers.PlanningController;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEvent;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
+import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
@@ -32,54 +34,52 @@ public class PlanningControllerImpl extends AbstractPAComponentController
 
     @Override
     @SuppressWarnings("unchecked")
-    public Wrapper<Boolean> addPlan(String name, String className) {
+    public Wrapper<Boolean> add(String planId, String className) {
         try {
             Class<?> clazz = Class.forName(className);
             if (Plan.class.isAssignableFrom(clazz)) {
-                return addPlan(name, (Class<Plan>) clazz);
+                return add(planId, (Class<Plan>) clazz);
             }
-            return new Wrapper<>(false, "Plan class is not assignable from the found class " + clazz.getName());
-        }
-        catch (Exception e) {
-            return new Wrapper<>(false, "Fail to get plan class " + className, e);
+            throw new ClassCastException("Can't cast " + clazz.getName() + " to " + Plan.class.getName());
+        } catch (Exception e) {
+            return new WrongWrapper<>("Fail to get plan class from name " + className, e);
         }
     }
 
     @Override
-    public <PLAN extends Plan> Wrapper<Boolean> addPlan(String name, Class<PLAN> clazz) {
+    public <PLAN extends Plan> Wrapper<Boolean> add(String planId, Class<PLAN> clazz) {
         try {
-            if (plans.containsKey(name)) {
-                return new Wrapper<>(false, "The plan name " + name + " already exists");
+            if (plans.containsKey(planId)) {
+                return new ValidWrapper<>(false, "A plan with id " + planId + " already exists");
             }
-            plans.put(name, clazz.newInstance());
-            return new Wrapper<>(true, "Plan " + name + " added correctly");
-        }
-        catch (Exception e) {
-            return new Wrapper<>(false, "Fail to instantiate plan " + clazz.getName(), e);
+            plans.put(planId, clazz.newInstance());
+            return new ValidWrapper<>(true);
+        } catch (Exception e) {
+            return new WrongWrapper<>("Fail to instantiate plan " + clazz.getName(), e);
         }
     }
 
     @Override
-    public Wrapper<Boolean> removePlan(String planName) {
-        if (plans.containsKey(planName)) {
-            plans.remove(planName);
-            return new Wrapper<>(true);
+    public Wrapper<Boolean> remove(String planId) {
+        if (plans.containsKey(planId)) {
+            plans.remove(planId);
+            return new ValidWrapper<>(true);
         }
-        return new Wrapper<>(false, String.format("no metric with name %s found", planName));
+        return new ValidWrapper<>(false, "No plan found with id " + planId);
     }
 
     @Override
-    public void doPlanFor(String ruleName, ACSAlarm alarm) {
+    public void doPlanFor(String planId, ACSAlarm alarm) {
         for (Plan plan : plans.values()) {
-            if (plan.isSubscribedTo(ruleName, alarm)) {
-                plan.doPlanFor(ruleName, alarm, monitoringController);
+            if (plan.isSubscribedTo(planId, alarm)) {
+                plan.doPlanFor(planId, alarm, monitoringController);
             }
         }
     }
 
     @Override
-    public Wrapper<String[]> getPlanNames() {
-        return new Wrapper<>(plans.keySet().toArray(new String[plans.size()]));
+    public Wrapper<String[]> getRegisteredIds() {
+        return new ValidWrapper<>(plans.keySet().toArray(new String[plans.size()]));
     }
 
     @Override

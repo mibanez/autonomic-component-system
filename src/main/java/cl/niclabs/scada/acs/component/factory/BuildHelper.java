@@ -1,5 +1,6 @@
 package cl.niclabs.scada.acs.component.factory;
 
+import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.MonitoringController;
@@ -11,6 +12,7 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningControllerImpl;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
+import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.IllegalBindingException;
@@ -52,7 +54,7 @@ public class BuildHelper {
     private final PAGenericFactory gf;
 
     public BuildHelper(ACSFactory factory) throws ACSFactoryException {
-      this(factory.getTypeFactory(), factory.getGenericFactory());
+        this(factory.getTypeFactory(), factory.getGenericFactory());
     }
 
     public BuildHelper(PAGCMTypeFactory typeFactory, PAGenericFactory genericFactory) throws ACSFactoryException {
@@ -162,8 +164,7 @@ public class BuildHelper {
 
                     if (isSingleton(itf)) {
                         acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
-                    }
-                    else if (itf instanceof PAGCMInterfaceType) {
+                    } else if (itf instanceof PAGCMInterfaceType) {
                         // gcm special interfaces
                         if (((PAGCMInterfaceType) itf).isGCMGathercastItf()) {
                             acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
@@ -172,8 +173,7 @@ public class BuildHelper {
                             acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "multicast"));
                         }
                     }
-                }
-                else if (isSingleton(itf)) {
+                } else if (isSingleton(itf)) {
                     // server interfaces needs an internal monitor connection
                     String name = String.format("%s-internal-monitor-controller", itf.getFcItfName());
                     acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton", true));
@@ -184,7 +184,7 @@ public class BuildHelper {
             String name = "internal-server-monitor-controller";
             acsInterfaces.add(tf.createGCMItfType(name, monClazz, false, true, "singleton", true));
 
-        } catch(InstantiationException e) {
+        } catch (InstantiationException e) {
             throw new ACSFactoryException("Couldn't create nf interface", e);
         }
 
@@ -211,16 +211,16 @@ public class BuildHelper {
         // To verify if the component has a STOPPED life-cycle we need a STARTED membrane
         String membraneState = membrane.getMembraneState();
         if (membraneState.equals(PAMembraneController.MEMBRANE_STOPPED)) {
-            ACSUtils.startMembrane(host, "addACSControllers");
+            startMembrane(host, "addACSControllers");
         }
 
         // Stopping everything
         String lifeCycleState = lifeCycle.getFcState();
         if (lifeCycleState.equals(PAGCMLifeCycleController.STARTED)) {
-            ACSUtils.stopLifeCycle(host, "addACSControllers");
+            stopLifeCycle(host, "addACSControllers");
         }
         if (membrane.getMembraneState().equals(PAMembraneController.MEMBRANE_STARTED)) {
-            ACSUtils.stopMembrane(host, "addACSControllers");
+            stopMembrane(host, "addACSControllers");
         }
 
         addController(ExecutionControllerImpl.CONTROLLER_NAME, ExecutionControllerImpl.class.getName(), getExecutionComponentType(), host);
@@ -231,10 +231,10 @@ public class BuildHelper {
 
         // Restoring old states
         if (membraneState.equals(PAMembraneController.MEMBRANE_STARTED)) {
-            ACSUtils.startMembrane(host, "addACSControllers");
+            startMembrane(host, "addACSControllers");
         }
         if (lifeCycleState.equals(PAGCMLifeCycleController.STARTED)) {
-            ACSUtils.startLifeCycle(host, "addACSControllers");
+            startLifeCycle(host, "addACSControllers");
         }
     }
 
@@ -242,7 +242,7 @@ public class BuildHelper {
     private void bindControllers(Component host) throws ACSFactoryException {
         try {
             PAMembraneController m = Utils.getPAMembraneController(host);
-            String hostName = ACSUtils.getComponentName(host);
+            String hostName = getComponentName(host);
 
             logger.trace("Binding monitoring on {}", hostName);
             m.nfBindFc(ACSUtils.MONITORING_CONTROLLER, MonitoringControllerImpl.CONTROLLER_NAME + "." + MonitoringControllerImpl.MONITORING_CONTROLLER_SERVER_ITF);
@@ -265,8 +265,7 @@ public class BuildHelper {
 
             logger.trace("Binding execution on {}", hostName);
             m.nfBindFc(ACSUtils.EXECUTION_CONTROLLER, ExecutionControllerImpl.CONTROLLER_NAME + "." + ExecutionControllerImpl.EXECUTION_CONTROLLER_SERVER_ITF);
-        }
-        catch (NoSuchInterfaceException | IllegalLifeCycleException |
+        } catch (NoSuchInterfaceException | IllegalLifeCycleException |
                 IllegalBindingException | NoSuchComponentException e) {
             throw new ACSFactoryException("Controllers binding fail", e);
         }
@@ -298,8 +297,7 @@ public class BuildHelper {
                     ExecutionController.class.getName(), false, false, "singleton"));
 
             return tf.createFcType(itfTypes.toArray(new InterfaceType[itfTypes.size()]));
-        }
-        catch (InstantiationException e) {
+        } catch (InstantiationException e) {
             throw new ACSFactoryException("Fail when instantiating an interface for execution controller", e);
         }
     }
@@ -313,10 +311,11 @@ public class BuildHelper {
                     RuleEventListener.class.getName(), false, false, "singleton"));
             itfTypes.add(tf.createGCMItfType(PlanningControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF,
                     MonitoringController.class.getName(), true, false, "singleton"));
+            itfTypes.add(tf.createGCMItfType(PlanningControllerImpl.EXECUTION_CONTROLLER_CLIENT_ITF,
+                    ExecutionController.class.getName(), true, false, "singleton"));
 
             return tf.createFcType(itfTypes.toArray(new InterfaceType[itfTypes.size()]));
-        }
-        catch (InstantiationException e) {
+        } catch (InstantiationException e) {
             throw new ACSFactoryException("Fail when instantiating an interface for planning controller", e);
         }
     }
@@ -335,8 +334,7 @@ public class BuildHelper {
                     RuleEventListener.class.getName(), true, false, "singleton"));
 
             return tf.createFcType(itfTypes.toArray(new InterfaceType[itfTypes.size()]));
-        }
-        catch (InstantiationException e) {
+        } catch (InstantiationException e) {
             throw new ACSFactoryException("Fail when instantiating an interface for analysis controller", e);
         }
     }
@@ -368,8 +366,7 @@ public class BuildHelper {
 
                 if (isSingleton(itf)) {
                     monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
-                }
-                else if (itf instanceof PAGCMInterfaceType) {
+                } else if (itf instanceof PAGCMInterfaceType) {
                     // gcm special interfaces
                     if (((PAGCMInterfaceType) itf).isGCMGathercastItf()) {
                         monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
@@ -421,4 +418,62 @@ public class BuildHelper {
         return isSingleton;
     }
 
+    private String getComponentName(Component component) {
+        if (component instanceof PAComponent) {
+            return ((PAComponent) component).getComponentParameters().getName();
+        }
+        try {
+            return GCM.getNameController(component).getFcName();
+        } catch (NoSuchInterfaceException e) {
+            return "*unknown*";
+        }
+    }
+
+    private void startLifeCycle(Component component, String where)
+            throws ACSFactoryException {
+        try {
+            logger.debug("{}: starting the life-cycle on component {}", where, getComponentName(component));
+            Utils.getPAGCMLifeCycleController(component).startFc();
+        } catch (NoSuchInterfaceException | IllegalLifeCycleException e) {
+            String msg = where + ": LifeCycle cannot be started on component " + getComponentName(component);
+            logger.error(msg);
+            throw new ACSFactoryException(msg, e);
+        }
+    }
+
+    private void startMembrane(Component component, String where)
+            throws ACSFactoryException {
+        try {
+            logger.debug("{}: starting the membrane on component {}", where, getComponentName(component));
+            Utils.getPAMembraneController(component).startMembrane();
+        } catch (NoSuchInterfaceException | IllegalLifeCycleException e) {
+            String msg = where + ": Membrane cannot be started on component " + getComponentName(component);
+            logger.error(msg);
+            throw new ACSFactoryException(msg, e);
+        }
+    }
+
+    private void stopLifeCycle(Component component, String where)
+            throws ACSFactoryException {
+        try {
+            logger.debug("{}: stopping the life-cycle on component {}", where, getComponentName(component));
+            Utils.getPAGCMLifeCycleController(component).stopFc();
+        } catch (NoSuchInterfaceException | IllegalLifeCycleException e) {
+            String msg = where + ": LifeCycle cannot be stopped on component " + getComponentName(component);
+            logger.error(msg);
+            throw new ACSFactoryException(msg, e);
+        }
+    }
+
+    private void stopMembrane(Component component, String where)
+            throws ACSFactoryException {
+        try {
+            logger.debug("{}: stopping the membrane on component {}", where, getComponentName(component));
+            Utils.getPAMembraneController(component).stopMembrane();
+        } catch (NoSuchInterfaceException | IllegalLifeCycleException e) {
+            String msg = where + ": Membrane cannot be stopped on component " + getComponentName(component);
+            logger.error(msg);
+            throw new ACSFactoryException(msg, e);
+        }
+    }
 }

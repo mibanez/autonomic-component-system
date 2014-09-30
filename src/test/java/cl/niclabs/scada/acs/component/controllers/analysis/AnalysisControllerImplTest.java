@@ -3,6 +3,7 @@ package cl.niclabs.scada.acs.component.controllers.analysis;
 import cl.niclabs.scada.acs.component.controllers.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.WrongValueException;
 import org.junit.Test;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 
@@ -48,42 +49,50 @@ public class AnalysisControllerImplTest {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
-        // wrong class path
-        Wrapper<Boolean> wrapper = analysisController.addRule("foo", "not.a.real.path.rule");
-        assertEquals(false, wrapper.unwrap());
-        assertNotNull(wrapper.getException());
+        try {
+            // wrong class path
+            Wrapper<Boolean> wrapper = analysisController.add("foo", "not.a.real.path.rule");
+            assertEquals(false, wrapper.unwrap());
+            fail("WrongValueException expected");
+        } catch (WrongValueException ignored) {}
 
-        // class is not a rule
-        wrapper = analysisController.addRule("foo", FakeRule.class.getName());
-        assertEquals(false, wrapper.unwrap());
-        assertNull(wrapper.getException());
+        try {
+            // class is not a rule
+            Wrapper<Boolean> wrapper = analysisController.add("foo", FakeRule.class.getName());
+            assertEquals(false, wrapper.unwrap());
+            fail("WrongValueException expected");
+        } catch (WrongValueException ignored) {}
 
-        // a correct one
-        wrapper = analysisController.addRule("foo", FooRule.class.getName());
-        assertTrue(wrapper.unwrap());
-        assertEquals(ACSAlarm.OK, analysisController.verify("foo").unwrap());
-        assertEquals(ACSAlarm.WARNING, analysisController.verify("foo").unwrap());
-        assertEquals(ACSAlarm.VIOLATION, analysisController.verify("foo").unwrap());
-        assertEquals(ACSAlarm.ERROR, analysisController.verify("foo").unwrap());
+        try {
+            // a correct one
+            Wrapper<Boolean> wrapper = analysisController.add("foo", FooRule.class.getName());
+            assertTrue(wrapper.unwrap());
+            assertEquals(ACSAlarm.OK, analysisController.verify("foo").unwrap());
+            assertEquals(ACSAlarm.WARNING, analysisController.verify("foo").unwrap());
+            assertEquals(ACSAlarm.VIOLATION, analysisController.verify("foo").unwrap());
+            assertEquals(ACSAlarm.ERROR, analysisController.verify("foo").unwrap());
 
-        // add multiple rules
-        assertTrue(analysisController.addRule("foo2", FooRule.class).unwrap());
-        assertTrue(analysisController.addRule("foo3", FooRule.class).unwrap());
+            // add multiple rules
+            assertTrue(analysisController.add("foo2", FooRule.class).unwrap());
+            assertTrue(analysisController.add("foo3", FooRule.class).unwrap());
 
-        HashSet<String> nameSet = new HashSet<>();
-        Collections.addAll(nameSet, analysisController.getRuleNames().unwrap());
-        assertTrue(nameSet.contains("foo"));
-        assertTrue(nameSet.contains("foo2"));
-        assertTrue(nameSet.contains("foo3"));
+            HashSet<String> nameSet = new HashSet<>();
+            Collections.addAll(nameSet, analysisController.getRegisteredIds().unwrap());
+            assertTrue(nameSet.contains("foo"));
+            assertTrue(nameSet.contains("foo2"));
+            assertTrue(nameSet.contains("foo3"));
 
-        // removing a rule
-        assertTrue(analysisController.removeRule("foo2").unwrap());
+            // removing a rule
+            assertTrue(analysisController.remove("foo2").unwrap());
 
-        nameSet.clear();
-        Collections.addAll(nameSet, analysisController.getRuleNames().unwrap());
-        assertTrue(nameSet.contains("foo"));
-        assertFalse(nameSet.contains("foo2"));
-        assertTrue(nameSet.contains("foo3"));
+            nameSet.clear();
+            Collections.addAll(nameSet, analysisController.getRegisteredIds().unwrap());
+            assertTrue(nameSet.contains("foo"));
+            assertFalse(nameSet.contains("foo2"));
+            assertTrue(nameSet.contains("foo3"));
+        } catch (WrongValueException e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
@@ -98,13 +107,17 @@ public class AnalysisControllerImplTest {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
-        analysisController.addRule("foo", FooRule.class.getName());
+        analysisController.add("foo", FooRule.class.getName());
 
         MetricEvent metricEvent = mock(MetricEvent.class);
         analysisController.notifyUpdate(metricEvent);
         analysisController.notifyUpdate(metricEvent);
         analysisController.notifyUpdate(metricEvent);
 
-        assertEquals(ACSAlarm.ERROR, analysisController.verify("foo").unwrap());
+        try {
+            assertEquals(ACSAlarm.ERROR, analysisController.verify("foo").unwrap());
+        } catch (WrongValueException e) {
+            fail(e.getMessage());
+        }
     }
 }

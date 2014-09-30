@@ -51,7 +51,7 @@ public class ACSMultiActiveServiceTest extends AbstractComponentTest {
 
             FooInterface fooItf = (FooInterface) foo.getFcInterface("server-itf");
             MonitoringController monitoringController = (MonitoringController) foo.getFcInterface("monitor-controller");
-            monitoringController.addMetric("foo-metric", FooMetric.class);
+            monitoringController.add("foo-metric", FooMetric.class);
             fooItf.foo();
 
             try {

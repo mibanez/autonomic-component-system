@@ -10,14 +10,14 @@ import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
  */
 public interface AnalysisController {
 
-    public Wrapper<Boolean> addRule(String name, String className);
+    public Wrapper<Boolean> add(String ruleId, String className);
 
-    public <RULE extends Rule> Wrapper<Boolean> addRule(String name, Class<RULE> clazz);
+    public <RULE extends Rule> Wrapper<Boolean> add(String ruleId, Class<RULE> clazz);
 
-    public Wrapper<Boolean> removeRule(String name);
+    public Wrapper<Boolean> remove(String ruleId);
 
-    public Wrapper<ACSAlarm> verify(String name);
+    public Wrapper<ACSAlarm> verify(String ruleId);
 
-    public Wrapper<String[]> getRuleNames();
+    public Wrapper<String[]> getRegisteredIds();
 
 }

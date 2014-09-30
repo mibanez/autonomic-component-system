@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
+import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.MonitoringController;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.Assert;

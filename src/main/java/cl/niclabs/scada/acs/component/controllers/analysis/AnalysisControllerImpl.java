@@ -4,7 +4,9 @@ import cl.niclabs.scada.acs.component.controllers.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener;
+import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
@@ -31,53 +33,51 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
 
     @Override
     @SuppressWarnings("unchecked")
-    public Wrapper<Boolean> addRule(String name, String className) {
+    public Wrapper<Boolean> add(String ruleId, String className) {
         try {
             Class<?> clazz = Class.forName(className);
             if (Rule.class.isAssignableFrom(clazz)) {
-                return addRule(name, (Class<Rule>) clazz);
+                return add(ruleId, (Class<Rule>) clazz);
             }
-            return new Wrapper<>(false, "Rule class is not assignable from the found class " + clazz.getName());
-        }
-        catch (Exception e) {
-            return new Wrapper<>(false, "Fail to get rule class " + className, e);
+            throw new ClassCastException("Can't cast " + clazz.getName() + " to " + Rule.class.getName());
+        } catch (Exception e) {
+            return new WrongWrapper<>("Fail to get rule class from name " + className, e);
         }
     }
 
     @Override
-    public <RULE extends Rule> Wrapper<Boolean> addRule(String name, Class<RULE> clazz) {
+    public <RULE extends Rule> Wrapper<Boolean> add(String ruleId, Class<RULE> clazz) {
         try {
-            if (rules.containsKey(name)) {
-                return new Wrapper<>(false, "The rule name " + name + " already exists");
+            if (!rules.containsKey(ruleId)) {
+                rules.put(ruleId, clazz.newInstance());
+                return new ValidWrapper<>(true);
             }
-            rules.put(name, clazz.newInstance());
-            return new Wrapper<>(true, "Rule " + name + " added correctly");
-        }
-        catch (Exception e) {
-            return new Wrapper<>(false, "Fail to instantiate rule " + clazz.getName(), e);
+            return new ValidWrapper<>(false, "A rule with id " + ruleId + " already exists");
+        } catch (Exception e) {
+            return new WrongWrapper<>("Fail to instantiate rule " + clazz.getName(), e);
         }
     }
 
     @Override
-    public Wrapper<Boolean> removeRule(String name) {
-        if (rules.containsKey(name)) {
-            rules.remove(name);
-            return new Wrapper<>(true);
+    public Wrapper<Boolean> remove(String ruleId) {
+        if (rules.containsKey(ruleId)) {
+            rules.remove(ruleId);
+            return new ValidWrapper<>(true);
         }
-        return new Wrapper<>(false, "no rule with name " + name + " name");
+        return new ValidWrapper<>(false, "no rule found with id " + ruleId);
     }
 
     @Override
-    public Wrapper<ACSAlarm> verify(String name) {
-        if (rules.containsKey(name)) {
-            return new Wrapper<>(rules.get(name).verify(monitoringController), "Alarm wrapped correctly");
+    public Wrapper<ACSAlarm> verify(String ruleId) {
+        if (rules.containsKey(ruleId)) {
+            return new ValidWrapper<>(rules.get(ruleId).verify(monitoringController));
         }
-        return new Wrapper<>(null, "No rule found with name " + name);
+        return new WrongWrapper<>("No rule found with id " + ruleId);
     }
 
     @Override
-    public Wrapper<String[]> getRuleNames() {
-        return new Wrapper<>(rules.keySet().toArray(new String[rules.size()]));
+    public Wrapper<String[]> getRegisteredIds() {
+        return new ValidWrapper<>(rules.keySet().toArray(new String[rules.size()]));
     }
 
     @Override

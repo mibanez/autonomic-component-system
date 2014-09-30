@@ -7,49 +7,22 @@ import java.io.Serializable;
 
 public interface MonitoringController {
 
-    /**
-     * Adds a new metric to the monitor controller.<br>
-     * The name of the metric must be unique.
-     * @param name      Name of the new metric
-     * @param className Name of the class implementing the metric
-     * @return          A wrapped boolean value.<br> True if it was correctly added, False otherwise.
-     */
-    public Wrapper<Boolean> addMetric(String name, String className);
+    public Wrapper<Boolean> add(String metricId, String className);
 
-    /**
-     * Adds a new metric to the monitor controller.<br>
-     * The name of the metric must be unique.
-     * @param name  Name of the new metric
-     * @param clazz Class implementing the metric
-     * @return      A wrapped boolean value.<br> True if it was correctly added, False otherwise.
-     */
-    public <METRIC extends Metric> Wrapper<Boolean> addMetric(String name, Class<METRIC> clazz);
+    public <METRIC extends Metric> Wrapper<Boolean> add(String metricId, Class<METRIC> clazz);
 
-    /**
-     * Removes a registered metric.
-     * @param name  Name of metric to remove
-     * @return      A wrapped boolean value.<br> True if it was correctly removed, False otherwise.
-     */
-    public Wrapper<Boolean> removeMetric(String name);
+    public <VALUE extends Serializable> Wrapper<VALUE> measure(String metricId);
 
-    /**
-     * Returns the value of a metric.
-     * @param name  Name of the metric
-     * @return      The value of the metric, wrapped
-     */
-    public <VALUE extends Serializable> Wrapper<VALUE> getValue(String name);
+    public <VALUE extends Serializable> Wrapper<VALUE> getValue(String metricId);
 
-    /**
-     * Measures the value of a metric.
-     * @param name  Name of the metric to measure
-     * @return      The new value of the metric
-     */
-    public <VALUE extends Serializable> Wrapper<VALUE> measure(String name);
+    public Wrapper<Boolean> isEnabled(String metricId);
 
-    /**
-     * Returns a list with the name of the registered metrics
-     * @return  Array with metric names
-     */
-    public Wrapper<String[]> getMetricNames();
+    public Wrapper<Boolean> enable(String metricId);
+
+    public Wrapper<Boolean> disable(String metricId);
+
+    public Wrapper<Boolean> remove(String metricId);
+
+    public Wrapper<String[]> getRegisteredIds();
 
 }

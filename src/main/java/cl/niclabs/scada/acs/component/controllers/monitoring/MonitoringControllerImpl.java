@@ -2,7 +2,9 @@ package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 import cl.niclabs.scada.acs.component.controllers.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.fractal.api.control.IllegalLifeCycleException;
@@ -29,66 +31,91 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
 
     @Override
     @SuppressWarnings("unchecked")
-    public Wrapper<Boolean> addMetric(String name, String className) {
+    public Wrapper<Boolean> add(String metricId, String className) {
         try {
             Class<?> clazz = Class.forName(className);
             if (Metric.class.isAssignableFrom(clazz)) {
-                return addMetric(name, (Class<Metric>) clazz);
+                return add(metricId, (Class<Metric>) clazz);
             }
-            return new Wrapper<>(false, "Metric class is not assignable from the found class " + clazz.getName());
-        }
-        catch (Exception e) {
-            return new Wrapper<>(false, "Fail to get metric class " + className, e);
+            throw new ClassCastException("Can't cast " + clazz.getName() + " to " + Metric.class.getName());
+        } catch (Exception e) {
+            return new WrongWrapper<>("Fail to get metric class from name " + className, e);
         }
     }
 
     @Override
-    public <METRIC extends Metric> Wrapper<Boolean> addMetric(String name, Class<METRIC> clazz) {
+    public <METRIC extends Metric> Wrapper<Boolean> add(String metricId, Class<METRIC> clazz) {
         try {
-            if (metrics.containsKey(name)) {
-                return new Wrapper<>(false, "The metric name " + name + " already exists");
+            if (!metrics.containsKey(metricId)) {
+                metrics.put(metricId, clazz.newInstance());
+                return new ValidWrapper<>(true);
             }
-            metrics.put(name, clazz.newInstance());
-            return new Wrapper<>(true, "Metric " + name + " added correctly");
+            return new ValidWrapper<>(false, "The metric id " + metricId + " already exists");
         }
         catch (Exception e) {
-            return new Wrapper<>(false, "Fail to instantiate metric " + clazz.getName(), e);
+            return new WrongWrapper<>("Fail to instantiate metric form class " + clazz.getName(), e);
         }
     }
 
     @Override
-    public Wrapper<Boolean> removeMetric(String name) {
-        if (metrics.containsKey(name)) {
-            metrics.remove(name);
-            return new Wrapper<>(true);
+    public Wrapper<Boolean> remove(String metricId) {
+        if (metrics.containsKey(metricId)) {
+            metrics.remove(metricId);
+            return new ValidWrapper<>(true);
         }
-        return new Wrapper<>(false, String.format("no metric with name %s found", name));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <VALUE extends Serializable> Wrapper<VALUE> getValue(String name) {
-        if (metrics.containsKey(name)) {
-            return metrics.get(name).getWrappedValue();
-        }
-        return new Wrapper(null, String.format("no metric found with name %s", name));
+        return new ValidWrapper<>(false, "No metric found with id " + metricId);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <VALUE extends Serializable> Wrapper<VALUE> measure(String name) {
-        if (metrics.containsKey(name)) {
-            Metric metric = metrics.get(name);
+    public <VALUE extends Serializable> Wrapper<VALUE> getValue(String metricId) {
+        if (metrics.containsKey(metricId)) {
+            return new ValidWrapper<>((VALUE) metrics.get(metricId).getValue());
+        }
+        return new WrongWrapper<>("No metric found with id " + metricId);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <VALUE extends Serializable> Wrapper<VALUE> measure(String metricId) {
+        if (metrics.containsKey(metricId)) {
+            Metric metric = metrics.get(metricId);
             metric.measure(recordStore);
-            metricEventListener.notifyUpdate(new MetricEvent(name, metric));
-            return metric.getWrappedValue();
+            metricEventListener.notifyUpdate(new MetricEvent(metricId, metric));
+            return new ValidWrapper<>((VALUE) metric.getValue());
         }
-        return new Wrapper<>(null, String.format("no metric with name %s found", name));
+        return new WrongWrapper<>("No metric found with id " + metricId);
     }
 
     @Override
-    public Wrapper<String[]> getMetricNames() {
-        return new Wrapper<>(metrics.keySet().toArray(new String[metrics.size()]));
+    public Wrapper<Boolean> isEnabled(String metricId) {
+        if (metrics.containsKey(metricId)) {
+            return new ValidWrapper<>(metrics.get(metricId).isEnabled());
+        }
+        return new WrongWrapper<>("No metric found with id " + metricId);
+    }
+
+    @Override
+    public Wrapper<Boolean> enable(String metricId) {
+        if (metrics.containsKey(metricId)) {
+            metrics.get(metricId).enable();
+            return new ValidWrapper<>(true);
+        }
+        return new ValidWrapper<>(false, "No metric found with id " + metricId);
+    }
+
+    @Override
+    public Wrapper<Boolean> disable(String metricId) {
+        if (metrics.containsKey(metricId)) {
+            metrics.get(metricId).disable();
+            return new ValidWrapper<>(true);
+        }
+        return new ValidWrapper<>(false, "No metric found with id " + metricId);
+    }
+
+    @Override
+    public Wrapper<String[]> getRegisteredIds() {
+        return new ValidWrapper<>(metrics.keySet().toArray(new String[metrics.size()]));
     }
 
     @Override

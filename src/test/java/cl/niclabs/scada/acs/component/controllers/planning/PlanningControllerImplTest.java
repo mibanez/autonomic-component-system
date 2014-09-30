@@ -3,6 +3,7 @@ package cl.niclabs.scada.acs.component.controllers.planning;
 import cl.niclabs.scada.acs.component.controllers.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.WrongValueException;
 import org.junit.Test;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 
@@ -42,52 +43,61 @@ public class PlanningControllerImplTest {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
-        // wrong class path
-        Wrapper<Boolean> wrapper = planningController.addPlan("foo", "not.a.real.path.plan");
-        assertEquals(false, wrapper.unwrap());
-        assertNotNull(wrapper.getException());
+        try {
+            // wrong class path
+            Wrapper<Boolean> wrapper = planningController.add("foo", "not.a.real.path.plan");
+            assertEquals(false, wrapper.unwrap());
+            fail("WrongValueException excepted");
+        } catch (WrongValueException ignored) {}
 
-        // class is not a rule
-        wrapper = planningController.addPlan("foo", FakePlan.class.getName());
-        assertEquals(false, wrapper.unwrap());
-        assertNull(wrapper.getException());
+        try {
+            // class is not a rule
+            Wrapper<Boolean> wrapper = planningController.add("foo", FakePlan.class.getName());
+            assertEquals(false, wrapper.unwrap());
+            fail("WrongValueException excepted");
+        } catch (WrongValueException ignored) {}
 
-        // a correct one
-        wrapper = planningController.addPlan("foo", FooPlan.class.getName());
-        assertTrue(wrapper.unwrap());
-        assertEquals(0, FooPlan.counter);
+        try {
+            // a correct one
+            Wrapper<Boolean> wrapper = planningController.add("foo", FooPlan.class.getName());
+            assertTrue(wrapper.unwrap());
+            assertEquals(0, FooPlan.counter);
 
-        // no subscribed events
-        planningController.doPlanFor("no-subscribed-rule", ACSAlarm.OK);
-        planningController.doPlanFor("no-subscribed-rule", ACSAlarm.WARNING);
-        planningController.doPlanFor("no-subscribed-rule", ACSAlarm.VIOLATION);
-        planningController.doPlanFor("foo-rule", ACSAlarm.OK);
-        planningController.doPlanFor("foo-rule", ACSAlarm.WARNING);
-        assertEquals(0, FooPlan.counter);
+            // no subscribed events
+            planningController.doPlanFor("no-subscribed-rule", ACSAlarm.OK);
+            planningController.doPlanFor("no-subscribed-rule", ACSAlarm.WARNING);
+            planningController.doPlanFor("no-subscribed-rule", ACSAlarm.VIOLATION);
+            planningController.doPlanFor("foo-rule", ACSAlarm.OK);
+            planningController.doPlanFor("foo-rule", ACSAlarm.WARNING);
+            assertEquals(0, FooPlan.counter);
 
-        planningController.doPlanFor("foo-rule", ACSAlarm.VIOLATION);
-        planningController.doPlanFor("foo-rule", ACSAlarm.ERROR);
-        planningController.doPlanFor("no-subscribed-rule", ACSAlarm.ERROR);
-        assertEquals(3, FooPlan.counter);
+            planningController.doPlanFor("foo-rule", ACSAlarm.VIOLATION);
+            planningController.doPlanFor("foo-rule", ACSAlarm.ERROR);
+            planningController.doPlanFor("no-subscribed-rule", ACSAlarm.ERROR);
+            assertEquals(3, FooPlan.counter);
 
-        // add multiple rules
-        assertTrue(planningController.addPlan("foo2", FooPlan.class).unwrap());
-        assertTrue(planningController.addPlan("foo3", FooPlan.class).unwrap());
+            // add multiple rules
+            assertTrue(planningController.add("foo2", FooPlan.class).unwrap());
+            assertTrue(planningController.add("foo3", FooPlan.class).unwrap());
 
-        HashSet<String> nameSet = new HashSet<>();
-        Collections.addAll(nameSet, planningController.getPlanNames().unwrap());
-        assertTrue(nameSet.contains("foo"));
-        assertTrue(nameSet.contains("foo2"));
-        assertTrue(nameSet.contains("foo3"));
+            HashSet<String> nameSet = new HashSet<>();
+            Collections.addAll(nameSet, planningController.getRegisteredIds().unwrap());
+            assertTrue(nameSet.contains("foo"));
+            assertTrue(nameSet.contains("foo2"));
+            assertTrue(nameSet.contains("foo3"));
 
-        // removing a rule
-        assertTrue(planningController.removePlan("foo2").unwrap());
+            // removing a rule
+            assertTrue(planningController.remove("foo2").unwrap());
 
-        nameSet.clear();
-        Collections.addAll(nameSet, planningController.getPlanNames().unwrap());
-        assertTrue(nameSet.contains("foo"));
-        assertFalse(nameSet.contains("foo2"));
-        assertTrue(nameSet.contains("foo3"));
+            nameSet.clear();
+            Collections.addAll(nameSet, planningController.getRegisteredIds().unwrap());
+            assertTrue(nameSet.contains("foo"));
+            assertFalse(nameSet.contains("foo2"));
+            assertTrue(nameSet.contains("foo3"));
+        } catch (WrongValueException e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
     }
 
 }
