@@ -20,8 +20,12 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
         implements MonitoringController, ACSEventListener, LifeCycleController, BindingController {
 
     public static final String CONTROLLER_NAME = "MonitorController";
-    public static final String MONITORING_CONTROLLER_SERVER_ITF = "monitoring-controller-server-itf";
+    public static final String MONITORING_CONTROLLER_SERVER_ITF = "monitoring-controller-server-itf-nf";
     public static final String METRIC_EVENT_LISTENER_CLIENT_ITF = "metric-event-listener-client-itf-nf";
+
+    public static final String EXTERNAL_MONITORING_ITF = "-external-monitoring-controller";
+    public static final String INTERNAL_MONITORING_ITF = "-internal-monitoring-controller";
+    public static final String INTERNAL_SERVER_MONITORING_ITF = "internal-server-monitoring-controller";
 
     private MetricEventListener metricEventListener;
 

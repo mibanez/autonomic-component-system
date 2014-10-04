@@ -7,9 +7,9 @@ import java.io.Serializable;
  */
 public class MetricEvent implements Serializable {
 
-    private String name;
-    private Class clazz;
-    private Object value;
+    private final String name;
+    private final Class clazz;
+    private final Object value;
 
     <METRIC extends Metric> MetricEvent(String metricName, METRIC metric) {
         name = metricName;

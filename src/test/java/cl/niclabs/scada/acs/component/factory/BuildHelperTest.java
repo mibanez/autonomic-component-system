@@ -3,6 +3,7 @@ package cl.niclabs.scada.acs.component.factory;
 import cl.niclabs.scada.acs.AbstractComponentTest;
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -54,9 +55,9 @@ public class BuildHelperTest extends AbstractComponentTest {
         Assert.assertTrue(nameSet.contains(ACSUtils.ANALYSIS_CONTROLLER));
         Assert.assertTrue(nameSet.contains(ACSUtils.PLANNING_CONTROLLER));
 
-        Assert.assertTrue(nameSet.contains("client-itf-external-monitor-controller"));
-        Assert.assertTrue(nameSet.contains("server-itf-internal-monitor-controller"));
-        Assert.assertTrue(nameSet.contains("internal-server-monitor-controller"));
+        Assert.assertTrue(nameSet.contains("client-itf" + MonitoringControllerImpl.EXTERNAL_MONITORING_ITF));
+        Assert.assertTrue(nameSet.contains("server-itf" + MonitoringControllerImpl.INTERNAL_MONITORING_ITF));
+        Assert.assertTrue(nameSet.contains(MonitoringControllerImpl.INTERNAL_SERVER_MONITORING_ITF));
 
     }
 

@@ -160,7 +160,7 @@ public class BuildHelper {
 
                 if (itf.isFcClientItf()) {
                     // client interfaces needs an external monitor connection
-                    String name = String.format("%s-external-monitor-controller", itf.getFcItfName());
+                    String name = itf.getFcItfName() + MonitoringControllerImpl.EXTERNAL_MONITORING_ITF;
 
                     if (isSingleton(itf)) {
                         acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
@@ -175,13 +175,13 @@ public class BuildHelper {
                     }
                 } else if (isSingleton(itf)) {
                     // server interfaces needs an internal monitor connection
-                    String name = String.format("%s-internal-monitor-controller", itf.getFcItfName());
+                    String name = itf.getFcItfName() + MonitoringControllerImpl.INTERNAL_MONITORING_ITF;
                     acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton", true));
                 }
             }
 
             // composite components needs and internal server monitor connection [does it?]
-            String name = "internal-server-monitor-controller";
+            String name = MonitoringControllerImpl.INTERNAL_SERVER_MONITORING_ITF;
             acsInterfaces.add(tf.createGCMItfType(name, monClazz, false, true, "singleton", true));
 
         } catch (InstantiationException e) {
@@ -362,7 +362,7 @@ public class BuildHelper {
                 }
 
                 // Add communication with the external monitors
-                String name = itf.getFcItfName() + "-external-monitor-controller-nf";
+                String name = itf.getFcItfName() + MonitoringControllerImpl.EXTERNAL_MONITORING_ITF;
 
                 if (isSingleton(itf)) {
                     monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
@@ -381,7 +381,7 @@ public class BuildHelper {
             if (Constants.COMPOSITE.equals(((PAComponent) host).getComponentParameters().getHierarchicalType())) {
                 for (InterfaceType itf : ((ComponentType) host.getFcType()).getFcInterfaceTypes()) {
                     if (!itf.isFcClientItf() && isSingleton(itf)) {
-                        String name = itf.getFcItfName() + "-internal-monitor-controller-nf";
+                        String name = itf.getFcItfName() + MonitoringControllerImpl.INTERNAL_MONITORING_ITF;
                         monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
                     }
                 }
