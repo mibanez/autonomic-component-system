@@ -1,9 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers.planning;
 
-import cl.niclabs.scada.acs.component.controllers.MonitoringController;
-import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
-import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
-import cl.niclabs.scada.acs.component.controllers.utils.WrongValueException;
+import cl.niclabs.scada.acs.component.controllers.*;
 import org.junit.Test;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 
@@ -23,10 +20,14 @@ public class PlanningControllerImplTest {
     public static class FooPlan extends Plan {
         public static int counter = 0;
         FooPlan() {
-            subscribeTo("foo-rule", ACSAlarm.VIOLATION);
-            globalSubscription(ACSAlarm.ERROR);
+            try {
+                subscribeTo("foo-rule", ACSAlarm.VIOLATION);
+                globalSubscription(ACSAlarm.ERROR);
+            } catch (CommunicationException e) {
+                e.printStackTrace();
+            }
         }
-        void doPlanFor(String ruleName, ACSAlarm alarm, MonitoringController monitorController) {
+        public void doPlanFor(String ruleName, ACSAlarm alarm, MonitoringController monitorController) {
             counter++;
         }
     }
@@ -43,58 +44,65 @@ public class PlanningControllerImplTest {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
+        Plan fooPlan = null;
         try {
             // wrong class path
-            Wrapper<Boolean> wrapper = planningController.add("foo", "not.a.real.path.plan");
-            assertEquals(false, wrapper.unwrap());
+            fooPlan = planningController.add("foo", "not.a.real.path.plan");
             fail("WrongValueException excepted");
-        } catch (WrongValueException ignored) {}
+        } catch (InvalidElementException ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
 
         try {
             // class is not a rule
-            Wrapper<Boolean> wrapper = planningController.add("foo", FakePlan.class.getName());
-            assertEquals(false, wrapper.unwrap());
+            fooPlan = planningController.add("foo", FakePlan.class.getName());
             fail("WrongValueException excepted");
-        } catch (WrongValueException ignored) {}
+        } catch (InvalidElementException ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
 
         try {
             // a correct one
-            Wrapper<Boolean> wrapper = planningController.add("foo", FooPlan.class.getName());
-            assertTrue(wrapper.unwrap());
+            fooPlan = planningController.add("foo", FooPlan.class.getName());
+
             assertEquals(0, FooPlan.counter);
 
             // no subscribed events
-            planningController.doPlanFor("no-subscribed-rule", ACSAlarm.OK);
-            planningController.doPlanFor("no-subscribed-rule", ACSAlarm.WARNING);
-            planningController.doPlanFor("no-subscribed-rule", ACSAlarm.VIOLATION);
-            planningController.doPlanFor("foo-rule", ACSAlarm.OK);
-            planningController.doPlanFor("foo-rule", ACSAlarm.WARNING);
+            fooPlan.doPlanFor("no-subscribed-rule", ACSAlarm.OK, null);
+            fooPlan.doPlanFor("no-subscribed-rule", ACSAlarm.WARNING, null);
+            fooPlan.doPlanFor("no-subscribed-rule", ACSAlarm.VIOLATION, null);
+            fooPlan.doPlanFor("foo-rule", ACSAlarm.OK, null);
+            fooPlan.doPlanFor("foo-rule", ACSAlarm.WARNING, null);
             assertEquals(0, FooPlan.counter);
 
-            planningController.doPlanFor("foo-rule", ACSAlarm.VIOLATION);
-            planningController.doPlanFor("foo-rule", ACSAlarm.ERROR);
-            planningController.doPlanFor("no-subscribed-rule", ACSAlarm.ERROR);
+            fooPlan.doPlanFor("foo-rule", ACSAlarm.VIOLATION, null);
+            fooPlan.doPlanFor("foo-rule", ACSAlarm.ERROR, null);
+            fooPlan.doPlanFor("no-subscribed-rule", ACSAlarm.ERROR, null);
             assertEquals(3, FooPlan.counter);
 
             // add multiple rules
-            assertTrue(planningController.add("foo2", FooPlan.class).unwrap());
-            assertTrue(planningController.add("foo3", FooPlan.class).unwrap());
+            planningController.add("foo2", FooPlan.class);
+            planningController.add("foo3", FooPlan.class);
 
             HashSet<String> nameSet = new HashSet<>();
-            Collections.addAll(nameSet, planningController.getRegisteredIds().unwrap());
+            Collections.addAll(nameSet, planningController.getRegisteredIds());
             assertTrue(nameSet.contains("foo"));
             assertTrue(nameSet.contains("foo2"));
             assertTrue(nameSet.contains("foo3"));
 
             // removing a rule
-            assertTrue(planningController.remove("foo2").unwrap());
+            planningController.remove("foo2");
 
             nameSet.clear();
-            Collections.addAll(nameSet, planningController.getRegisteredIds().unwrap());
+            Collections.addAll(nameSet, planningController.getRegisteredIds());
             assertTrue(nameSet.contains("foo"));
             assertFalse(nameSet.contains("foo2"));
             assertTrue(nameSet.contains("foo3"));
-        } catch (WrongValueException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
         }

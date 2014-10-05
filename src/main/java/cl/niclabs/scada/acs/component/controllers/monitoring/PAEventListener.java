@@ -14,6 +14,7 @@ import javax.management.Notification;
 import javax.management.NotificationListener;
 import javax.management.ObjectName;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Queue;
 
 /**
@@ -29,7 +30,7 @@ import java.util.Queue;
  * @author cruz
  *
  */
-public class PAEventListener implements NotificationListener {
+public class PAEventListener implements NotificationListener, Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(PAEventListener.class);
     private final ACSEventListener acsEventListener;

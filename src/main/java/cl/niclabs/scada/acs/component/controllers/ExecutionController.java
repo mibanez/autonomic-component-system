@@ -1,10 +1,8 @@
 package cl.niclabs.scada.acs.component.controllers;
 
-import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.objectweb.proactive.extra.component.fscript.exceptions.ReconfigurationException;
 
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * Created by mibanez
@@ -19,7 +17,7 @@ public interface ExecutionController {
      * @return The names of all the procedures successfully loaded.
      * @throws ReconfigurationException If errors were detected in the procedure definitions.
      */
-    Set<String> load(String fileName) throws ReconfigurationException;
+    Wrapper<String[]> load(String fileName) throws ReconfigurationException;
 
     /**
      * Returns the names of all the currently defined global variables.
@@ -27,7 +25,7 @@ public interface ExecutionController {
      * @return The names of all the currently defined global variables.
      * @throws ReconfigurationException If an error occurred while getting global variable names.
      */
-    Set<String> getGlobals() throws ReconfigurationException;
+    Wrapper<String[]> getGlobals() throws ReconfigurationException;
 
     /**
      * Executes a code fragment: either an FPath expression or a single FScript statement.

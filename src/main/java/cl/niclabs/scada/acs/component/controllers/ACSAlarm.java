@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.component.controllers.analysis;
+package cl.niclabs.scada.acs.component.controllers;
 
 /**
  * Created by mibanez

@@ -1,17 +1,18 @@
 package cl.niclabs.scada.acs.component.controllers.analysis;
 
-import cl.niclabs.scada.acs.component.controllers.AnalysisController;
-import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.*;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
-import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Analysis Controller implementation
@@ -20,70 +21,125 @@ import java.util.HashMap;
 public class AnalysisControllerImpl extends AbstractPAComponentController
         implements AnalysisController, MetricEventListener, BindingController {
 
-    public static final String CONTROLLER_NAME = "AnalysisController";
-    public static final String ANALYSIS_CONTROLLER_SERVER_ITF = "analysis-controller-server-itf-nf";
-    public static final String METRIC_EVENT_LISTENER_SERVER_ITF = "metric-event-listener-server-itf-nf";
-    public static final String MONITORING_CONTROLLER_CLIENT_ITF = "monitoring-controller-client-itf-nf";
-    public static final String RULE_EVENT_LISTENER_CLIENT_ITF = "rule-event-listener-client-itf-nf";
+    private static final Logger logger = LoggerFactory.getLogger(AnalysisController.class);
+
+    private final HashMap<String, Rule> rules = new HashMap<>();
 
     private MonitoringController monitoringController;
     private RuleEventListener ruleEventListener;
 
-    private final HashMap<String, Rule> rules = new HashMap<>();
+
 
     @Override
     @SuppressWarnings("unchecked")
-    public Wrapper<Boolean> add(String ruleId, String className) {
+    public Rule add(String ruleId, String className) throws DuplicatedElementIdException, InvalidElementException {
         try {
             Class<?> clazz = Class.forName(className);
             if (Rule.class.isAssignableFrom(clazz)) {
                 return add(ruleId, (Class<Rule>) clazz);
             }
-            throw new ClassCastException("Can't cast " + clazz.getName() + " to " + Rule.class.getName());
-        } catch (Exception e) {
-            return new WrongWrapper<>("Fail to get rule class from name " + className, e);
+            throw new InvalidElementException("Can't cast " + clazz.getName() + " to " + Rule.class.getName());
+        } catch (ClassNotFoundException e) {
+            throw new InvalidElementException(e);
         }
     }
 
     @Override
-    public <RULE extends Rule> Wrapper<Boolean> add(String ruleId, Class<RULE> clazz) {
-        try {
-            if (!rules.containsKey(ruleId)) {
-                rules.put(ruleId, clazz.newInstance());
-                return new ValidWrapper<>(true);
+    public <RULE extends Rule> Rule add(String id, Class<RULE> clazz)
+            throws DuplicatedElementIdException, InvalidElementException {
+
+        if (rules.containsKey(id)) {
+            throw new DuplicatedElementIdException(id);
+        } else try {
+            rules.put(id, clazz.newInstance());
+            return new RepresentativeRule(id, this);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new InvalidElementException(e);
+        }
+    }
+
+    @Override
+    public Rule get(String id) throws ElementNotFoundException {
+        if (rules.containsKey(id)) {
+            return new RepresentativeRule(id, this);
+        }
+        throw new ElementNotFoundException(id);
+    }
+
+    @Override
+    public void remove(String id) throws ElementNotFoundException {
+        if (rules.containsKey(id)) {
+            rules.remove(id);
+        } else {
+            throw new ElementNotFoundException(id);
+        }
+    }
+
+    @Override
+    public String[] getRegisteredIds() {
+        return rules.keySet().toArray(new String[rules.size()]);
+    }
+
+
+    @Override
+    public Wrapper<ACSAlarm> verify(String id) {
+        if (rules.containsKey(id)) {
+            try {
+                return new ValidWrapper<>(rules.get(id).verify(monitoringController));
+            } catch (CommunicationException e) {
+                new WrongWrapper<>(e);
             }
-            return new ValidWrapper<>(false, "A rule with id " + ruleId + " already exists");
-        } catch (Exception e) {
-            return new WrongWrapper<>("Fail to instantiate rule " + clazz.getName(), e);
         }
+        return new WrongWrapper<>(new ElementNotFoundException(id));
     }
 
     @Override
-    public Wrapper<Boolean> remove(String ruleId) {
-        if (rules.containsKey(ruleId)) {
-            rules.remove(ruleId);
-            return new ValidWrapper<>(true);
+    public Wrapper<Boolean> subscribeTo(String id, String metricName) {
+        if (rules.containsKey(id)) {
+            try {
+                rules.get(id).subscribeTo(metricName);
+                return new ValidWrapper<>(true);
+            } catch (CommunicationException e) {
+                new WrongWrapper<>(e);
+            }
         }
-        return new ValidWrapper<>(false, "no rule found with id " + ruleId);
+        return new WrongWrapper<>(new ElementNotFoundException(id));
     }
 
     @Override
-    public Wrapper<ACSAlarm> verify(String ruleId) {
-        if (rules.containsKey(ruleId)) {
-            return new ValidWrapper<>(rules.get(ruleId).verify(monitoringController));
+    public Wrapper<Boolean> unsubscribeFrom(String id, String metricName) {
+        if (rules.containsKey(id)) {
+            try {
+                rules.get(id).unsubscribeFrom(metricName);
+                return new ValidWrapper<>(true);
+            } catch (CommunicationException e) {
+                new WrongWrapper<>(e);
+            }
         }
-        return new WrongWrapper<>("No rule found with id " + ruleId);
+        return new WrongWrapper<>(new ElementNotFoundException(id));
     }
 
     @Override
-    public Wrapper<String[]> getRegisteredIds() {
-        return new ValidWrapper<>(rules.keySet().toArray(new String[rules.size()]));
+    public Wrapper<Boolean> isSubscribedTo(String id, String metricName) {
+        if (rules.containsKey(id)) {
+            try {
+                return new ValidWrapper<>(rules.get(id).isSubscribedTo(metricName));
+            } catch (CommunicationException e) {
+                new WrongWrapper<>(e);
+            }
+        }
+        return new WrongWrapper<>(new ElementNotFoundException(id));
     }
 
     @Override
     public void notifyUpdate(MetricEvent event) {
-        for (Rule rule: rules.values()) {
-            rule.verify(monitoringController);
+        for (Map.Entry<String, Rule> entry: rules.entrySet()) {
+            try {
+                entry.getValue().verify(monitoringController);
+            } catch (CommunicationException e) {
+                logger.warn("Exceptions during rules verification. Rule={}, Event={}, ExceptionMessage={}",
+                        entry.getKey(), event, e.getMessage());
+            }
         }
     }
 
@@ -118,5 +174,11 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
             default: throw new NoSuchInterfaceException(name);
         }
     }
+
+    public static final String CONTROLLER_NAME = "AnalysisController";
+    public static final String ANALYSIS_CONTROLLER_SERVER_ITF = "analysis-controller-server-itf-nf";
+    public static final String METRIC_EVENT_LISTENER_SERVER_ITF = "metric-event-listener-server-itf-nf";
+    public static final String MONITORING_CONTROLLER_CLIENT_ITF = "monitoring-controller-client-itf-nf";
+    public static final String RULE_EVENT_LISTENER_CLIENT_ITF = "rule-event-listener-client-itf-nf";
 
 }

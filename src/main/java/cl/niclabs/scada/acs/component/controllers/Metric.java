@@ -1,5 +1,6 @@
-package cl.niclabs.scada.acs.component.controllers.monitoring;
+package cl.niclabs.scada.acs.component.controllers;
 
+import cl.niclabs.scada.acs.component.controllers.monitoring.ACSEventType;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 
 import java.io.Serializable;
@@ -15,29 +16,23 @@ public abstract class Metric<TYPE extends Serializable> implements Serializable 
     private final Set<ACSEventType> subscriptions = new HashSet<>();
     private boolean enabled = false;
 
-
-
-    public void subscribeTo(ACSEventType eventType) {
+    public void subscribeTo(ACSEventType eventType) throws CommunicationException {
         subscriptions.add(eventType);
     }
 
-    public void unsubscribeFrom(ACSEventType eventType) {
+    public void unsubscribeFrom(ACSEventType eventType) throws CommunicationException {
         subscriptions.remove(eventType);
     }
 
-    public boolean isSubscribedTo(ACSEventType eventType) {
+    public boolean isSubscribedTo(ACSEventType eventType) throws CommunicationException {
         return subscriptions.contains(eventType);
     }
 
-    public void enable() {
-        enabled = true;
+    public void setEnabled(boolean enabled) throws CommunicationException {
+        this.enabled = enabled;
     }
 
-    public void disable() {
-        enabled = false;
-    }
-
-    public boolean isEnabled() {
+    public boolean isEnabled() throws CommunicationException {
         return enabled;
     }
 
@@ -45,11 +40,11 @@ public abstract class Metric<TYPE extends Serializable> implements Serializable 
      * Returns the actual value
      * @return  Actual value
      */
-    public abstract TYPE getValue();
+    public abstract TYPE getValue() throws CommunicationException;
 
     /**
      * Called to recalculate the value
      */
-    public abstract void measure(RecordStore recordStore);
+    public abstract TYPE measure(RecordStore recordStore) throws CommunicationException;
 
 }

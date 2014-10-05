@@ -1,9 +1,8 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
-import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.*;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
-import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
@@ -11,6 +10,8 @@ import org.objectweb.fractal.api.control.IllegalLifeCycleException;
 import org.objectweb.fractal.api.control.LifeCycleController;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
 import org.objectweb.proactive.core.runtime.ProActiveRuntimeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -19,14 +20,7 @@ import java.util.Map;
 public class MonitoringControllerImpl extends AbstractPAComponentController
         implements MonitoringController, ACSEventListener, LifeCycleController, BindingController {
 
-    public static final String CONTROLLER_NAME = "MonitorController";
-    public static final String MONITORING_CONTROLLER_SERVER_ITF = "monitoring-controller-server-itf-nf";
-    public static final String METRIC_EVENT_LISTENER_CLIENT_ITF = "metric-event-listener-client-itf-nf";
-
-    public static final String EXTERNAL_MONITORING_ITF = "-external-monitoring-controller";
-    public static final String INTERNAL_MONITORING_ITF = "-internal-monitoring-controller";
-    public static final String INTERNAL_SERVER_MONITORING_ITF = "internal-server-monitoring-controller";
-
+    private static final Logger logger = LoggerFactory.getLogger(MonitoringController.class);
     private MetricEventListener metricEventListener;
 
     private final Map<String, Metric> metrics = new HashMap<>();
@@ -35,106 +29,158 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
 
     @Override
     @SuppressWarnings("unchecked")
-    public Wrapper<Boolean> add(String metricId, String className) {
+    public Metric add(String metricId, String className) throws DuplicatedElementIdException, InvalidElementException {
         try {
             Class<?> clazz = Class.forName(className);
-            if (Metric.class.isAssignableFrom(clazz)) {
+            if (Metric.class.isAssignableFrom(clazz) ) {
                 return add(metricId, (Class<Metric>) clazz);
-            }
-            throw new ClassCastException("Can't cast " + clazz.getName() + " to " + Metric.class.getName());
-        } catch (Exception e) {
-            return new WrongWrapper<>("Fail to get metric class from name " + className, e);
+            } else throw new InvalidElementException("Can't cast " + clazz.getName() + " to " + Metric.class.getName());
+        } catch (ClassNotFoundException e) {
+            throw new InvalidElementException("Class name " + className + " can't be found", e);
         }
     }
 
     @Override
-    public <METRIC extends Metric> Wrapper<Boolean> add(String metricId, Class<METRIC> clazz) {
+    public <METRIC extends Metric> Metric add(String metricId, Class<METRIC> clazz)
+            throws DuplicatedElementIdException, InvalidElementException {
+
         try {
-            if (!metrics.containsKey(metricId)) {
-                metrics.put(metricId, clazz.newInstance());
-                return new ValidWrapper<>(true);
+            if (metrics.containsKey(metricId)) {
+                throw new DuplicatedElementIdException("The metric id " + metricId + " already exists!");
             }
-            return new ValidWrapper<>(false, "The metric id " + metricId + " already exists");
-        }
-        catch (Exception e) {
-            return new WrongWrapper<>("Fail to instantiate metric form class " + clazz.getName(), e);
+            metrics.put(metricId, clazz.newInstance());
+            return new RepresentativeMetric(metricId, this);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new InvalidElementException(e);
         }
     }
 
     @Override
-    public Wrapper<Boolean> remove(String metricId) {
-        if (metrics.containsKey(metricId)) {
-            metrics.remove(metricId);
-            return new ValidWrapper<>(true);
+    public Metric get(String id) throws ElementNotFoundException {
+        if (metrics.containsKey(id)) {
+            return new RepresentativeMetric(id, this);
         }
-        return new ValidWrapper<>(false, "No metric found with id " + metricId);
+        throw new ElementNotFoundException(notFoundMessage(id));
+    }
+
+    @Override
+    public void remove(String id) throws ElementNotFoundException {
+        if (metrics.containsKey(id)) {
+            metrics.remove(id);
+        } else {
+            throw new ElementNotFoundException(notFoundMessage(id));
+        }
+    }
+
+    @Override
+    public String[] getRegisteredIds() {
+        return metrics.keySet().toArray(new String[metrics.size()]);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <VALUE extends Serializable> Wrapper<VALUE> getValue(String metricId) {
-        if (metrics.containsKey(metricId)) {
-            return new ValidWrapper<>((VALUE) metrics.get(metricId).getValue());
+    public <TYPE extends Serializable> Wrapper<TYPE> getValue(String id) {
+        if ( ! metrics.containsKey(id) ) {
+            return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        } else try {
+            return new ValidWrapper<>((TYPE) metrics.get(id).getValue());
+        } catch (CommunicationException e) {
+            return new WrongWrapper<>(e);
         }
-        return new WrongWrapper<>("No metric found with id " + metricId);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <VALUE extends Serializable> Wrapper<VALUE> measure(String metricId) {
-        if (metrics.containsKey(metricId)) {
-            Metric metric = metrics.get(metricId);
+    public <VALUE extends Serializable> Wrapper<VALUE> measure(String id) {
+        if ( ! metrics.containsKey(id) ) {
+            return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        } else try {
+            Metric metric = metrics.get(id);
             metric.measure(recordStore);
-            metricEventListener.notifyUpdate(new MetricEvent(metricId, metric));
+            metricEventListener.notifyUpdate(new MetricEvent(id, metric));
             return new ValidWrapper<>((VALUE) metric.getValue());
+        } catch (CommunicationException e) {
+            return new WrongWrapper<>(e);
         }
-        return new WrongWrapper<>("No metric found with id " + metricId);
+
     }
 
     @Override
-    public Wrapper<Boolean> isEnabled(String metricId) {
-        if (metrics.containsKey(metricId)) {
-            return new ValidWrapper<>(metrics.get(metricId).isEnabled());
+    public Wrapper<Boolean> isEnabled(String id) {
+        if ( ! metrics.containsKey(id) ) {
+            return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        } else try {
+            return new ValidWrapper<>(metrics.get(id).isEnabled());
+        } catch (CommunicationException e) {
+            return new WrongWrapper<>(e);
         }
-        return new WrongWrapper<>("No metric found with id " + metricId);
     }
 
     @Override
-    public Wrapper<Boolean> enable(String metricId) {
-        if (metrics.containsKey(metricId)) {
-            metrics.get(metricId).enable();
+    public Wrapper<Boolean> setEnabled(String id, boolean enabled) {
+        if ( ! metrics.containsKey(id) ) {
+            return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        } else try {
+            metrics.get(id).setEnabled(enabled);
             return new ValidWrapper<>(true);
+        } catch (CommunicationException e) {
+            return new WrongWrapper<>(e);
         }
-        return new WrongWrapper<>("No metric found with id " + metricId);
     }
 
     @Override
-    public Wrapper<Boolean> disable(String metricId) {
-        if (metrics.containsKey(metricId)) {
-            metrics.get(metricId).disable();
+    public Wrapper<Boolean> subscribeTo(String id, ACSEventType eventType) throws CommunicationException {
+        if ( ! metrics.containsKey(id) ) {
+            return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        } else try {
+            metrics.get(id).subscribeTo(eventType);
             return new ValidWrapper<>(true);
+        } catch (CommunicationException e) {
+            return new WrongWrapper<>(e);
         }
-        return new WrongWrapper<>("No metric found with id " + metricId);
     }
 
     @Override
-    public Wrapper<String[]> getRegisteredIds() {
-        return new ValidWrapper<>(metrics.keySet().toArray(new String[metrics.size()]));
+    public Wrapper<Boolean> unsubscribeFrom(String id, ACSEventType eventType) throws CommunicationException {
+        if ( ! metrics.containsKey(id) ) {
+            return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        } else try {
+            metrics.get(id).unsubscribeFrom(eventType);
+            return new ValidWrapper<>(true);
+        } catch (CommunicationException e) {
+            return new WrongWrapper<>(e);
+        }
+    }
+
+    @Override
+    public Wrapper<Boolean> isSubscribedTo(String id, ACSEventType eventType) throws CommunicationException {
+        if ( ! metrics.containsKey(id) ) {
+            return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        } else try {
+            return new ValidWrapper<>(metrics.get(id).isEnabled());
+        } catch (CommunicationException e) {
+            return new WrongWrapper<>(e);
+        }
     }
 
     @Override
     public void notifyACSEvent(ACSEventType eventType) {
         for (Map.Entry<String, Metric> entry : metrics.entrySet()) {
-            if (entry.getValue().isSubscribedTo(eventType)) {
-                entry.getValue().measure(recordStore);
-                metricEventListener.notifyUpdate(new MetricEvent(entry.getKey(), entry.getValue()));
+            try {
+                if (entry.getValue().isSubscribedTo(eventType)) {
+                    entry.getValue().measure(recordStore);
+                    metricEventListener.notifyUpdate(new MetricEvent(entry.getKey(), entry.getValue()));
+                }
+            } catch (CommunicationException e) {
+                logger.warn("Exceptions during metric measuring. Metric={} Event={} ExceptionMessage=",
+                        entry.getKey(), eventType, e.getMessage());
             }
         }
     }
 
     @Override
     public String getFcState() {
-        return null; // never used on
+        return null; // never used on ProActive implementation
     }
 
     @Override
@@ -178,4 +224,17 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
             default: throw new NoSuchInterfaceException(name);
         }
     }
+
+    private String notFoundMessage(String id) {
+        return "No metric found with id " + id;
+    }
+
+    public static final String CONTROLLER_NAME = "MonitorController";
+    public static final String MONITORING_CONTROLLER_SERVER_ITF = "monitoring-controller-server-itf-nf";
+    public static final String METRIC_EVENT_LISTENER_CLIENT_ITF = "metric-event-listener-client-itf-nf";
+
+    public static final String EXTERNAL_MONITORING_ITF = "-external-monitoring-controller";
+    public static final String INTERNAL_MONITORING_ITF = "-internal-monitoring-controller";
+    public static final String INTERNAL_SERVER_MONITORING_ITF = "internal-server-monitoring-controller";
+
 }

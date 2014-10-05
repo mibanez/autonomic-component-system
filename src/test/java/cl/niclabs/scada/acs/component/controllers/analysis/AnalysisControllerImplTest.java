@@ -1,9 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.analysis;
 
-import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.*;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
-import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
-import cl.niclabs.scada.acs.component.controllers.utils.WrongValueException;
 import org.junit.Test;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 
@@ -22,7 +20,7 @@ public class AnalysisControllerImplTest {
     public static class FakeRule implements Serializable {}
     public static class FooRule extends Rule {
         public int counter = -1;
-        public FooRule() {
+        public FooRule() throws CommunicationException {
             subscribeTo("foo");
         }
         public ACSAlarm verify(MonitoringController monitoringController) {
@@ -49,48 +47,57 @@ public class AnalysisControllerImplTest {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
-        try {
-            // wrong class path
-            Wrapper<Boolean> wrapper = analysisController.add("foo", "not.a.real.path.rule");
-            assertEquals(false, wrapper.unwrap());
-            fail("WrongValueException expected");
-        } catch (WrongValueException ignored) {}
+        Rule fooRule = null;
 
+        // wrong class path
         try {
-            // class is not a rule
-            Wrapper<Boolean> wrapper = analysisController.add("foo", FakeRule.class.getName());
-            assertEquals(false, wrapper.unwrap());
+            fooRule = analysisController.add("foo", "not.a.real.path.rule");
             fail("WrongValueException expected");
-        } catch (WrongValueException ignored) {}
+        } catch (InvalidElementException ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Unexpected exception");
+        }
 
+        // class is not a rule
         try {
-            // a correct one
-            Wrapper<Boolean> wrapper = analysisController.add("foo", FooRule.class.getName());
-            assertTrue(wrapper.unwrap());
-            assertEquals(ACSAlarm.OK, analysisController.verify("foo").unwrap());
-            assertEquals(ACSAlarm.WARNING, analysisController.verify("foo").unwrap());
-            assertEquals(ACSAlarm.VIOLATION, analysisController.verify("foo").unwrap());
-            assertEquals(ACSAlarm.ERROR, analysisController.verify("foo").unwrap());
+            fooRule = analysisController.add("foo", FakeRule.class.getName());
+            fail("WrongValueException expected");
+        } catch (InvalidElementException ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Unexpected exception");
+        }
+
+        // a correct one
+        try {
+            fooRule = analysisController.add("foo", FooRule.class.getName());
+
+            assertEquals(ACSAlarm.OK, fooRule.verify(null));
+            assertEquals(ACSAlarm.WARNING, fooRule.verify(null));
+            assertEquals(ACSAlarm.VIOLATION, fooRule.verify(null));
+            assertEquals(ACSAlarm.ERROR, fooRule.verify(null));
 
             // add multiple rules
-            assertTrue(analysisController.add("foo2", FooRule.class).unwrap());
-            assertTrue(analysisController.add("foo3", FooRule.class).unwrap());
+            analysisController.add("foo2", FooRule.class);
+            analysisController.add("foo3", FooRule.class);
 
             HashSet<String> nameSet = new HashSet<>();
-            Collections.addAll(nameSet, analysisController.getRegisteredIds().unwrap());
+            Collections.addAll(nameSet, analysisController.getRegisteredIds());
             assertTrue(nameSet.contains("foo"));
             assertTrue(nameSet.contains("foo2"));
             assertTrue(nameSet.contains("foo3"));
 
             // removing a rule
-            assertTrue(analysisController.remove("foo2").unwrap());
+            analysisController.remove("foo2");
 
             nameSet.clear();
-            Collections.addAll(nameSet, analysisController.getRegisteredIds().unwrap());
+            Collections.addAll(nameSet, analysisController.getRegisteredIds());
             assertTrue(nameSet.contains("foo"));
             assertFalse(nameSet.contains("foo2"));
             assertTrue(nameSet.contains("foo3"));
-        } catch (WrongValueException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             fail(e.getMessage());
         }
     }
@@ -107,7 +114,12 @@ public class AnalysisControllerImplTest {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
-        analysisController.add("foo", FooRule.class.getName());
+        try {
+            analysisController.add("foo", FooRule.class.getName());
+        } catch (DuplicatedElementIdException | InvalidElementException e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
 
         MetricEvent metricEvent = mock(MetricEvent.class);
         analysisController.notifyUpdate(metricEvent);
@@ -116,7 +128,7 @@ public class AnalysisControllerImplTest {
 
         try {
             assertEquals(ACSAlarm.ERROR, analysisController.verify("foo").unwrap());
-        } catch (WrongValueException e) {
+        } catch (CommunicationException e) {
             fail(e.getMessage());
         }
     }

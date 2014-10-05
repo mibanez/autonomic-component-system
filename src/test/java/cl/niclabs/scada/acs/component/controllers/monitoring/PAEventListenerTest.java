@@ -199,6 +199,10 @@ public class PAEventListenerTest extends AbstractComponentTest {
             try {
                 System.out.println("Waiting 2 seconds for delayed events...");
                 Thread.sleep(2000);
+                if (monitorNotifier.getCheckNumber() != 9999999L) {
+                    System.out.println("Waiting 3 seconds more for delayed events...");
+                    Thread.sleep(3000);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

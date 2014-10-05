@@ -1,23 +1,28 @@
 package cl.niclabs.scada.acs.component.controllers;
 
-import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
-import cl.niclabs.scada.acs.component.controllers.planning.Plan;
-import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
-
 /**
  * Planning controller
  *
  */
 public interface PlanningController {
 
-    public Wrapper<Boolean> add(String planId, String className);
+    public Plan add(String id, String className) throws DuplicatedElementIdException, InvalidElementException;
 
-    public <PLAN extends Plan> Wrapper<Boolean> add(String planId, Class<PLAN> clazz);
+    public <PLAN extends Plan> Plan add(String id, Class<PLAN> clazz) throws DuplicatedElementIdException, InvalidElementException;
 
-    public Wrapper<Boolean> remove(String planId);
+    public Plan get(String id) throws ElementNotFoundException;
 
-    public void doPlanFor(String planId, ACSAlarm alarm);
+    public void remove(String id) throws ElementNotFoundException;
 
-    public Wrapper<String[]> getRegisteredIds();
+    public String[] getRegisteredIds();
 
+    public Wrapper<Boolean> doPlanFor(String id, String ruleId, ACSAlarm alarm);
+
+    public Wrapper<Boolean> globalSubscription(String id, ACSAlarm alarmLevel);
+
+    public Wrapper<Boolean> subscribeTo(String id, String ruleId, ACSAlarm alarmLevel);
+
+    public Wrapper<Boolean> unsubscribeFrom(String id, String ruleId);
+
+    public Wrapper<Boolean> isSubscribedTo(String id, String ruleId, ACSAlarm alarmLevel);
 }

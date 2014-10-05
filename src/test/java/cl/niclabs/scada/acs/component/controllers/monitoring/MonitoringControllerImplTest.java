@@ -1,8 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
+import cl.niclabs.scada.acs.component.controllers.*;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
-import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
-import cl.niclabs.scada.acs.component.controllers.utils.WrongValueException;
 import org.junit.Test;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 
@@ -24,8 +23,14 @@ public class MonitoringControllerImplTest {
     private static class FakeMetric implements Serializable { }
     public static class FooMetric extends Metric<String> {
         private int counter = 0;
-        public FooMetric() { subscribeTo(ACSEventType.VOID_REQUEST_SENT); }
-        public void measure(RecordStore store) { counter++; }
+        public FooMetric() {
+            try {
+                subscribeTo(ACSEventType.VOID_REQUEST_SENT);
+            } catch (CommunicationException e) {
+                e.printStackTrace();
+            }
+        }
+        public String measure(RecordStore store) { counter++; return getValue(); }
         public String getValue() { return "foo-" + counter; }
     }
     public static class FooMetricEventListener implements MetricEventListener {
@@ -52,28 +57,35 @@ public class MonitoringControllerImplTest {
             fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
+        Metric fooMetric = null;
         try {
             // wrong class path
-            Wrapper<Boolean> wrapper = monitorController.add("foo", "not.a.real.path.metric");
-            assertEquals(false, wrapper.unwrap());
+            fooMetric = monitorController.add("foo", "not.a.real.path.metric");
             fail("WrongValueException excepted");
-        } catch (WrongValueException ignored) {}
+        } catch (InvalidElementException ignored) {
+        } catch (DuplicatedElementIdException e) {
+            fail("Unexpected DuplicatedElementIdException: " + e.getMessage());
+        }
+
+
         try {
             // class is not a metric
-            Wrapper<Boolean> wrapper = monitorController.add("foo", FakeMetric.class.getName());
-            assertEquals(false, wrapper.unwrap());
+            fooMetric = monitorController.add("foo", FakeMetric.class.getName());
             fail("WrongValueException excepted");
-        } catch (WrongValueException ignored) {}
+        } catch (InvalidElementException ignored) {
+        } catch (DuplicatedElementIdException e) {
+            fail("Unexpected DuplicatedElementIdException: " + e.getMessage());
+        }
 
         try {
             // a correct one
-            Wrapper<Boolean> wrapper = monitorController.add("foo", FooMetric.class.getName());
-            assertTrue(wrapper.unwrap());
-            assertTrue(monitorController.getValue("foo").unwrap().equals("foo-0"));
-            assertTrue(monitorController.measure("foo").unwrap().equals("foo-1"));
-            assertTrue(monitorController.measure("foo").unwrap().equals("foo-2"));
-            assertTrue(monitorController.measure("foo").unwrap().equals("foo-3"));
-            assertTrue(monitorController.getValue("foo").unwrap().equals("foo-3"));
+            fooMetric = monitorController.add("foo", FooMetric.class.getName());
+
+            assertEquals("foo-0", fooMetric.getValue());
+            assertEquals("foo-1", fooMetric.measure(null));
+            assertEquals("foo-2", fooMetric.measure(null));
+            assertEquals("foo-3", fooMetric.measure(null));
+            assertEquals("foo-3", fooMetric.getValue());
 
             // bad value cast
             try {
@@ -83,25 +95,34 @@ public class MonitoringControllerImplTest {
             } catch (ClassCastException ignored) {
             }
 
+            // bad value cast 2
+            try {
+                Metric<Integer> fakeMetric = monitorController.get("foo");
+                Integer fakeValue = fakeMetric.getValue();
+                fail("ClassCastException expected");
+            } catch (ClassCastException ignored) {
+            }
+
             // add multiple metrics
-            assertTrue(monitorController.add("foo2", FooMetric.class).unwrap());
-            assertTrue(monitorController.add("foo3", FooMetric.class).unwrap());
+            monitorController.add("foo2", FooMetric.class);
+            monitorController.add("foo3", FooMetric.class);
 
             HashSet<String> nameSet = new HashSet<>();
-            Collections.addAll(nameSet, monitorController.getRegisteredIds().unwrap());
+            Collections.addAll(nameSet, monitorController.getRegisteredIds());
             assertTrue(nameSet.contains("foo"));
             assertTrue(nameSet.contains("foo2"));
             assertTrue(nameSet.contains("foo3"));
 
             // removing a metric
-            assertTrue(monitorController.remove("foo2").unwrap());
+            monitorController.remove("foo2");
 
             nameSet.clear();
-            Collections.addAll(nameSet, monitorController.getRegisteredIds().unwrap());
+            Collections.addAll(nameSet, monitorController.getRegisteredIds());
             assertTrue(nameSet.contains("foo"));
             assertFalse(nameSet.contains("foo2"));
             assertTrue(nameSet.contains("foo3"));
-        } catch (WrongValueException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             fail(e.getMessage());
         }
     }
@@ -131,7 +152,7 @@ public class MonitoringControllerImplTest {
             assertEquals("foo", metricEventListener.name);
             assertEquals("foo-3", metricEventListener.value);
             assertEquals(FooMetric.class.getName(), metricEventListener.clazzName);
-        } catch (WrongValueException e) {
+        } catch (Exception e) {
             fail(e.getMessage());
         }
     }

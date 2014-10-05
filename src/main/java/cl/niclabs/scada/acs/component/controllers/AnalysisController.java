@@ -1,23 +1,28 @@
 package cl.niclabs.scada.acs.component.controllers;
 
-import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
-import cl.niclabs.scada.acs.component.controllers.analysis.Rule;
-import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
-
 /**
  * Analysis Controller
  *
  */
 public interface AnalysisController {
 
-    public Wrapper<Boolean> add(String ruleId, String className);
+    public Rule add(String ruleId, String className) throws DuplicatedElementIdException, InvalidElementException;
 
-    public <RULE extends Rule> Wrapper<Boolean> add(String ruleId, Class<RULE> clazz);
+    public <RULE extends Rule> Rule add(String ruleId, Class<RULE> clazz) throws DuplicatedElementIdException, InvalidElementException;
 
-    public Wrapper<Boolean> remove(String ruleId);
+    public Rule get(String ruleId) throws ElementNotFoundException;
 
-    public Wrapper<ACSAlarm> verify(String ruleId);
+    public void remove(String ruleId) throws ElementNotFoundException;
 
-    public Wrapper<String[]> getRegisteredIds();
+    public String[] getRegisteredIds();
+
+
+    public Wrapper<ACSAlarm> verify(String id);
+
+    public Wrapper<Boolean> subscribeTo(String id, String metricName);
+
+    public Wrapper<Boolean> unsubscribeFrom(String id, String metricName);
+
+    public Wrapper<Boolean> isSubscribedTo(String id, String metricName);
 
 }
