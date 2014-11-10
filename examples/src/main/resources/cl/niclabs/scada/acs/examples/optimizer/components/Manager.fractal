@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE definition
+        PUBLIC "-//objectweb.org//DTD Fractal ADL 2.0//EN"
+        "classpath://org/objectweb/proactive/core/component/adl/xml/proactive.dtd">
+
+<definition name="cl.niclabs.scada.acs.examples.optimizer.components.Manager">
+
+    <!-- server -->
+    <interface name="manager-server-itf" role="server" signature="cl.niclabs.scada.acs.examples.optimizer.components.Cracker"/>
+
+    <!-- client: a maximum of 16 slaves supported -->
+    <interface name="dispatcher-client-itf" role="client" signature="cl.niclabs.scada.acs.examples.optimizer.components.Dispatcher"/>
+
+    <!-- implementation -->
+    <content class="cl.niclabs.scada.acs.examples.optimizer.components.ManagerImpl"/>
+    <controller desc="primitive"/>
+
+</definition>
