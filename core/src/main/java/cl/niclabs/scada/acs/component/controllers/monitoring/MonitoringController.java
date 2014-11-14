@@ -1,26 +1,17 @@
-package cl.niclabs.scada.acs.component.controllers;
+package cl.niclabs.scada.acs.component.controllers.monitoring;
 
-import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
-import cl.niclabs.scada.acs.component.controllers.monitoring.RecordEvent;
+import cl.niclabs.scada.acs.component.controllers.*;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 
-import java.io.Serializable;
-import java.util.HashSet;
+public interface MonitoringController extends MetricStore {
 
-public interface MonitoringController {
+    // METRICS
 
     public MetricProxy add(String metricId, String className) throws DuplicatedElementIdException, InvalidElementException;
 
     public <METRIC extends Metric> MetricProxy add(String metricId, Class<METRIC> clazz) throws DuplicatedElementIdException, InvalidElementException;
 
     public void remove(String metricId) throws ElementNotFoundException;
-
-    public HashSet<String> getRegisteredIds();
-
-    // METRIC
-
-    public <VALUE extends Serializable> Wrapper<VALUE> calculate(String metricId);
-
-    public <VALUE extends Serializable> Wrapper<VALUE> getValue(String metricId);
 
     // STATE
 

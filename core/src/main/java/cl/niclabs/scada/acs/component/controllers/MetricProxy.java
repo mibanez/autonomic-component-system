@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.RecordEvent;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;

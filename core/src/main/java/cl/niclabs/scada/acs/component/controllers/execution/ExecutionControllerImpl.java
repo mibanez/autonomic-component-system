@@ -1,8 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.execution;
 
-import cl.niclabs.scada.acs.component.controllers.ExecutionController;
-import cl.niclabs.scada.acs.component.controllers.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import cl.niclabs.scada.acs.gcmscript.controllers.GenericElementNode;
 import org.etsi.uri.gcm.util.GCM;
@@ -69,10 +68,9 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
             Set<String> result = loader.load(new FileReader(fileName));
             return new ValidWrapper<>(result.toArray(new String[result.size()]));
         } catch (FileNotFoundException | InvalidScriptException e) {
-            ReconfigurationException re = new ReconfigurationException("Unable to load procedure definitions", e);
-            return new WrongWrapper<>(re);
+            return new WrongWrapper<>("Unable to load procedure definitions: " + e.getMessage());
         } catch (ReconfigurationException re) {
-            return new WrongWrapper<>(re);
+            return new WrongWrapper<>("ReconfigurationException: " + re.getMessage());
         }
     }
 
@@ -83,7 +81,7 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
             Set<String> result = engine.getGlobals();
             return new ValidWrapper<>(result.toArray(new String[result.size()]));
         } catch (ReconfigurationException re) {
-            return new WrongWrapper<>(re);
+            return new WrongWrapper<>("ReconfigurationException: " + re.getMessage());
         }
     }
 
@@ -96,8 +94,10 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
                 return new ValidWrapper<>(null);
             }
             return new ValidWrapper<>((REPLY) getRepresentation(result));
-        } catch (ReconfigurationException | FScriptException e) {
-            return new WrongWrapper<>(e);
+        } catch (ReconfigurationException e) {
+            return new WrongWrapper<>("ReconfigurationException: " + e.getMessage());
+        } catch (FScriptException e) {
+            return new WrongWrapper<>("FScriptException: " + e.getMessage());
         }
     }
 

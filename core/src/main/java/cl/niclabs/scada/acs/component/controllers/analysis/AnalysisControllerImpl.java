@@ -3,7 +3,9 @@ package cl.niclabs.scada.acs.component.controllers.analysis;
 import cl.niclabs.scada.acs.component.controllers.*;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
@@ -82,7 +84,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
         if (rules.containsKey(id)) {
             return new ValidWrapper<>(rules.get(id).getAlarm(monitoringController));
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No rule registered with id: " + id);
     }
 
 
@@ -91,7 +93,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
         if (rules.containsKey(id)) {
             return new ValidWrapper<>(rules.get(id).verify(monitoringController));
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No rule registered with id: " + id);
     }
 
     @Override
@@ -99,7 +101,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
         if (rules.containsKey(id)) {
             return new ValidWrapper<>(rules.get(id).isEnabled());
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No rule registered with id: " + id);
     }
 
     @Override
@@ -108,7 +110,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
             rules.get(id).setEnabled(enabled);
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No rule registered with id: " + id);
     }
 
     @Override
@@ -117,7 +119,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
             rules.get(id).subscribeTo(metricName);
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No rule registered with id: " + id);
     }
 
     @Override
@@ -126,7 +128,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
             rules.get(id).unsubscribeFrom(metricName);
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No rule registered with id: " + id);
     }
 
     @Override
@@ -134,7 +136,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
         if (rules.containsKey(id)) {
             return new ValidWrapper<>(rules.get(id).isSubscribedTo(metricName));
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No rule registered with id: " + id);
     }
 
     @Override
@@ -142,7 +144,7 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
         if (rules.containsKey(id)) {
             return new ValidWrapper<>(rules.get(id).getSubscriptions());
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No rule registered with id: " + id);
     }
 
     @Override

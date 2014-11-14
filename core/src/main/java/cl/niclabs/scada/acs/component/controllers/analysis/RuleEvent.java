@@ -1,7 +1,5 @@
 package cl.niclabs.scada.acs.component.controllers.analysis;
 
-import cl.niclabs.scada.acs.component.controllers.ACSAlarm;
-
 import java.io.Serializable;
 
 /**

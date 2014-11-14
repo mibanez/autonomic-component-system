@@ -1,9 +1,13 @@
 package cl.niclabs.scada.acs.component.controllers.planning;
 
 import cl.niclabs.scada.acs.component.controllers.*;
+import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEvent;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
+import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
@@ -80,13 +84,11 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     public Wrapper<Boolean> doPlanFor(String id, String ruleId, ACSAlarm alarm) {
         if (plans.containsKey(id)) {
             Plan plan = plans.get(id);
-            if (plan.isSubscribedTo(ruleId, alarm)) {
-                plan.doPlanFor(ruleId, alarm, monitoringController);
-                return new ValidWrapper<>(true);
-            }
-            return new ValidWrapper<>(false);
+            plan.doPlanFor(ruleId, alarm, monitoringController);
+            return new ValidWrapper<>(true);
+
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new ValidWrapper<>(false, "No plan registered with id " + id);
     }
 
     // SUBSCRIPTION
@@ -97,7 +99,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
             plans.get(id).globallySubscribe(alarm);
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new ValidWrapper<>(false, "No plan registered with id " + id);
     }
 
     @Override
@@ -106,7 +108,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
             plans.get(id).globallyUnsubscribe();
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new ValidWrapper<>(false, "No plan registered with id " + id);
     }
 
     @Override
@@ -114,7 +116,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
         if (plans.containsKey(id)) {
             new ValidWrapper<>(plans.get(id).getGlobalSubscription());
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No plan registered with id " + id);
     }
 
     @Override
@@ -123,7 +125,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
             plans.get(id).subscribeTo(ruleId, alarmLevel);
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new ValidWrapper<>(false, "No plan registered with id " + id);
     }
 
     @Override
@@ -132,7 +134,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
             plans.get(id).unsubscribeFrom(ruleId);
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new ValidWrapper<>(false, "No plan registered with id " + id);
     }
 
     @Override
@@ -140,7 +142,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
         if (plans.containsKey(id)) {
             return new ValidWrapper<>(plans.get(id).getSubscriptions());
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No plan registered with id " + id);
     }
 
     @Override
@@ -148,7 +150,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
         if (plans.containsKey(id)) {
             return new ValidWrapper<>(plans.get(id).isSubscribedTo(ruleId, alarmLevel));
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No plan registered with id " + id);
     }
 
     // STATE
@@ -158,7 +160,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
         if (plans.containsKey(id)) {
             return new ValidWrapper<>(plans.get(id).isEnabled());
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new WrongWrapper<>("No plan registered with id " + id);
     }
 
     @Override
@@ -167,7 +169,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
             plans.get(id).setEnabled(enabled);
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(id));
+        return new ValidWrapper<>(false, "No plan registered with id " + id);
     }
 
     // RULE EVENT LISTENER

@@ -1,6 +1,8 @@
 package cl.niclabs.scada.acs.component.controllers;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
+import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 

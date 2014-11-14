@@ -1,21 +1,28 @@
 package cl.niclabs.scada.acs.component.controllers.utils;
 
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
-import cl.niclabs.scada.acs.component.controllers.Wrapper;
-
 import java.io.Serializable;
+
 
 public class WrongWrapper<TYPE extends Serializable> implements Wrapper<TYPE> {
 
-    private final CommunicationException cause;
+    private final String msg;
 
-    public WrongWrapper(Throwable cause) {
-        this.cause = new CommunicationException(cause);
+    public WrongWrapper(String msg) {
+        this.msg = msg;
     }
 
     @Override
-    public TYPE unwrap() throws CommunicationException {
-       throw this.cause;
+    public TYPE unwrap() {
+       return null;
     }
 
+    @Override
+    public boolean isValid() {
+        return false;
+    }
+
+    @Override
+    public String getMessage() {
+        return msg;
+    }
 }

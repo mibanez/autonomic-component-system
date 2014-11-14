@@ -1,4 +1,7 @@
-package cl.niclabs.scada.acs.component.controllers;
+package cl.niclabs.scada.acs.component.controllers.analysis;
+
+import cl.niclabs.scada.acs.component.controllers.GenericElement;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 
 import java.util.HashSet;
 

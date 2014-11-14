@@ -4,6 +4,7 @@ import cl.niclabs.scada.acs.component.controllers.*;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.ACSRecordStore;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
@@ -19,8 +20,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-public class MonitoringControllerImpl extends AbstractPAComponentController
-        implements MonitoringController, RecordEventListener, LifeCycleController, BindingController {
+public class MonitoringControllerImpl extends AbstractPAComponentController implements MetricStore,
+        MonitoringController, RecordEventListener, LifeCycleController, BindingController {
 
     private static final Logger logger = LoggerFactory.getLogger(MonitoringController.class);
     private MetricEventListener metricEventListener;
@@ -77,7 +78,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
         if (metrics.containsKey(id)) {
             return new ValidWrapper<>((TYPE) metrics.get(id).getValue());
         }
-        return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        return new WrongWrapper<>(notFoundMessage(id));
     }
 
     @Override
@@ -89,8 +90,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
             metricEventListener.notifyUpdate(new MetricEvent(id, metric));
             return new ValidWrapper<>((VALUE) metric.getValue());
         }
-        return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
-
+        return new WrongWrapper<>(notFoundMessage(id));
     }
 
     @Override
@@ -98,7 +98,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
         if (metrics.containsKey(id)) {
             return new ValidWrapper<>(metrics.get(id).isEnabled());
         }
-        return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        return new WrongWrapper<>(notFoundMessage(id));
     }
 
     @Override
@@ -107,7 +107,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
             metrics.get(id).setEnabled(enabled);
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        return new WrongWrapper<>(notFoundMessage(id));
     }
 
     @Override
@@ -116,7 +116,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
             metrics.get(id).subscribeTo(eventType);
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        return new WrongWrapper<>(notFoundMessage(id));
     }
 
     @Override
@@ -125,7 +125,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
             metrics.get(id).unsubscribeFrom(eventType);
             return new ValidWrapper<>(true);
         }
-        return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        return new WrongWrapper<>(notFoundMessage(id));
     }
 
     @Override
@@ -133,7 +133,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController
         if (metrics.containsKey(id)) {
             return new ValidWrapper<>(metrics.get(id).isEnabled());
         }
-        return new WrongWrapper<>(new ElementNotFoundException(notFoundMessage(id)));
+        return new WrongWrapper<>(notFoundMessage(id));
     }
 
     @Override

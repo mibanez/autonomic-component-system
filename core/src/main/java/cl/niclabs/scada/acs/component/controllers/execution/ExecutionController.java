@@ -1,5 +1,6 @@
-package cl.niclabs.scada.acs.component.controllers;
+package cl.niclabs.scada.acs.component.controllers.execution;
 
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.objectweb.proactive.extra.component.fscript.exceptions.ReconfigurationException;
 
 import java.io.Serializable;
