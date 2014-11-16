@@ -1,7 +1,8 @@
 package cl.niclabs.scada.acs.gcmscript.monitoring;
 
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
-import cl.niclabs.scada.acs.component.controllers.MetricProxy;
+import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import cl.niclabs.scada.acs.gcmscript.controllers.monitoring.MetricNode;
 import org.junit.Assert;
@@ -10,6 +11,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.objectweb.fractal.api.Component;
+import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.fscript.model.NodeKind;
 import org.objectweb.fractal.fscript.model.Property;
 import org.objectweb.fractal.fscript.types.PrimitiveType;
@@ -17,35 +20,35 @@ import org.objectweb.fractal.fscript.types.PrimitiveType;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 /**
  * Created by mibanez
  */
 public class MetricNodeTest  {
 
-    private static MetricProxy metricProxy;
+    private static Component host;
+    private static MonitoringController monitoringController;
+    private static String metricId = "foo";
     private static ACSModel acsModel;
 
     @BeforeClass
-    public static void setUp() {
-        metricProxy = Mockito.mock(MetricProxy.class);
-        Mockito.doReturn("foo").when(metricProxy).getId();
-        try {
-            Mockito.doReturn("value").when(metricProxy).getValue();
-            Mockito.doReturn(false).when(metricProxy).isEnabled();
-            Mockito.doAnswer(new Answer() {
-                public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                    Mockito.doReturn(true).when(metricProxy).isEnabled();
-                    return null;
-                }
-            }).when(metricProxy).setEnabled(true);
+    public static void setUp() throws NoSuchInterfaceException {
+        monitoringController = mock(MonitoringController.class);
+        Mockito.doReturn(new ValidWrapper<>("value")).when(monitoringController).getValue(metricId);
+        Mockito.doReturn(new ValidWrapper<>(false)).when(monitoringController).isEnabled(metricId);
+        Mockito.doAnswer(new Answer() {
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Mockito.doReturn(new ValidWrapper<>(true)).when(monitoringController).isEnabled(metricId);
+                return new ValidWrapper<>(true);
+            }
+        }).when(monitoringController).setEnabled(metricId, true);
 
-        } catch (CommunicationException e) {
-            e.printStackTrace();
-            Assert.fail(e.getMessage());
-        }
+        host = mock(Component.class);
+        doReturn(monitoringController).when(host).getFcInterface(ACSUtils.MONITORING_CONTROLLER);
 
-        acsModel = Mockito.mock(ACSModel.class, Mockito.RETURNS_MOCKS);
+        acsModel = mock(ACSModel.class, Mockito.RETURNS_MOCKS);
         Mockito.doReturn(new NodeKind("metric",
                 new Property("id", PrimitiveType.STRING, false),
                 new Property("value", PrimitiveType.OBJECT, false),
@@ -53,23 +56,23 @@ public class MetricNodeTest  {
     }
 
     @Test(expected = NullPointerException.class)
-    public void createWithNullMetricProxy() {
-        new MetricNode(acsModel, null);
+    public void createWithNullMetricProxy() throws NoSuchInterfaceException {
+        new MetricNode(acsModel, null, metricId);
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void readInvalidProperty() {
-        (new MetricNode(acsModel, metricProxy)).getProperty("invalid");
+    public void readInvalidProperty() throws NoSuchInterfaceException {
+        (new MetricNode(acsModel, host, metricId)).getProperty("invalid");
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void writeInvalidProperty() {
-        (new MetricNode(acsModel, metricProxy)).setProperty("invalid", null);
+    public void writeInvalidProperty() throws NoSuchInterfaceException {
+        (new MetricNode(acsModel, host, metricId)).setProperty("invalid", null);
     }
 
     @Test
-    public void checkMetricFunctions() {
-        MetricNode node = new MetricNode(acsModel, metricProxy);
+    public void checkMetricFunctions() throws NoSuchInterfaceException {
+        MetricNode node = new MetricNode(acsModel, host, monitoringController, metricId);
         assertEquals("foo", node.getProperty("id"));
         assertEquals("value", node.getProperty("value"));
         Assert.assertFalse((Boolean) node.getProperty("enabled"));

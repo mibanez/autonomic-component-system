@@ -1,6 +1,9 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListener;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEvent;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEventListener;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.IncomingRecord;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.OutgoingRecord;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.OutgoingVoidRecord;

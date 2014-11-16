@@ -3,7 +3,6 @@ package cl.niclabs.scada.acs.component.controllers.planning;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.ElementNotFoundException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
-import cl.niclabs.scada.acs.component.controllers.PlanProxy;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 
@@ -31,9 +30,9 @@ public interface PlanningController {
         }
     }
 
-    public PlanProxy add(String id, String className) throws DuplicatedElementIdException, InvalidElementException;
+    public void add(String id, String className) throws DuplicatedElementIdException, InvalidElementException;
 
-    public <PLAN extends Plan> PlanProxy add(String id, Class<PLAN> clazz) throws DuplicatedElementIdException, InvalidElementException;
+    public <PLAN extends Plan> void add(String id, Class<PLAN> clazz) throws DuplicatedElementIdException, InvalidElementException;
 
     public void remove(String id) throws ElementNotFoundException;
 

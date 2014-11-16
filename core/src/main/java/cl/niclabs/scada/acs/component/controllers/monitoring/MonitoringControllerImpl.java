@@ -1,10 +1,17 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
-import cl.niclabs.scada.acs.component.controllers.*;
+import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
+import cl.niclabs.scada.acs.component.controllers.ElementNotFoundException;
+import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListener;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEvent;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEventListener;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStoreImpl;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
+import cl.niclabs.scada.acs.gcmscript.CommunicationException;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.fractal.api.control.IllegalLifeCycleException;
@@ -15,81 +22,60 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
-public class MonitoringControllerImpl extends AbstractPAComponentController implements MetricStore,
-        MonitoringController, RecordEventListener, LifeCycleController, BindingController {
+public class MonitoringControllerImpl extends AbstractPAComponentController implements MonitoringController,
+        RecordEventListener, LifeCycleController, BindingController {
 
     private static final Logger logger = LoggerFactory.getLogger(MonitoringController.class);
     private MetricEventListener metricEventListener;
 
     private final Map<String, Metric> metrics = new HashMap<>();
-    private final RecordStoreImpl recordStore = new RecordStoreImpl();
+    private final RecordStore recordStore = new RecordStoreImpl();
     private GCMPAEventListener eventListener;
 
     @Override
     @SuppressWarnings("unchecked")
-    public MetricProxy add(String metricId, String className) throws DuplicatedElementIdException, InvalidElementException {
+    public void add(String metricId, String className) throws DuplicatedElementIdException, InvalidElementException {
         try {
             Class<?> clazz = Class.forName(className);
-            if (Metric.class.isAssignableFrom(clazz) ) {
-                return add(metricId, (Class<Metric>) clazz);
-            } else throw new InvalidElementException("Can't cast " + clazz.getName() + " to " + Metric.class.getName());
+            if (!Metric.class.isAssignableFrom(clazz)) {
+                String msg = String.format("Can't cast %s to $s", clazz.getName(), Metric.class.getName());
+                throw new InvalidElementException(msg);
+            }
+            add(metricId, (Class<Metric>) clazz);
         } catch (ClassNotFoundException e) {
-            throw new InvalidElementException("Class name " + className + " can't be found", e);
+            String msg = String.format("Can't found class %s", className);
+            throw new InvalidElementException(msg, e);
         }
     }
 
     @Override
-    public <METRIC extends Metric> MetricProxy add(String metricId, Class<METRIC> clazz)
+    public <METRIC extends Metric> void add(String metricId, Class<METRIC> clazz)
             throws DuplicatedElementIdException, InvalidElementException {
         if (metrics.containsKey(metricId)) {
-            throw new DuplicatedElementIdException("The metric id " + metricId + " already exists!");
+            String msg = String.format("The metric id %s is already registered", metricId);
+            throw new DuplicatedElementIdException(msg);
         } else try {
             metrics.put(metricId, clazz.newInstance());
-            return new MetricProxy(metricId, hostComponent);
         } catch (InstantiationException | IllegalAccessException e) {
             throw new InvalidElementException(e);
-        } catch (CommunicationException e) {
-            throw new InvalidElementException("Can't create metric proxy: " + e.getMessage());
         }
     }
 
     @Override
     public void remove(String id) throws ElementNotFoundException {
-        if (metrics.containsKey(id)) {
-            metrics.remove(id);
-        } else {
+        if (!metrics.containsKey(id)) {
             throw new ElementNotFoundException(notFoundMessage(id));
         }
+        metrics.remove(id);
     }
 
     @Override
-    public HashSet<String> getRegisteredIds() {
-        return new HashSet<>(metrics.keySet());
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <TYPE extends Serializable> Wrapper<TYPE> getValue(String id) {
-        if (metrics.containsKey(id)) {
-            return new ValidWrapper<>((TYPE) metrics.get(id).getValue());
-        }
-        return new WrongWrapper<>(notFoundMessage(id));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <VALUE extends Serializable> Wrapper<VALUE> calculate(String id) {
-        if (metrics.containsKey(id)) {
-            Metric metric = metrics.get(id);
-            metric.calculate(recordStore);
-            metricEventListener.notifyUpdate(new MetricEvent(id, metric));
-            return new ValidWrapper<>((VALUE) metric.getValue());
-        }
-        return new WrongWrapper<>(notFoundMessage(id));
+    public ArrayList<String> getRegisteredIds() {
+        return new ArrayList<>(metrics.keySet());
     }
 
     @Override
@@ -133,6 +119,32 @@ public class MonitoringControllerImpl extends AbstractPAComponentController impl
             return new ValidWrapper<>(metrics.get(id).isEnabled());
         }
         return new WrongWrapper<>(notFoundMessage(id));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <TYPE extends Serializable> Wrapper<TYPE> getValue(String id) {
+        if (metrics.containsKey(id)) {
+            return new ValidWrapper<>((TYPE) metrics.get(id).getValue());
+        }
+        return new WrongWrapper<>(notFoundMessage(id));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <VALUE extends Serializable> Wrapper<VALUE> calculate(String id) {
+        if (metrics.containsKey(id)) {
+            Metric metric = metrics.get(id);
+            metric.calculate(recordStore);
+            metricEventListener.notifyUpdate(new MetricEvent(id, metric));
+            return new ValidWrapper<>((VALUE) metric.getValue());
+        }
+        return new WrongWrapper<>(notFoundMessage(id));
+    }
+
+    @Override
+    public WrongWrapper<MonitoringController> remoteMonitoring(String interfaceName) {
+        return new WrongWrapper<>(String.format("No remote monitoring for interface %s", interfaceName));
     }
 
     @Override

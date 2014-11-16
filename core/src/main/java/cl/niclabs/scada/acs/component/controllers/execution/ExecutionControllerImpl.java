@@ -3,7 +3,6 @@ package cl.niclabs.scada.acs.component.controllers.execution;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
-import cl.niclabs.scada.acs.gcmscript.controllers.GenericElementNode;
 import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.Interface;
@@ -121,10 +120,6 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
                 return (PAInterfaceImpl) itf;
             }
             return String.format("[Not Serializable Interface: %s]", itf.getFcItfName());
-        }
-
-        if (object instanceof GenericElementNode) {
-            return ((GenericElementNode) object).getElementProxy();
         }
 
         return object.toString();

@@ -3,7 +3,6 @@ package cl.niclabs.scada.acs.component.controllers.analysis;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.ElementNotFoundException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
-import cl.niclabs.scada.acs.component.controllers.RuleProxy;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 
 import java.util.HashSet;
@@ -14,9 +13,9 @@ import java.util.HashSet;
  */
 public interface AnalysisController {
 
-    RuleProxy add(String ruleId, String className) throws DuplicatedElementIdException, InvalidElementException;
+    void add(String ruleId, String className) throws DuplicatedElementIdException, InvalidElementException;
 
-    <RULE extends Rule> RuleProxy add(String ruleId, Class<RULE> clazz) throws DuplicatedElementIdException, InvalidElementException;
+    <RULE extends Rule> void add(String ruleId, Class<RULE> clazz) throws DuplicatedElementIdException, InvalidElementException;
 
     void remove(String ruleId) throws ElementNotFoundException;
 

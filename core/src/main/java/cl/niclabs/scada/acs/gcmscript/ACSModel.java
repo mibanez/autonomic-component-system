@@ -1,8 +1,5 @@
 package cl.niclabs.scada.acs.gcmscript;
 
-import cl.niclabs.scada.acs.component.controllers.MetricProxy;
-import cl.niclabs.scada.acs.component.controllers.PlanProxy;
-import cl.niclabs.scada.acs.component.controllers.RuleProxy;
 import cl.niclabs.scada.acs.gcmscript.controllers.analysis.AddRuleAction;
 import cl.niclabs.scada.acs.gcmscript.controllers.analysis.PrintRulesFunction;
 import cl.niclabs.scada.acs.gcmscript.controllers.analysis.RuleNode;
@@ -11,6 +8,8 @@ import cl.niclabs.scada.acs.gcmscript.controllers.monitoring.MetricNode;
 import cl.niclabs.scada.acs.gcmscript.controllers.monitoring.PrintMetricsFunction;
 import cl.niclabs.scada.acs.gcmscript.controllers.monitoring.RemoveMetricAction;
 import cl.niclabs.scada.acs.gcmscript.controllers.planning.PlanNode;
+import org.objectweb.fractal.api.Component;
+import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.fscript.model.Property;
 import org.objectweb.proactive.extra.component.fscript.model.GCMModel;
 import org.objectweb.proactive.extra.component.fscript.model.GCMProcedure;
@@ -56,16 +55,16 @@ public class ACSModel extends GCMModel {
         }
     }
 
-    public MetricNode createMetricNode(MetricProxy metricProxy) {
-        return new MetricNode(this, metricProxy);
+    public MetricNode createMetricNode(Component host, String metricId) throws NoSuchInterfaceException {
+        return new MetricNode(this, host, metricId);
     }
 
-    public RuleNode createRuleNode(RuleProxy ruleProxy) {
-        return new RuleNode(this, ruleProxy);
+    public RuleNode createRuleNode(Component host, String ruleId) throws NoSuchInterfaceException {
+        return new RuleNode(this, host, ruleId);
     }
 
-    public PlanNode createPlanNode(PlanProxy planProxy) {
-        return new PlanNode(this, planProxy);
+    public PlanNode createPlanNode(Component host, String planId) throws NoSuchInterfaceException {
+        return new PlanNode(this, host, planId);
     }
 
 }

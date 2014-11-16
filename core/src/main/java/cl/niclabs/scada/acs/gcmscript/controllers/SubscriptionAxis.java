@@ -1,18 +1,18 @@
 package cl.niclabs.scada.acs.gcmscript.controllers;
 
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
-import cl.niclabs.scada.acs.component.controllers.MetricProxy;
-import cl.niclabs.scada.acs.component.controllers.RuleProxy;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import cl.niclabs.scada.acs.gcmscript.controllers.analysis.RuleNode;
 import cl.niclabs.scada.acs.gcmscript.controllers.monitoring.MetricNode;
 import cl.niclabs.scada.acs.gcmscript.controllers.planning.PlanNode;
-import org.objectweb.fractal.api.Component;
+import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.fscript.model.AbstractAxis;
 import org.objectweb.fractal.fscript.model.Node;
 import org.objectweb.fractal.fscript.model.fractal.FractalModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +21,8 @@ import java.util.Set;
  * Created by mibanez
  */
 public class SubscriptionAxis extends AbstractAxis {
+
+    private final static Logger logger = LoggerFactory.getLogger(SubscriptionAxis.class);
 
     public SubscriptionAxis(FractalModel model) {
         super(model, "subscription", "generic-element", "generic-element");
@@ -51,13 +53,16 @@ public class SubscriptionAxis extends AbstractAxis {
     private HashSet<Node> selectFromRule(RuleNode ruleNode) {
 
         HashSet<Node> metricNodes = new HashSet<>();
-        Component host = ruleNode.getElementProxy().getHost();
+        Wrapper<HashSet<String>> wrapper = ruleNode.getAnalysisController().getSubscriptions(ruleNode.getRuleId());
 
-        try {
-            for (String metricId : ruleNode.getElementProxy().getSubscriptions()) {
-                metricNodes.add(new MetricNode((ACSModel) getModel(), new MetricProxy(metricId, host)));
+        if (wrapper.isValid()) {
+            for (String metricId : wrapper.unwrap()) {
+                try {
+                    metricNodes.add(((ACSModel) model).createMetricNode(ruleNode.getHost(), metricId));
+                } catch (NoSuchInterfaceException ignore) {}
             }
-        } catch (CommunicationException ignore) {
+        } else {
+            logger.debug("Invalid wrapper: {}", wrapper.getMessage());
         }
 
         return metricNodes;
@@ -66,13 +71,17 @@ public class SubscriptionAxis extends AbstractAxis {
     private Set<Node> selectFromPlan(PlanNode planNode) {
 
         HashSet<Node> ruleNodes = new HashSet<>();
-        Component host = planNode.getElementProxy().getHost();
+        Wrapper<HashSet<PlanningController.AlarmSubscription>> wrapper;
+        wrapper = planNode.getPlanningController().getSubscriptions(planNode.getPlanId());
 
-        try {
-            for (PlanningController.AlarmSubscription alarmSubscription : planNode.getElementProxy().getSubscriptions()) {
-                ruleNodes.add(new RuleNode((ACSModel) getModel(), new RuleProxy(alarmSubscription.getRuleId(), host)));
+        if (wrapper.isValid()) {
+            for (PlanningController.AlarmSubscription alarmSubscription : wrapper.unwrap()) {
+                try {
+                    ruleNodes.add(((ACSModel) model).createRuleNode(planNode.getHost(), alarmSubscription.getRuleId()));
+                } catch (NoSuchInterfaceException ignore) {}
             }
-        } catch (CommunicationException ignore) {
+        } else {
+            logger.debug("Invalid wrapper: {}", wrapper.getMessage());
         }
 
         return ruleNodes;
@@ -80,16 +89,16 @@ public class SubscriptionAxis extends AbstractAxis {
 
     @Override
     public void connect(Node source, Node dest) {
-        try {
-            if ((source instanceof RuleNode) && (dest instanceof MetricNode)) {
-                ((RuleNode) source).getElementProxy().subscribeTo(((MetricNode) dest).getElementProxy().getId());
-            } else if ((source instanceof PlanNode) && (dest instanceof RuleNode)) {
-                ((PlanNode) source).getElementProxy().subscribeTo(((RuleNode) dest).getElementProxy().getId(), ACSAlarm.ERROR);
-            } else {
-                throw new IllegalArgumentException("Operation not supported for for given source and destination nodes");
-            }
-        } catch (CommunicationException e) {
-            throw new UnsupportedOperationException("can't connect nodes: " + e.getMessage());
+        if ((source instanceof RuleNode) && (dest instanceof MetricNode)) {
+            RuleNode ruleNode = (RuleNode) source;
+            MetricNode metricNode = (MetricNode) dest;
+            ruleNode.getAnalysisController().subscribeTo(ruleNode.getRuleId(), metricNode.getMetricId());
+        } else if ((source instanceof PlanNode) && (dest instanceof RuleNode)) {
+            PlanNode planNode = (PlanNode) source;
+            RuleNode ruleNode = (RuleNode) dest;
+            planNode.getPlanningController().subscribeTo(planNode.getPlanId(), ruleNode.getRuleId(), ACSAlarm.ERROR);
+        } else {
+            throw new IllegalArgumentException("Operation not supported for for given source and destination nodes");
         }
     }
 
@@ -109,16 +118,16 @@ public class SubscriptionAxis extends AbstractAxis {
      */
     @Override
     public void disconnect(Node source, Node dest) {
-        try {
-            if ((source instanceof RuleNode) && (dest instanceof MetricNode)) {
-                ((RuleNode) source).getElementProxy().unsubscribeFrom(((MetricNode) dest).getElementProxy().getId());
-            } else if ((source instanceof PlanNode) && (dest instanceof RuleNode)) {
-                ((PlanNode) source).getElementProxy().unsubscribeFrom(((RuleNode) dest).getElementProxy().getId());
-            } else {
-                throw new IllegalArgumentException("Operation not supported for for given source and destination nodes");
-            }
-        } catch (CommunicationException e) {
-            throw new UnsupportedOperationException("can't disconnect nodes: " + e.getMessage());
+        if ((source instanceof RuleNode) && (dest instanceof MetricNode)) {
+            RuleNode ruleNode = (RuleNode) source;
+            MetricNode metricNode = (MetricNode) dest;
+            ruleNode.getAnalysisController().unsubscribeFrom(ruleNode.getRuleId(), metricNode.getMetricId());
+        } else if ((source instanceof PlanNode) && (dest instanceof RuleNode)) {
+            PlanNode planNode = (PlanNode) source;
+            RuleNode ruleNode = (RuleNode) dest;
+            planNode.getPlanningController().unsubscribeFrom(planNode.getPlanId(), ruleNode.getRuleId());
+        } else {
+            throw new IllegalArgumentException("Operation not supported for for given source and destination nodes");
         }
     }
 }

@@ -1,7 +1,6 @@
 package cl.niclabs.scada.acs.gcmscript.controllers.planning;
 
 import cl.niclabs.scada.acs.component.controllers.ElementNotFoundException;
-import cl.niclabs.scada.acs.component.controllers.PlanProxy;
 import org.objectweb.fractal.fscript.ScriptExecutionError;
 import org.objectweb.fractal.fscript.diagnostics.Diagnostic;
 import org.objectweb.fractal.fscript.diagnostics.Severity;
@@ -34,9 +33,9 @@ public class RemovePlanAction extends AbstractGCMProcedure {
 
     @Override
     public Object apply(List<Object> args, Context ctx) throws ScriptExecutionError {
-        PlanProxy planProxy = ((PlanNode) args.get(0)).getElementProxy();
+        PlanNode planNode = (PlanNode) args.get(0);
         try {
-            planProxy.getPlanningController().remove(planProxy.getId());
+            planNode.getPlanningController().remove(planNode.getPlanId());
             return "Removing plan... Done.";
         } catch (ElementNotFoundException e) {
             throw new ScriptExecutionError(new Diagnostic(Severity.WARNING, "PlanController exception"), e);

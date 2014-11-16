@@ -3,7 +3,6 @@ package cl.niclabs.scada.acs.gcmscript.controllers.analysis;
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
-import cl.niclabs.scada.acs.component.controllers.RuleProxy;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -41,11 +40,11 @@ public class AddRuleAction extends AbstractGCMProcedure {
     @Override
     public Object apply(List<Object> objects, Context context) throws ScriptExecutionError {
         Component host = (Component) objects.get(0);
-        String id = (String) objects.get(1);
+        String ruleId = (String) objects.get(1);
         String className = (String) objects.get(2);
         try {
-            RuleProxy ruleProxy = ACSUtils.getAnalysisController(host).add(id, className);
-            return ((ACSModel) model).createRuleNode(ruleProxy);
+            ACSUtils.getAnalysisController(host).add(ruleId, className);
+            return ((ACSModel) model).createRuleNode(host, ruleId);
         }
         catch (NoSuchInterfaceException e) {
             throw new ScriptExecutionError(new Diagnostic(Severity.ERROR, "AnalysisController not found"), e);

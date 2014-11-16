@@ -1,8 +1,6 @@
 package cl.niclabs.scada.acs.gcmscript.controllers.monitoring;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
-import cl.niclabs.scada.acs.component.controllers.MetricProxy;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import org.objectweb.fractal.api.Component;
@@ -46,23 +44,23 @@ public class MetricAxis extends AbstractAxis {
      */
     @Override
     public Set<Node> selectFrom(Node source) {
-        Component comp;
+        Component host;
         if (source instanceof GCMComponentNode) {
-            comp = ((GCMComponentNode) source).getComponent();
+            host = ((GCMComponentNode) source).getComponent();
         } else if (source instanceof GCMInterfaceNode) {
-            comp = ((GCMInterfaceNode) source).getInterface().getFcItfOwner();
+            host = ((GCMInterfaceNode) source).getInterface().getFcItfOwner();
         } else {
             throw new IllegalArgumentException("Invalid source node kind " + source.getKind());
         }
 
         HashSet<Node> result = new HashSet<>();
         try {
-            MonitoringController monitoringController = ACSUtils.getMonitoringController(comp);
+            MonitoringController monitoringController = ACSUtils.getMonitoringController(host);
             for (String metricId : monitoringController.getRegisteredIds()) {
-                Node node = ((ACSModel) model).createMetricNode(new MetricProxy(metricId, comp));
+                Node node = ((ACSModel) model).createMetricNode(host, metricId);
                 result.add(node);
             }
-        } catch (NoSuchInterfaceException | CommunicationException e) {
+        } catch (NoSuchInterfaceException e) {
             e.printStackTrace();
         }
 

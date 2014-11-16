@@ -2,7 +2,6 @@ package cl.niclabs.scada.acs.component.controllers.planning;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
-import cl.niclabs.scada.acs.component.controllers.PlanProxy;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEvent;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
@@ -54,10 +53,9 @@ public class PlanningControllerImplTest {
             Assert.fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
-        PlanProxy fooPlan = null;
         try {
             // wrong class path
-            fooPlan = planningController.add("foo", "not.a.real.path.plan");
+            planningController.add("foo", "not.a.real.path.plan");
             Assert.fail("WrongValueException excepted");
         } catch (InvalidElementException ignored) {
         } catch (Exception e) {
@@ -67,7 +65,7 @@ public class PlanningControllerImplTest {
 
         try {
             // class is not a rule
-            fooPlan = planningController.add("foo", FakePlan.class.getName());
+            planningController.add("foo", FakePlan.class.getName());
             Assert.fail("WrongValueException excepted");
         } catch (InvalidElementException ignored) {
         } catch (Exception e) {
@@ -77,7 +75,7 @@ public class PlanningControllerImplTest {
 
         try {
             // a correct one
-            fooPlan = planningController.add("foo", FooPlan.class.getName());
+            planningController.add("foo", FooPlan.class.getName());
 
             Assert.assertEquals(0, FooPlan.counter);
 

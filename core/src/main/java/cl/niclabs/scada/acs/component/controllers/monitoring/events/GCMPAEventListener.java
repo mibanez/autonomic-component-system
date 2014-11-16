@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.component.controllers.monitoring;
+package cl.niclabs.scada.acs.component.controllers.monitoring.events;
 
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.*;
 import org.objectweb.proactive.core.ProActiveRuntimeException;
@@ -34,12 +34,12 @@ public class GCMPAEventListener implements NotificationListener, Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(GCMPAEventListener.class);
     private final RecordEventListener recordEventListener;
-    private final RecordStoreImpl RecordStoreImpl;
+    private final RecordStore recordStore;
 
 
-    public GCMPAEventListener(RecordEventListener recordEventListener, RecordStoreImpl RecordStoreImpl, UniqueID uniqueId, String runtimeURL) {
+    public GCMPAEventListener(RecordEventListener recordEventListener, RecordStore recordStore, UniqueID uniqueId, String runtimeURL) {
         this.recordEventListener = recordEventListener;
-        this.RecordStoreImpl = RecordStoreImpl;
+        this.recordStore = recordStore;
         ObjectName objectName = FactoryName.createActiveObjectName(uniqueId);
         String completeRuntimeURL = FactoryName.getCompleteUrl(runtimeURL);
         JMXNotificationManager jmxNotificationManager = JMXNotificationManager.getInstance();
@@ -106,7 +106,7 @@ public class GCMPAEventListener implements NotificationListener, Serializable {
         // TODO: handle request without parent, directly called from the component instance
         try {
             IncomingRecord record = new IncomingRecord(data, time);
-            RecordStoreImpl.update(record);
+            recordStore.update(record);
             recordEventListener.notifyACSEvent(RecordEvent.REQUEST_RECEIVED);
             if (logger.isTraceEnabled()) {
                 logger.trace("REQUEST RECEIVED --> {}", record);
@@ -119,7 +119,7 @@ public class GCMPAEventListener implements NotificationListener, Serializable {
         try {
             IncomingRecord record = new IncomingRecord(data, 0);
             record.setServiceStartedTime(time);
-            RecordStoreImpl.update(record);
+            recordStore.update(record);
             recordEventListener.notifyACSEvent(RecordEvent.REQUEST_SERVICE_STARTED);
             if (logger.isTraceEnabled()) {
                 logger.trace("REQUEST SERVICE STARTED --> {}", record);
@@ -132,7 +132,7 @@ public class GCMPAEventListener implements NotificationListener, Serializable {
         try {
             IncomingRecord record = new IncomingRecord(data, 0);
             record.setServiceEndedTime(time);
-            RecordStoreImpl.update(record);
+            recordStore.update(record);
             recordEventListener.notifyACSEvent(RecordEvent.REQUEST_SERVICE_ENDED);
             if (logger.isTraceEnabled()) {
                 logger.trace("REQUEST SERVICE ENDED --> {}", record);
@@ -144,7 +144,7 @@ public class GCMPAEventListener implements NotificationListener, Serializable {
     private void requestSent(RequestNotificationData data, long time) {
         try {
             OutgoingRecord record = new OutgoingRecord(data, time);
-            RecordStoreImpl.update(record);
+            recordStore.update(record);
             recordEventListener.notifyACSEvent(RecordEvent.REQUEST_SENT);
             if (logger.isTraceEnabled()) {
                 logger.trace("REQUEST SENT --> {}", record);
@@ -157,7 +157,7 @@ public class GCMPAEventListener implements NotificationListener, Serializable {
         try {
             OutgoingRecord record = new OutgoingRecord(data, 0);
             record.setFutureReceivedTime(time);
-            RecordStoreImpl.update(record);
+            recordStore.update(record);
             recordEventListener.notifyACSEvent(RecordEvent.FUTURE_RECEIVED);
             if (logger.isTraceEnabled()) {
                 logger.trace("REQUEST RESPONSE RECEIVED --> {}", record);
@@ -170,7 +170,7 @@ public class GCMPAEventListener implements NotificationListener, Serializable {
         try {
             OutgoingRecord record = new OutgoingRecord(data, 0);
             record.setResponseReceivedTime(time);
-            RecordStoreImpl.update(record);
+            recordStore.update(record);
             recordEventListener.notifyACSEvent(RecordEvent.RESPONSE_RECEIVED);
             if (logger.isTraceEnabled()) {
                 logger.trace("REQUEST RESPONSE COMPLETED --> {}", record);
@@ -182,7 +182,7 @@ public class GCMPAEventListener implements NotificationListener, Serializable {
     private void voidRequestSent(RequestNotificationData data, long time) {
         try {
             OutgoingVoidRecord record = new OutgoingVoidRecord(data, time);
-            RecordStoreImpl.update(record);
+            recordStore.update(record);
             recordEventListener.notifyACSEvent(RecordEvent.VOID_REQUEST_SENT);
             if (logger.isTraceEnabled()) {
                 logger.trace("VOID REQUEST SENT --> {}", record);

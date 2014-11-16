@@ -1,8 +1,6 @@
 package cl.niclabs.scada.acs.gcmscript.controllers.planning;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
-import cl.niclabs.scada.acs.component.controllers.PlanProxy;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import org.objectweb.fractal.api.Component;
@@ -46,23 +44,23 @@ public class PlanAxis extends AbstractAxis {
      */
     @Override
     public Set<Node> selectFrom(Node source) {
-        Component comp;
+        Component host;
         if (source instanceof GCMComponentNode) {
-            comp = ((GCMComponentNode) source).getComponent();
+            host = ((GCMComponentNode) source).getComponent();
         } else if (source instanceof GCMInterfaceNode) {
-            comp = ((GCMInterfaceNode) source).getInterface().getFcItfOwner();
+            host = ((GCMInterfaceNode) source).getInterface().getFcItfOwner();
         } else {
             throw new IllegalArgumentException("Invalid source node kind " + source.getKind());
         }
 
         HashSet<Node> result = new HashSet<>();
         try {
-            PlanningController planningController = ACSUtils.getPlanningController(comp);
+            PlanningController planningController = ACSUtils.getPlanningController(host);
             for (String planId : planningController.getRegisteredIds()) {
-                Node node = ((ACSModel) model).createPlanNode(new PlanProxy(planId, comp));
+                Node node = ((ACSModel) model).createPlanNode(host, planId);
                 result.add(node);
             }
-        } catch (NoSuchInterfaceException | CommunicationException e) {
+        } catch (NoSuchInterfaceException e) {
             e.printStackTrace();
         }
 

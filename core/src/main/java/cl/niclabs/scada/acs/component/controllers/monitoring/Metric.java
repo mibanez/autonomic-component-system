@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 import cl.niclabs.scada.acs.component.controllers.GenericElement;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEvent;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordQuerier;
 
 import java.io.Serializable;
@@ -15,9 +16,7 @@ public abstract class Metric<TYPE extends Serializable> extends GenericElement {
 
     private final Set<RecordEvent> subscriptions = new HashSet<>();
 
-
     public abstract TYPE getValue();
-
     public abstract TYPE calculate(RecordQuerier recordQuerier);
 
     // SUBSCRIPTIONS

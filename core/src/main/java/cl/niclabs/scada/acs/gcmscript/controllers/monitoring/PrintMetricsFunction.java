@@ -12,7 +12,6 @@ import org.objectweb.fractal.fscript.types.Signature;
 import org.objectweb.proactive.extra.component.fscript.model.AbstractGCMProcedure;
 import org.objectweb.proactive.extra.component.fscript.model.GCMComponentNode;
 
-import java.util.HashSet;
 import java.util.List;
 
 import static org.objectweb.fractal.fscript.types.PrimitiveType.STRING;
@@ -43,7 +42,7 @@ public class PrintMetricsFunction extends AbstractGCMProcedure {
         GCMComponentNode node = (GCMComponentNode) objects.get(0);
         try {
             MonitoringController monitor = ACSUtils.getMonitoringController(node.getComponent());
-            HashSet<String> metrics = monitor.getRegisteredIds();
+            List<String> metrics = monitor.getRegisteredIds();
 
             String info = "\t(NAME)\t(STATE)\n";
             for (String id : metrics) {

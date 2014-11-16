@@ -3,7 +3,6 @@ package cl.niclabs.scada.acs.gcmscript.controllers.planning;
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
-import cl.niclabs.scada.acs.component.controllers.PlanProxy;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -41,11 +40,11 @@ public class AddPlanAction extends AbstractGCMProcedure {
     @Override
     public Object apply(List<Object> objects, Context context) throws ScriptExecutionError {
         Component host = (Component) objects.get(0);
-        String id = (String) objects.get(1);
+        String planId = (String) objects.get(1);
         String className = (String) objects.get(2);
         try {
-            PlanProxy planProxy = ACSUtils.getPlanningController(host).add(id, className);
-            return ((ACSModel) model).createPlanNode(planProxy);
+            ACSUtils.getPlanningController(host).add(planId, className);
+            return ((ACSModel) model).createPlanNode(host, planId);
         }
         catch (NoSuchInterfaceException e) {
             throw new ScriptExecutionError(new Diagnostic(Severity.ERROR, "PlanningController not found"), e);

@@ -3,7 +3,7 @@ package cl.niclabs.scada.acs.gcmscript.controllers.monitoring;
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
-import cl.niclabs.scada.acs.component.controllers.MetricProxy;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -41,11 +41,12 @@ public class AddMetricAction extends AbstractGCMProcedure {
     @Override
     public Object apply(List<Object> objects, Context context) throws ScriptExecutionError {
         Component host = (Component) objects.get(0);
-        String id = (String) objects.get(1);
+        String metricId = (String) objects.get(1);
         String className = (String) objects.get(2);
         try {
-            MetricProxy metricProxy = ACSUtils.getMonitoringController(host).add(id, className);
-            return ((ACSModel) model).createMetricNode(metricProxy);
+            MonitoringController monitoringController =  ACSUtils.getMonitoringController(host);
+            monitoringController.add(metricId, className);
+            return ((ACSModel) model).createMetricNode(host, metricId);
         }
         catch (NoSuchInterfaceException e) {
             throw new ScriptExecutionError(new Diagnostic(Severity.ERROR, "MonitorController not found"), e);

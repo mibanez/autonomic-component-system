@@ -1,6 +1,8 @@
 package cl.niclabs.scada.acs.component.controllers.planning;
 
-import cl.niclabs.scada.acs.component.controllers.*;
+import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
+import cl.niclabs.scada.acs.component.controllers.ElementNotFoundException;
+import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEvent;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
@@ -36,31 +38,28 @@ public class PlanningControllerImpl extends AbstractPAComponentController
 
     @Override
     @SuppressWarnings("unchecked")
-    public PlanProxy add(String planId, String className) throws DuplicatedElementIdException, InvalidElementException {
+    public void add(String planId, String className) throws DuplicatedElementIdException, InvalidElementException {
         try {
             Class<?> clazz = Class.forName(className);
-            if (Plan.class.isAssignableFrom(clazz)) {
-                return add(planId, (Class<Plan>) clazz);
+            if (!Plan.class.isAssignableFrom(clazz)) {
+                throw new InvalidElementException("Can't cast " + clazz.getName() + " to " + Plan.class.getName());
             }
-            throw new InvalidElementException("Can't cast " + clazz.getName() + " to " + Plan.class.getName());
+            add(planId, (Class<Plan>) clazz);
         } catch (ClassNotFoundException e) {
             throw new InvalidElementException(e);
         }
     }
 
     @Override
-    public <PLAN extends Plan> PlanProxy add(String id, Class<PLAN> clazz)
+    public <PLAN extends Plan> void add(String id, Class<PLAN> clazz)
             throws DuplicatedElementIdException, InvalidElementException {
 
         if (plans.containsKey(id)) {
             throw new DuplicatedElementIdException(id);
         } else try {
             plans.put(id, clazz.newInstance());
-            return new PlanProxy(id, hostComponent);
         } catch (InstantiationException | IllegalAccessException e) {
             throw new InvalidElementException(e);
-        } catch (CommunicationException e) {
-            throw new InvalidElementException("Can't create plan proxy: " + e.getMessage());
         }
     }
 

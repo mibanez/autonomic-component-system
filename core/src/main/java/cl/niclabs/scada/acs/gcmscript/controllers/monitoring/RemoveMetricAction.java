@@ -1,7 +1,6 @@
 package cl.niclabs.scada.acs.gcmscript.controllers.monitoring;
 
 import cl.niclabs.scada.acs.component.controllers.ElementNotFoundException;
-import cl.niclabs.scada.acs.component.controllers.MetricProxy;
 import org.objectweb.fractal.fscript.ScriptExecutionError;
 import org.objectweb.fractal.fscript.diagnostics.Diagnostic;
 import org.objectweb.fractal.fscript.diagnostics.Severity;
@@ -34,9 +33,9 @@ public class RemoveMetricAction extends AbstractGCMProcedure {
 
     @Override
     public Object apply(List<Object> args, Context ctx) throws ScriptExecutionError {
-        MetricProxy metricProxy = ((MetricNode) args.get(0)).getElementProxy();
+        MetricNode metricNode = (MetricNode) args.get(0);
         try {
-            metricProxy.getMonitoringController().remove(metricProxy.getId());
+            metricNode.getMonitoringController().remove(metricNode.getMetricId());
             return "Removing metric... Done.";
         } catch (ElementNotFoundException e) {
             throw new ScriptExecutionError(new Diagnostic(Severity.WARNING, "MonitoringController exception"), e);

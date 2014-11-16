@@ -1,7 +1,6 @@
 package cl.niclabs.scada.acs.gcmscript.controllers.analysis;
 
 import cl.niclabs.scada.acs.component.controllers.ElementNotFoundException;
-import cl.niclabs.scada.acs.component.controllers.RuleProxy;
 import org.objectweb.fractal.fscript.ScriptExecutionError;
 import org.objectweb.fractal.fscript.diagnostics.Diagnostic;
 import org.objectweb.fractal.fscript.diagnostics.Severity;
@@ -34,9 +33,9 @@ public class RemoveRuleAction extends AbstractGCMProcedure {
 
     @Override
     public Object apply(List<Object> args, Context ctx) throws ScriptExecutionError {
-        RuleProxy ruleProxy = ((RuleNode) args.get(0)).getElementProxy();
+        RuleNode ruleNode = (RuleNode) args.get(0);
         try {
-            ruleProxy.getAnalysisController().remove(ruleProxy.getId());
+            ruleNode.getAnalysisController().remove(ruleNode.getRuleId());
             return "Removing rule... Done.";
         } catch (ElementNotFoundException e) {
             throw new ScriptExecutionError(new Diagnostic(Severity.WARNING, "AnalysisController exception"), e);

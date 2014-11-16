@@ -1,12 +1,11 @@
 package cl.niclabs.scada.acs.component.controllers.analysis;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
-import cl.niclabs.scada.acs.component.controllers.RuleProxy;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
+import cl.niclabs.scada.acs.gcmscript.CommunicationException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -67,11 +66,9 @@ public class AnalysisControllerImplTest {
             Assert.fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
-        RuleProxy fooRule = null;
-
         // wrong class path
         try {
-            fooRule = analysisController.add("foo", "not.a.real.path.rule");
+            analysisController.add("foo", "not.a.real.path.rule");
             Assert.fail("WrongValueException expected");
         } catch (InvalidElementException ignored) {
         } catch (Exception e) {
@@ -81,7 +78,7 @@ public class AnalysisControllerImplTest {
 
         // class is not a rule
         try {
-            fooRule = analysisController.add("foo", FakeRule.class.getName());
+            analysisController.add("foo", FakeRule.class.getName());
             Assert.fail("WrongValueException expected");
         } catch (InvalidElementException ignored) {
         } catch (Exception e) {
@@ -91,12 +88,12 @@ public class AnalysisControllerImplTest {
 
         // a correct one
         try {
-            fooRule = analysisController.add("foo", FooRule.class.getName());
+            analysisController.add("foo", FooRule.class.getName());
 
-            assertEquals(ACSAlarm.OK, fooRule.verify());
-            assertEquals(ACSAlarm.WARNING, fooRule.verify());
-            assertEquals(ACSAlarm.VIOLATION, fooRule.verify());
-            assertEquals(ACSAlarm.ERROR, fooRule.verify());
+            assertEquals(ACSAlarm.OK, analysisController.verify("foo").unwrap());
+            assertEquals(ACSAlarm.WARNING, analysisController.verify("foo").unwrap());
+            assertEquals(ACSAlarm.VIOLATION, analysisController.verify("foo").unwrap());
+            assertEquals(ACSAlarm.ERROR, analysisController.verify("foo").unwrap());
 
             // add multiple rules
             analysisController.add("foo2", FooRule.class);

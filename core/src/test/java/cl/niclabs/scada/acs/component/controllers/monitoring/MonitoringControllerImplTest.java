@@ -3,8 +3,9 @@ package cl.niclabs.scada.acs.component.controllers.monitoring;
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
-import cl.niclabs.scada.acs.component.controllers.MetricProxy;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEvent;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordQuerier;
+import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -64,10 +65,9 @@ public class MonitoringControllerImplTest {
             Assert.fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
         }
 
-        MetricProxy fooMetric = null;
         try {
             // wrong class path
-            fooMetric = monitorController.add("foo", "not.a.real.path.metric");
+            monitorController.add("foo", "not.a.real.path.metric");
             Assert.fail("WrongValueException excepted");
         } catch (InvalidElementException ignored) {
         } catch (DuplicatedElementIdException e) {
@@ -77,7 +77,7 @@ public class MonitoringControllerImplTest {
 
         try {
             // class is not a metric
-            fooMetric = monitorController.add("foo", FakeMetric.class.getName());
+            monitorController.add("foo", FakeMetric.class.getName());
             Assert.fail("WrongValueException excepted");
         } catch (InvalidElementException ignored) {
         } catch (DuplicatedElementIdException e) {
@@ -86,13 +86,13 @@ public class MonitoringControllerImplTest {
 
         try {
             // a correct one
-            fooMetric = monitorController.add("foo", FooMetric.class.getName());
+            monitorController.add("foo", FooMetric.class.getName());
 
-            assertEquals("foo-0", fooMetric.getValue());
-            assertEquals("foo-1", fooMetric.measure());
-            assertEquals("foo-2", fooMetric.measure());
-            assertEquals("foo-3", fooMetric.measure());
-            assertEquals("foo-3", fooMetric.getValue());
+            assertEquals("foo-0", monitorController.getValue("foo").unwrap());
+            assertEquals("foo-1", monitorController.calculate("foo").unwrap());
+            assertEquals("foo-2", monitorController.calculate("foo").unwrap());
+            assertEquals("foo-3", monitorController.calculate("foo").unwrap());
+            assertEquals("foo-3", monitorController.getValue("foo").unwrap());
 
             // bad value cast
             try {
@@ -104,9 +104,9 @@ public class MonitoringControllerImplTest {
 
             // bad value cast 2
             try {
-                MetricProxy proxy = Mockito.mock(MetricProxy.class);
-                doReturn("foo").when(proxy).getValue();
-                Integer fakeValue = (Integer) proxy.getValue();
+                MonitoringController mon = Mockito.mock(MonitoringController.class);
+                doReturn(new ValidWrapper<>("foo")).when(mon).getValue(eq("foo"));
+                Integer fakeValue = (Integer) mon.getValue("foo").unwrap();
                 Assert.fail("ClassCastException expected");
             } catch (ClassCastException ignored) {
             }

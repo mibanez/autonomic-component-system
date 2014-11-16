@@ -1,6 +1,8 @@
 package cl.niclabs.scada.acs.component.controllers.analysis;
 
-import cl.niclabs.scada.acs.component.controllers.*;
+import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
+import cl.niclabs.scada.acs.component.controllers.ElementNotFoundException;
+import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
@@ -35,31 +37,28 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
 
     @Override
     @SuppressWarnings("unchecked")
-    public RuleProxy add(String ruleId, String className) throws DuplicatedElementIdException, InvalidElementException {
+    public void add(String ruleId, String className) throws DuplicatedElementIdException, InvalidElementException {
         try {
             Class<?> clazz = Class.forName(className);
-            if (Rule.class.isAssignableFrom(clazz)) {
-                return add(ruleId, (Class<Rule>) clazz);
+            if (!Rule.class.isAssignableFrom(clazz)) {
+                throw new InvalidElementException("Can't cast " + clazz.getName() + " to " + Rule.class.getName());
             }
-            throw new InvalidElementException("Can't cast " + clazz.getName() + " to " + Rule.class.getName());
+            add(ruleId, (Class<Rule>) clazz);
         } catch (ClassNotFoundException e) {
             throw new InvalidElementException(e);
         }
     }
 
     @Override
-    public <RULE extends Rule> RuleProxy add(String id, Class<RULE> clazz)
+    public <RULE extends Rule> void add(String id, Class<RULE> clazz)
             throws DuplicatedElementIdException, InvalidElementException {
 
         if (rules.containsKey(id)) {
             throw new DuplicatedElementIdException(id);
         } else try {
             rules.put(id, clazz.newInstance());
-            return new RuleProxy(id, hostComponent);
         } catch (InstantiationException | IllegalAccessException e) {
             throw new InvalidElementException(e);
-        } catch (CommunicationException e) {
-            throw new InvalidElementException("Can't create rule proxy: " + e.getMessage());
         }
     }
 

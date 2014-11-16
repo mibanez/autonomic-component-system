@@ -1,7 +1,6 @@
 package cl.niclabs.scada.acs.multiactivity.component;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
-import cl.niclabs.scada.acs.component.controllers.MetricProxy;
 import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordQuerier;
@@ -37,13 +36,12 @@ public class ACSMultiActiveServiceTest extends AbstractComponentTest {
 
             FooInterface fooItf = (FooInterface) foo.getFcInterface("server-itf");
             MonitoringController monitoringController = (MonitoringController) foo.getFcInterface("monitor-controller");
-            @SuppressWarnings("unchecked")
-            MetricProxy<String> fooMetric = monitoringController.add("foo-metric", FooMetric.class);
+            monitoringController.add("foo-metric", FooMetric.class);
 
             fooItf.foo();
 
             for (int i = 0; i < 10; i++) {
-                System.out.println(fooMetric.getValue());
+                System.out.println(monitoringController.getValue("foo-metric"));
                 Thread.sleep(100);
             }
         } catch (Exception e) {

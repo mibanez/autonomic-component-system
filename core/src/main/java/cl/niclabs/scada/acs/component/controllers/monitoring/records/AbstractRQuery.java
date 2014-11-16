@@ -7,7 +7,7 @@ import java.util.List;
 
 abstract class AbstractRQuery<Q extends AbstractRQuery, R extends AbstractRecord> {
 
-    public abstract List<R> getRecords();
+    protected abstract List<R> getRecords();
 
     public AbstractRQuery whereRecordIsFinished() {
         Iterator<R> iterator = getRecords().iterator();
@@ -70,10 +70,10 @@ abstract class AbstractRQuery<Q extends AbstractRQuery, R extends AbstractRecord
     }
 
     /** Add all the records to the list */
-    protected void fillWithRecords(List<R> query, CircularArrayList records) {
+    void fillWithRecords(List<R> query, CircularArrayList records) {
         synchronized (records) {
-            for (int i = 0; i < records.size(); i++) {
-                query.add((R) records.get(i));
+            for (Object record : records) {
+                query.add((R) record);
             }
         }
     }
