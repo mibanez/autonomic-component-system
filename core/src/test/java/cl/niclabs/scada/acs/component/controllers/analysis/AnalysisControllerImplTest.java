@@ -1,8 +1,12 @@
 package cl.niclabs.scada.acs.component.controllers.analysis;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
-import cl.niclabs.scada.acs.component.controllers.*;
+import cl.niclabs.scada.acs.component.controllers.CommunicationException;
+import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
+import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
+import cl.niclabs.scada.acs.component.controllers.RuleProxy;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -146,10 +150,6 @@ public class AnalysisControllerImplTest {
         analysisController.notifyUpdate(metricEvent);
         analysisController.notifyUpdate(metricEvent);
 
-        try {
-            assertEquals(ACSAlarm.ERROR, analysisController.verify("foo").unwrap());
-        } catch (CommunicationException e) {
-            Assert.fail(e.getMessage());
-        }
+        assertEquals(ACSAlarm.ERROR, analysisController.verify("foo").unwrap());
     }
 }

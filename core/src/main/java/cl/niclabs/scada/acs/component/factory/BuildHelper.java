@@ -1,15 +1,15 @@
 package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
-import cl.niclabs.scada.acs.component.controllers.AnalysisController;
-import cl.niclabs.scada.acs.component.controllers.ExecutionController;
-import cl.niclabs.scada.acs.component.controllers.MonitoringController;
-import cl.niclabs.scada.acs.component.controllers.PlanningController;
+import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisControllerImpl;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
+import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionControllerImpl;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
+import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningControllerImpl;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.etsi.uri.gcm.util.GCM;
@@ -66,12 +66,14 @@ public class BuildHelper {
         }
     }
 
-    // Normally, the NF interfaces mentioned here should be those that are going to be implemented by NF component,
-    // and the rest of the NF interfaces (that are going to be implemented by object controller) should be in a
-    // ControllerDesc file. But the PAComponentImpl ignores the NFType if there is a ControllerDesc file specified,
-    // so I better put all the NF interfaces here.
-    // That means that I need another method to add the object controllers for the (not yet created) controllers.
-    // -- cruz
+    /**
+     * Normally, the NF interfaces mentioned here should be those that are going to be implemented by NF component,
+     * and the rest of the NF interfaces (that are going to be implemented by object controller) should be in a
+     * ControllerDesc file. But the PAComponentImpl ignores the NFType if there is a ControllerDesc file specified,
+     * so I better put all the NF interfaces here.
+     * That means that I need another method to add the object controllers for the (not yet created) controllers.
+     * -- cruz
+     */
     public List<InterfaceType> getStandardNfInterfaces() throws ACSFactoryException {
         ArrayList<InterfaceType> nfInterfaces = new ArrayList<>();
         try {
@@ -87,11 +89,12 @@ public class BuildHelper {
         }
         return nfInterfaces;
     }
-
-    // Adds the controller objects to the NF interfaces that are not part of the M&M Framework.
-    // Normally, PAComponentImpl.addMandatoryControllers should have added already the mandatory
-    // MEMBRANE, LIFECYCLE and NAME controllers. Interfaces like BINDING and CONTENT, which are not
-    // supposed to be in all components, should have been removed from the component NFType in the appropriate cases.
+    /**
+     * Adds the controller objects to the NF interfaces that are not part of the M&M Framework.
+     * Normally, PAComponentImpl.addMandatoryControllers should have added already the mandatory
+     * MEMBRANE, LIFECYCLE and NAME controllers. Interfaces like BINDING and CONTENT, which are not
+     * supposed to be in all components, should have been removed from the component NFType in the appropriate cases.
+     */
     public void addObjectControllers(Component component) throws ACSFactoryException {
 
         if (!(component instanceof PAComponent)) {

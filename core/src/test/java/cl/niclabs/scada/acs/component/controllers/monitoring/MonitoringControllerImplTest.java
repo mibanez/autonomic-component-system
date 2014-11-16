@@ -4,8 +4,8 @@ import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
 import cl.niclabs.scada.acs.component.controllers.MetricProxy;
-import cl.niclabs.scada.acs.component.controllers.Wrapper;
-import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordQuerier;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -34,7 +34,7 @@ public class MonitoringControllerImplTest {
         public FooMetric() {
             subscribeTo(RecordEvent.VOID_REQUEST_SENT);
         }
-        public String calculate(RecordStore store) { counter++; return getValue(); }
+        public String calculate(RecordQuerier recordQuerier) { counter++; return getValue(); }
         public String getValue() { return "foo-" + counter; }
     }
     public static class FooMetricEventListener implements MetricEventListener {

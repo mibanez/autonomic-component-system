@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs.component.adl;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
-import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
 import org.junit.Assert;
 import org.junit.Before;

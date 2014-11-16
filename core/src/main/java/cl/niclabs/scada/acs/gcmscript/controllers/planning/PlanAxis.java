@@ -3,7 +3,7 @@ package cl.niclabs.scada.acs.gcmscript.controllers.planning;
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.CommunicationException;
 import cl.niclabs.scada.acs.component.controllers.PlanProxy;
-import cl.niclabs.scada.acs.component.controllers.PlanningController;
+import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;

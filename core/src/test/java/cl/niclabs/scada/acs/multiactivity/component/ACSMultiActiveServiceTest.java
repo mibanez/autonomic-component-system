@@ -2,9 +2,9 @@ package cl.niclabs.scada.acs.multiactivity.component;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
 import cl.niclabs.scada.acs.component.controllers.MetricProxy;
-import cl.niclabs.scada.acs.component.controllers.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
-import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordQuerier;
 import org.junit.Assert;
 import org.junit.Test;
 import org.objectweb.fractal.api.Component;
@@ -19,7 +19,7 @@ import org.objectweb.proactive.core.component.Utils;
 public class ACSMultiActiveServiceTest extends AbstractComponentTest {
 
     public static class FooMetric extends Metric<String> {
-        public String calculate(RecordStore record) { return getValue(); }
+        public String calculate(RecordQuerier recordQuerier) { return getValue(); }
         public String getValue() { return "Foo Foo Foo !!"; }
     }
 

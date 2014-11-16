@@ -12,9 +12,9 @@ import java.util.Map;
  * Stores acs event records
  *
  */
-public class ACSRecordStore implements RecordStore, Serializable {
+public class RecordStoreImpl implements RecordStore, Serializable {
 
-    private final static Logger logger = LoggerFactory.getLogger(ACSRecordStore.class);
+    private final static Logger logger = LoggerFactory.getLogger(RecordStoreImpl.class);
 
     // Stores the records on an optimized way for record attributes queries
     private final CircularArrayList<IncomingRecord> incomingCircleArray = new CircularArrayList<>();
@@ -30,14 +30,16 @@ public class ACSRecordStore implements RecordStore, Serializable {
     private long maxSize = 64;
 
 
-    public ACSRecordStore() {
+    public RecordStoreImpl() {
 
     }
 
+    @Override
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
     }
 
+    @Override
     public void update(IncomingRecord record) {
         synchronized (incomingCircleArray) {
             IncomingRecord oldRecord = incomingMap.get(record.getCurrentId());
@@ -66,6 +68,7 @@ public class ACSRecordStore implements RecordStore, Serializable {
         }
     }
 
+    @Override
     public void update(OutgoingRecord record) {
         synchronized (outgoingCircleArray) {
             OutgoingRecord oldRecord = outgoingMap.get(record.getCurrentId());
@@ -94,6 +97,7 @@ public class ACSRecordStore implements RecordStore, Serializable {
         }
     }
 
+    @Override
     public void update(OutgoingVoidRecord record) {
         synchronized (outgoingVoidCircleArray) {
             OutgoingVoidRecord oldRecord = outgoingVoidMap.get(record.getCurrentId());

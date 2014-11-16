@@ -1,9 +1,8 @@
 package cl.niclabs.scada.acs.gcmscript.controllers.planning;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
-import cl.niclabs.scada.acs.component.controllers.ACSAlarm;
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
-import cl.niclabs.scada.acs.component.controllers.PlanningController;
+import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
+import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.fscript.ScriptExecutionError;
 import org.objectweb.fractal.fscript.diagnostics.Diagnostic;
@@ -64,9 +63,6 @@ public class PrintPlansFunction extends AbstractGCMProcedure {
         }
         catch (NoSuchInterfaceException e) {
             throw new ScriptExecutionError(new Diagnostic(Severity.ERROR, "AnalysisController not found"), e);
-        }
-        catch (CommunicationException e) {
-            throw new ScriptExecutionError(new Diagnostic(Severity.ERROR, e.getMessage()), e);
         }
     }
 

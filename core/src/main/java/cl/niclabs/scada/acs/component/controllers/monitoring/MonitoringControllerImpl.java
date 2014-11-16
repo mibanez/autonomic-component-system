@@ -1,8 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 import cl.niclabs.scada.acs.component.controllers.*;
-import cl.niclabs.scada.acs.component.controllers.monitoring.records.ACSRecordStore;
-import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStoreImpl;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
@@ -27,7 +26,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController impl
     private MetricEventListener metricEventListener;
 
     private final Map<String, Metric> metrics = new HashMap<>();
-    private final ACSRecordStore ACSRecordStore = new ACSRecordStore();
+    private final RecordStoreImpl recordStore = new RecordStoreImpl();
     private GCMPAEventListener eventListener;
 
     @Override
@@ -86,7 +85,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController impl
     public <VALUE extends Serializable> Wrapper<VALUE> calculate(String id) {
         if (metrics.containsKey(id)) {
             Metric metric = metrics.get(id);
-            metric.calculate((RecordStore) ACSRecordStore);
+            metric.calculate(recordStore);
             metricEventListener.notifyUpdate(new MetricEvent(id, metric));
             return new ValidWrapper<>((VALUE) metric.getValue());
         }
@@ -140,7 +139,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController impl
     public void notifyACSEvent(RecordEvent eventType) {
         for (Map.Entry<String, Metric> entry : metrics.entrySet()) {
             if (entry.getValue().isSubscribedTo(eventType)) {
-                entry.getValue().calculate(ACSRecordStore);
+                entry.getValue().calculate(recordStore);
                 metricEventListener.notifyUpdate(new MetricEvent(entry.getKey(), entry.getValue()));
             }
         }
@@ -155,7 +154,7 @@ public class MonitoringControllerImpl extends AbstractPAComponentController impl
     public void startFc() throws IllegalLifeCycleException {
         if (eventListener == null) {
             String runtimeURL = ProActiveRuntimeImpl.getProActiveRuntime().getURL();
-            eventListener = new GCMPAEventListener(this, ACSRecordStore, hostComponent.getID(), runtimeURL);
+            eventListener = new GCMPAEventListener(this, recordStore, hostComponent.getID(), runtimeURL);
         }
     }
 

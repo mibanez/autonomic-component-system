@@ -1,8 +1,7 @@
 package cl.niclabs.scada.acs.gcmscript.controllers.analysis;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
-import cl.niclabs.scada.acs.component.controllers.AnalysisController;
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
+import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisController;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.fscript.ScriptExecutionError;
 import org.objectweb.fractal.fscript.diagnostics.Diagnostic;
@@ -57,8 +56,6 @@ public class PrintRulesFunction extends AbstractGCMProcedure {
             return info += "\t --- (END) ---\n";
         } catch (NoSuchInterfaceException e) {
             throw new ScriptExecutionError(new Diagnostic(Severity.ERROR, "AnalysisController not found"), e);
-        } catch (CommunicationException e) {
-            throw new ScriptExecutionError(new Diagnostic(Severity.ERROR, e.getMessage()), e);
         }
     }
 

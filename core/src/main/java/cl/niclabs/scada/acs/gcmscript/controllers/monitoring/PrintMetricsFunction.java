@@ -1,9 +1,8 @@
 package cl.niclabs.scada.acs.gcmscript.controllers.monitoring;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
-import cl.niclabs.scada.acs.component.controllers.MonitoringController;
-import cl.niclabs.scada.acs.component.controllers.Wrapper;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.fscript.ScriptExecutionError;
 import org.objectweb.fractal.fscript.diagnostics.Diagnostic;
@@ -53,7 +52,7 @@ public class PrintMetricsFunction extends AbstractGCMProcedure {
             }
             return info += "\t --- (END) ---\n";
 
-        } catch (NoSuchInterfaceException | CommunicationException e) {
+        } catch (NoSuchInterfaceException e) {
             throw new ScriptExecutionError(new Diagnostic(Severity.ERROR, e.getMessage()), e);
         }
     }

@@ -1,13 +1,10 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring.records;
 
-/**
- * Created by Matias on 09-11-2014.
- */
-public interface RecordStore {
+public interface RecordStore extends RecordQuerier {
 
-    RQuery fromAll();
-    IncomingRQuery fromIncoming();
-    OutgoingRQuery fromOutgoing();
-    OutgoingVoidRQuery fromOutgoingVoid();
+    void setMaxSize(int maxSize);
 
+    void update(IncomingRecord record);
+    void update(OutgoingRecord record);
+    void update(OutgoingVoidRecord record);
 }

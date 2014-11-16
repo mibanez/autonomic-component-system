@@ -3,7 +3,7 @@ package cl.niclabs.scada.acs.gcmscript.controllers.monitoring;
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.CommunicationException;
 import cl.niclabs.scada.acs.component.controllers.MetricProxy;
-import cl.niclabs.scada.acs.component.controllers.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;

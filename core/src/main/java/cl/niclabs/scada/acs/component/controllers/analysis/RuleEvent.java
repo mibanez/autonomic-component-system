@@ -10,7 +10,7 @@ public class RuleEvent implements Serializable {
     private final String ruleId;
     private final ACSAlarm alarm;
 
-    RuleEvent(String ruleId, ACSAlarm alarm) {
+    public RuleEvent(String ruleId, ACSAlarm alarm) {
         this.ruleId = ruleId;
         this.alarm = alarm;
     }

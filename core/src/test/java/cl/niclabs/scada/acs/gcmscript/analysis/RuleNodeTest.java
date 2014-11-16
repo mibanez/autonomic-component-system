@@ -1,8 +1,8 @@
 package cl.niclabs.scada.acs.gcmscript.analysis;
 
-import cl.niclabs.scada.acs.component.controllers.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.CommunicationException;
 import cl.niclabs.scada.acs.component.controllers.RuleProxy;
+import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import cl.niclabs.scada.acs.gcmscript.controllers.analysis.RuleNode;
 import org.junit.Assert;

@@ -1,8 +1,8 @@
 package cl.niclabs.scada.acs.gcmscript.planning;
 
-import cl.niclabs.scada.acs.component.controllers.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.CommunicationException;
 import cl.niclabs.scada.acs.component.controllers.PlanProxy;
+import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.gcmscript.ACSModel;
 import cl.niclabs.scada.acs.gcmscript.controllers.planning.PlanNode;
 import org.junit.Assert;

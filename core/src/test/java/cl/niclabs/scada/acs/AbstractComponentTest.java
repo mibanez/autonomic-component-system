@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs;
 
 import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
-import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordQuerier;
 import cl.niclabs.scada.acs.component.factory.ACSFactory;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import org.junit.AfterClass;
@@ -69,7 +69,7 @@ public abstract class AbstractComponentTest {
         public String getValue() {
             return "foo";
         }
-        public String calculate(RecordStore ACSRecordStore) {
+        public String calculate(RecordQuerier recordQuerier) {
             return "foo";
         }
     }

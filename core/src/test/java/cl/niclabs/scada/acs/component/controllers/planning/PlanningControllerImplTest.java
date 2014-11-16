@@ -1,7 +1,12 @@
 package cl.niclabs.scada.acs.component.controllers.planning;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
-import cl.niclabs.scada.acs.component.controllers.*;
+import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
+import cl.niclabs.scada.acs.component.controllers.PlanProxy;
+import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
+import cl.niclabs.scada.acs.component.controllers.analysis.RuleEvent;
+import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -76,17 +81,20 @@ public class PlanningControllerImplTest {
 
             Assert.assertEquals(0, FooPlan.counter);
 
+            RuleEventListener ruleEventListener = (RuleEventListener) planningController;
+
             // no subscribed events
-            fooPlan.doPlanFor("no-subscribed-rule", ACSAlarm.OK);
-            fooPlan.doPlanFor("no-subscribed-rule", ACSAlarm.WARNING);
-            fooPlan.doPlanFor("no-subscribed-rule", ACSAlarm.VIOLATION);
-            fooPlan.doPlanFor("foo-rule", ACSAlarm.OK);
-            fooPlan.doPlanFor("foo-rule", ACSAlarm.WARNING);
+            ruleEventListener.notifyAlarm(new RuleEvent("no-subscribed-rule", ACSAlarm.OK));
+            ruleEventListener.notifyAlarm(new RuleEvent("no-subscribed-rule", ACSAlarm.WARNING));
+            ruleEventListener.notifyAlarm(new RuleEvent("no-subscribed-rule", ACSAlarm.VIOLATION));
+            ruleEventListener.notifyAlarm(new RuleEvent("foo-rule", ACSAlarm.OK));
+            ruleEventListener.notifyAlarm(new RuleEvent("foo-rule", ACSAlarm.WARNING));
             Assert.assertEquals(0, FooPlan.counter);
 
-            fooPlan.doPlanFor("foo-rule", ACSAlarm.VIOLATION);
-            fooPlan.doPlanFor("foo-rule", ACSAlarm.ERROR);
-            fooPlan.doPlanFor("no-subscribed-rule", ACSAlarm.ERROR);
+            // subscribed events
+            ruleEventListener.notifyAlarm(new RuleEvent("foo-rule", ACSAlarm.VIOLATION));
+            ruleEventListener.notifyAlarm(new RuleEvent("foo-rule", ACSAlarm.ERROR));
+            ruleEventListener.notifyAlarm(new RuleEvent("no-subscribed-rule", ACSAlarm.ERROR));
             Assert.assertEquals(3, FooPlan.counter);
 
             // add multiple rules

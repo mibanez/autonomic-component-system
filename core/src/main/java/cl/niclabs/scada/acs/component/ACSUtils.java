@@ -1,9 +1,9 @@
 package cl.niclabs.scada.acs.component;
 
-import cl.niclabs.scada.acs.component.controllers.AnalysisController;
-import cl.niclabs.scada.acs.component.controllers.ExecutionController;
-import cl.niclabs.scada.acs.component.controllers.MonitoringController;
-import cl.niclabs.scada.acs.component.controllers.PlanningController;
+import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisController;
+import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 

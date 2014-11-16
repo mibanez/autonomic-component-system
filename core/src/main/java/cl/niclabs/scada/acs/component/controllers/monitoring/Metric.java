@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 import cl.niclabs.scada.acs.component.controllers.GenericElement;
-import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordQuerier;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -18,7 +18,7 @@ public abstract class Metric<TYPE extends Serializable> extends GenericElement {
 
     public abstract TYPE getValue();
 
-    public abstract TYPE calculate(RecordStore recordStore);
+    public abstract TYPE calculate(RecordQuerier recordQuerier);
 
     // SUBSCRIPTIONS
 

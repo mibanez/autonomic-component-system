@@ -1,10 +1,10 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
-import cl.niclabs.scada.acs.component.controllers.monitoring.records.ACSRecordStore;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.IncomingRecord;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.OutgoingRecord;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.OutgoingVoidRecord;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStoreImpl;
 import cl.niclabs.scada.acs.component.factory.BuildHelper;
 import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
 import cl.niclabs.scada.acs.multiactivity.component.ACSMultiActiveService;
@@ -174,14 +174,14 @@ public class GCMPAEventListenerTest extends AbstractComponentTest {
         };
 
         // Definition of fake record store
-        ACSRecordStore ACSRecordStore = Mockito.mock(ACSRecordStore.class);
-        Mockito.doNothing().when(ACSRecordStore).update(Matchers.any(IncomingRecord.class));
-        Mockito.doNothing().when(ACSRecordStore).update(Matchers.any(OutgoingRecord.class));
-        Mockito.doNothing().when(ACSRecordStore).update(Matchers.any(OutgoingVoidRecord.class));
+        RecordStoreImpl RecordStoreImpl = Mockito.mock(RecordStoreImpl.class);
+        Mockito.doNothing().when(RecordStoreImpl).update(Matchers.any(IncomingRecord.class));
+        Mockito.doNothing().when(RecordStoreImpl).update(Matchers.any(OutgoingRecord.class));
+        Mockito.doNothing().when(RecordStoreImpl).update(Matchers.any(OutgoingVoidRecord.class));
 
         // Definition of real RecordEventListener class to test
         String runtimeURL = ProActiveRuntimeImpl.getProActiveRuntime().getURL();
-        new GCMPAEventListener(monitorNotifier, ACSRecordStore, ((PAComponent) subordinate).getID(), runtimeURL);
+        new GCMPAEventListener(monitorNotifier, RecordStoreImpl, ((PAComponent) subordinate).getID(), runtimeURL);
 
         // Testing ....
         try {
