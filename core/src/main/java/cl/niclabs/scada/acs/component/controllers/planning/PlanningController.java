@@ -15,6 +15,8 @@ import java.util.HashSet;
  */
 public interface PlanningController {
 
+    static final String ITF_NAME = "planning-controller-nf";
+
     public static class AlarmSubscription implements Serializable {
         private final String ruleId;
         private final ACSAlarm alarm;

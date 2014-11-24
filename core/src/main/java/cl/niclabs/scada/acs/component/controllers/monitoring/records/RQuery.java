@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * RQuery
  * Created by Matias on 09-11-2014.
  */
 public class RQuery extends AbstractRQuery<RQuery, AbstractRecord> {

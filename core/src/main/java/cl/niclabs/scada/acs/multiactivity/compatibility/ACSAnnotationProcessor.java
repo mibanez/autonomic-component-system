@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.multiactivity.compatibility;
 
-import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import org.objectweb.proactive.annotation.multiactivity.MemberOf;
 import org.objectweb.proactive.multiactivity.compatibility.AnnotationProcessor;
 import org.objectweb.proactive.multiactivity.compatibility.MethodGroup;
@@ -20,7 +20,7 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
     private static final Logger logger = LoggerFactory.getLogger(ACSAnnotationProcessor.class);
 
     public static final String DEFAULT_GROUP_NAME = "__UnlabeledMethods__";
-    public static final String ACS_GROUP_NAME = "__AcsControllers__";
+    public static final String MONITORING_GROUP_NAME = "__MonitoringMethods__";
 
     private final Map<String, MethodGroup> acsGroups = new HashMap<>();
     private final Map<String, MethodGroup> acsMemberships = new HashMap<>();
@@ -34,13 +34,13 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
         super(clazz);
 
         MethodGroup defaultGroup = new MethodGroup(DEFAULT_GROUP_NAME, false);
-        MethodGroup acsGroup = new MethodGroup(ACS_GROUP_NAME, false);
+        MethodGroup acsGroup = new MethodGroup(MONITORING_GROUP_NAME, false);
 
         defaultGroup.addCompatibleWith(acsGroup);
         acsGroup.addCompatibleWith(defaultGroup);
 
         acsGroups.put(DEFAULT_GROUP_NAME, defaultGroup);
-        acsGroups.put(ACS_GROUP_NAME, acsGroup);
+        acsGroups.put(MONITORING_GROUP_NAME, acsGroup);
 
         // fill default group
         processUnlabeledMethods(clazz);
@@ -50,10 +50,10 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
     }
 
     private void processAcsMethods() {
-        for (Method method : MonitoringControllerImpl.class.getDeclaredMethods()) {
+        for (Method method : MonitoringController.class.getMethods()) {
             String methodName = method.toString().substring(method.toString().indexOf(method.getName() + "("));
-            logger.debug("adding [MonitorController.]{} method to group {}", methodName, ACS_GROUP_NAME);
-            acsMemberships.put(methodName, acsGroups.get(ACS_GROUP_NAME));
+            logger.trace("adding {} method to group {}", methodName, MONITORING_GROUP_NAME);
+            acsMemberships.put(methodName, acsGroups.get(MONITORING_GROUP_NAME));
         }
     }
 
@@ -63,15 +63,13 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
      * @param processedClass class to process
      */
     private void processUnlabeledMethods(Class<?> processedClass) {
-
         // go through each public method of a class
         for (Method method : processedClass.getMethods()) {
-
             // if it isn't member of a group, add it to the __UnlabeledMethods__ groups
             if (method.getAnnotation(MemberOf.class) == null) {
                 String methodName = method.toString().substring(method.toString().indexOf(method.getName() + "("));
                 acsMemberships.put(methodName, acsGroups.get(DEFAULT_GROUP_NAME));
-                logger.debug("Adding {} interface to {} group.", methodName, DEFAULT_GROUP_NAME);
+                logger.trace("Adding {} interface to {} group.", methodName, DEFAULT_GROUP_NAME);
             }
         }
     }
@@ -81,7 +79,7 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
 
         if (!groupsMixed) {
             Map<String, MethodGroup> groups = super.getMethodGroups();
-            MethodGroup acsGroup = acsGroups.get(ACS_GROUP_NAME);
+            MethodGroup acsGroup = acsGroups.get(MONITORING_GROUP_NAME);
 
             // add compatibility to acs group with the user defined groups
             for (MethodGroup mg : groups.values()) {
@@ -106,5 +104,4 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
 
         return acsMemberships;
     }
-
 }

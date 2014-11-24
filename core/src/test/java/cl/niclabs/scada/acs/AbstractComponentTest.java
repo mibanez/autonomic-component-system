@@ -1,9 +1,10 @@
 package cl.niclabs.scada.acs;
 
-import cl.niclabs.scada.acs.component.controllers.monitoring.Metric;
-import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordQuerier;
+import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.Metric;
+import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import cl.niclabs.scada.acs.component.factory.ACSFactory;
-import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
+import cl.niclabs.scada.acs.component.factory.ACSFactoryException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -69,7 +70,7 @@ public abstract class AbstractComponentTest {
         public String getValue() {
             return "foo";
         }
-        public String calculate(RecordQuerier recordQuerier) {
+        public String calculate(RecordStore recordStore, MetricStore metricStore) {
             return "foo";
         }
     }

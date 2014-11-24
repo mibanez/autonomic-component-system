@@ -3,12 +3,13 @@ package cl.niclabs.scada.acs.component.controllers.monitoring.records;
 import org.objectweb.proactive.core.body.tags.tag.CMTag;
 import org.objectweb.proactive.core.jmx.notification.RequestNotificationData;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 @SuppressWarnings("UnusedDeclaration")
-public abstract class AbstractRecord {
+public abstract class AbstractRecord implements Serializable {
 
     // The ? is a "reluctant" quantifier, to make the .* to match the smallest possible string.
     private final static Pattern pattern = Pattern.compile("\\[TAG\\](.*?)\\[DATA\\](.*?)\\[END\\]");

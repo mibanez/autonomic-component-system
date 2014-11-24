@@ -5,6 +5,8 @@ package cl.niclabs.scada.acs.component.controllers.monitoring.events;
  */
 public interface RecordEventListener {
 
-    public void notifyACSEvent(RecordEvent eventType);
+    static final String ITF_NAME = "record-event-listener-nf";
+
+    void notifyRecordEvent(RecordEvent eventType);
 
 }

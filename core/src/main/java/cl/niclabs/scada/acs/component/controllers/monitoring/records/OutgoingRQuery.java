@@ -22,7 +22,7 @@ public class OutgoingRQuery extends AbstractRQuery<OutgoingRQuery, OutgoingRecor
         return query;
     }
 
-    public AbstractRQuery whereSentTimeGreaterThan(long time) {
+    public OutgoingRQuery whereSentTimeGreaterThan(long time) {
         Iterator<OutgoingRecord> iterator = query.iterator();
         while(iterator.hasNext()) {
             if (iterator.next().getSentTime() >= time) {
@@ -32,7 +32,7 @@ public class OutgoingRQuery extends AbstractRQuery<OutgoingRQuery, OutgoingRecor
         return this;
     }
 
-    public AbstractRQuery whereSentTimeLessThan(long time) {
+    public OutgoingRQuery whereSentTimeLessThan(long time) {
         Iterator<OutgoingRecord> iterator = query.iterator();
         while(iterator.hasNext()) {
             if (iterator.next().getSentTime() <= time) {
@@ -42,7 +42,7 @@ public class OutgoingRQuery extends AbstractRQuery<OutgoingRQuery, OutgoingRecor
         return this;
     }
 
-    public AbstractRQuery whereFutureReceivedTimeGreaterThan(long time) {
+    public OutgoingRQuery whereFutureReceivedTimeGreaterThan(long time) {
         Iterator<OutgoingRecord> iterator = query.iterator();
         while(iterator.hasNext()) {
             if (iterator.next().getFutureReceivedTime() >= time) {
@@ -52,7 +52,7 @@ public class OutgoingRQuery extends AbstractRQuery<OutgoingRQuery, OutgoingRecor
         return this;
     }
 
-    public AbstractRQuery whereFutureReceivedTimeLessThan(long time) {
+    public OutgoingRQuery whereFutureReceivedTimeLessThan(long time) {
         Iterator<OutgoingRecord> iterator = query.iterator();
         while(iterator.hasNext()) {
             if (iterator.next().getFutureReceivedTime() <= time) {
@@ -62,7 +62,7 @@ public class OutgoingRQuery extends AbstractRQuery<OutgoingRQuery, OutgoingRecor
         return this;
     }
 
-    public AbstractRQuery whereResponseReceivedTimeGreaterThan(long time) {
+    public OutgoingRQuery whereResponseReceivedTimeGreaterThan(long time) {
         Iterator<OutgoingRecord> iterator = query.iterator();
         while(iterator.hasNext()) {
             if (iterator.next().getResponseReceivedTime() >= time) {
@@ -72,7 +72,7 @@ public class OutgoingRQuery extends AbstractRQuery<OutgoingRQuery, OutgoingRecor
         return this;
     }
 
-    public AbstractRQuery whereResponseReceivedTimeLessThan(long time) {
+    public OutgoingRQuery whereResponseReceivedTimeLessThan(long time) {
         Iterator<OutgoingRecord> iterator = query.iterator();
         while(iterator.hasNext()) {
             if (iterator.next().getResponseReceivedTime() <= time) {

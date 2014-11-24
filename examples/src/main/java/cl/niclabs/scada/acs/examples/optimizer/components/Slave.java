@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs.examples.optimizer.components;
 
 
-import cl.niclabs.scada.acs.component.controllers.Wrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 
 public interface Slave {
 

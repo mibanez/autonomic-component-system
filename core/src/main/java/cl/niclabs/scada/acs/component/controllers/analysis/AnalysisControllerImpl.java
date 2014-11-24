@@ -3,9 +3,8 @@ package cl.niclabs.scada.acs.component.controllers.analysis;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.ElementNotFoundException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
-import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
-import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricEventListener;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
@@ -147,22 +146,24 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     }
 
     @Override
-    public void notifyUpdate(MetricEvent event) {
+    public void notifyMetricChange(String metricName) {
         for (Map.Entry<String, Rule> entry: rules.entrySet()) {
-            entry.getValue().verify(monitoringController);
+            if (entry.getValue().isSubscribedTo(metricName)) {
+                entry.getValue().verify(monitoringController);
+            }
         }
     }
 
     @Override
     public String[] listFc() {
-        return new String[] {MONITORING_CONTROLLER_CLIENT_ITF, RULE_EVENT_LISTENER_CLIENT_ITF };
+        return new String[] { MonitoringController.ITF_NAME, RuleEventListener.ITF_NAME };
     }
 
     @Override
     public Object lookupFc(String name) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITORING_CONTROLLER_CLIENT_ITF: return monitoringController;
-            case RULE_EVENT_LISTENER_CLIENT_ITF: return ruleEventListener;
+            case MonitoringController.ITF_NAME: return monitoringController;
+            case RuleEventListener.ITF_NAME: return ruleEventListener;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -170,8 +171,8 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     @Override
     public void bindFc(String name, Object o) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITORING_CONTROLLER_CLIENT_ITF: monitoringController = (MonitoringController) o; break;
-            case RULE_EVENT_LISTENER_CLIENT_ITF: ruleEventListener = (RuleEventListener) o; break;
+            case MonitoringController.ITF_NAME: monitoringController = (MonitoringController) o; break;
+            case RuleEventListener.ITF_NAME: ruleEventListener = (RuleEventListener) o; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -179,16 +180,10 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     @Override
     public void unbindFc(String name) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITORING_CONTROLLER_CLIENT_ITF: monitoringController = null; break;
-            case RULE_EVENT_LISTENER_CLIENT_ITF: ruleEventListener = null; break;
+            case MonitoringController.ITF_NAME: monitoringController = null; break;
+            case RuleEventListener.ITF_NAME: ruleEventListener = null; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }
-
-    public static final String CONTROLLER_NAME = "AnalysisController";
-    public static final String ANALYSIS_CONTROLLER_SERVER_ITF = "analysis-controller-server-itf-nf";
-    public static final String METRIC_EVENT_LISTENER_SERVER_ITF = "metric-event-listener-server-itf-nf";
-    public static final String MONITORING_CONTROLLER_CLIENT_ITF = "monitoring-controller-client-itf-nf";
-    public static final String RULE_EVENT_LISTENER_CLIENT_ITF = "rule-event-listener-client-itf-nf";
 
 }

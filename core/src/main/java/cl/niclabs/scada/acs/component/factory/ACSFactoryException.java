@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.component.factory.exceptions;
+package cl.niclabs.scada.acs.component.factory;
 
 /**
  * Created by mibanez

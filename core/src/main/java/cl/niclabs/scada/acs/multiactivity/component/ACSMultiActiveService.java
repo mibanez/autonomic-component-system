@@ -67,11 +67,12 @@ public class ACSMultiActiveService extends Service {
     }
 
     private void init(List<PriorityConstraint> priorityConstraints) {
-        if (executor != null)
+
+        if (executor != null) {
             return;
+        }
 
         ACSAnnotationProcessor annotationProcessor = new ACSAnnotationProcessor(body.getReifiedObject().getClass());
-
         CompatibilityTracker compatibility = new CompatibilityTracker(annotationProcessor, requestQueue);
 
         if (priorityConstraints != null) {

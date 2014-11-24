@@ -2,30 +2,34 @@ package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisController;
-import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisControllerImpl;
+import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisControllerFactory;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
+import cl.niclabs.scada.acs.component.controllers.execution.ExecutionControllerFactory;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionControllerImpl;
-import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEventListener;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
-import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringManagerFactory;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListener;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListenerFactory;
+import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEventListener;
+import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricEventListener;
+import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricStoreFactory;
+import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.RemoteMonitoringManager;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
+import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStoreFactory;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
-import cl.niclabs.scada.acs.component.controllers.planning.PlanningControllerImpl;
-import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
+import cl.niclabs.scada.acs.component.controllers.planning.PlanningControllerFactory;
 import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.IllegalBindingException;
-import org.objectweb.fractal.api.control.IllegalContentException;
 import org.objectweb.fractal.api.control.IllegalLifeCycleException;
 import org.objectweb.fractal.api.control.NameController;
 import org.objectweb.fractal.api.factory.InstantiationException;
-import org.objectweb.fractal.api.type.ComponentType;
 import org.objectweb.fractal.api.type.InterfaceType;
 import org.objectweb.proactive.core.body.proxy.UniversalBodyProxy;
 import org.objectweb.proactive.core.component.Constants;
-import org.objectweb.proactive.core.component.ContentDescription;
-import org.objectweb.proactive.core.component.ControllerDescription;
 import org.objectweb.proactive.core.component.Utils;
 import org.objectweb.proactive.core.component.control.*;
 import org.objectweb.proactive.core.component.exceptions.NoSuchComponentException;
@@ -43,9 +47,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by mibanez
- */
+
 public class BuildHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(BuildHelper.class);
@@ -100,98 +102,84 @@ public class BuildHelper {
         if (!(component instanceof PAComponent)) {
             throw new ACSFactoryException("the component must be a PAComponent instance");
         }
+        String prompt = "addObjectControllers@".concat(((PAComponent) component).getComponentParameters().getName());
 
-        logger.debug("addObjectControllers: adding object controllers on {}",
-                ((PAComponent) component).getComponentParameters().getName());
-
-        PAMembraneController membrane;
         try {
-            membrane = Utils.getPAMembraneController(component);
+            PAMembraneController membrane = Utils.getPAMembraneController(component);
+            try {
+                component.getFcInterface(Constants.CONTENT_CONTROLLER);
+                membrane.setControllerObject(Constants.CONTENT_CONTROLLER, PAContentControllerImpl.class.getName());
+            } catch (NoSuchInterfaceException e) {
+                logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
+            }
+            try {
+                component.getFcInterface(Constants.BINDING_CONTROLLER);
+                membrane.setControllerObject(Constants.BINDING_CONTROLLER, PABindingControllerImpl.class.getName());
+                logger.trace("[addObjectControllers] bindingController added");
+            } catch (NoSuchInterfaceException e) {
+                logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
+            }
+            try {
+                component.getFcInterface(Constants.SUPER_CONTROLLER);
+                membrane.setControllerObject(Constants.SUPER_CONTROLLER, PASuperControllerImpl.class.getName());
+            } catch (NoSuchInterfaceException e) {
+                logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
+            }
+            try {
+                component.getFcInterface(Constants.MULTICAST_CONTROLLER);
+                membrane.setControllerObject(Constants.MULTICAST_CONTROLLER, PAMulticastControllerImpl.class.getName());
+            } catch (NoSuchInterfaceException e) {
+                logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
+            }
         } catch (NoSuchInterfaceException e) {
-            // Non-existent interfaces have been ignored at component creation time.
-            return;
+            logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
         }
-        // add the remaining object controllers
-        try {
-            // this call is just to catch the exception. If the exception is generated in the next line
-            // for some reason I can't catch it here.
-            component.getFcInterface(Constants.CONTENT_CONTROLLER);
-            membrane.setControllerObject(Constants.CONTENT_CONTROLLER, PAContentControllerImpl.class.getName());
-        } catch (NoSuchInterfaceException e) {
-            // Non-existent interfaces have been ignored at component creation time.
-        }
-        try {
-            component.getFcInterface(Constants.BINDING_CONTROLLER);
-            membrane.setControllerObject(Constants.BINDING_CONTROLLER, PABindingControllerImpl.class.getName());
-        } catch (NoSuchInterfaceException e) {
-            // Non-existent interfaces have been ignored at component creation time.
-        }
-        try {
-            component.getFcInterface(Constants.SUPER_CONTROLLER);
-            membrane.setControllerObject(Constants.SUPER_CONTROLLER, PASuperControllerImpl.class.getName());
-        } catch (NoSuchInterfaceException e) {
-            // Non-existent interfaces have been ignored at component creation time.
-        }
-        try {
-            component.getFcInterface(Constants.MULTICAST_CONTROLLER);
-            membrane.setControllerObject(Constants.MULTICAST_CONTROLLER, PAMulticastControllerImpl.class.getName());
-        } catch (NoSuchInterfaceException e) {
-            // Non-existent interfaces have been ignored at component creation time.
-        }
-        // LIFECYCLE is mandatory and should have been added at component creation time
-        // NAME      is mandatory and should have been added at component creation time
     }
 
-    /**
-     * Generates the extra NF interfaces needed by every ACS component.
-     */
-    public List<InterfaceType> getAcsNfInterfaces(InterfaceType[] fnInterfaceTypes)
+
+    public List<InterfaceType> getExtraNfInterfaces(InterfaceType[] fInterfaceTypes)
             throws ACSFactoryException {
 
         String monClazz = MonitoringController.class.getName();
-        ArrayList<InterfaceType> acsInterfaces = new ArrayList<>();
+        ArrayList<InterfaceType> extraNfItfs = new ArrayList<>();
 
         try {
             // Add controller main nf interface
-            acsInterfaces.add(tf.createGCMItfType(ACSUtils.EXECUTION_CONTROLLER, ExecutionController.class.getName(), false, true, "singleton"));
-            acsInterfaces.add(tf.createGCMItfType(ACSUtils.PLANNING_CONTROLLER, PlanningController.class.getName(), false, true, "singleton"));
-            acsInterfaces.add(tf.createGCMItfType(ACSUtils.ANALYSIS_CONTROLLER, AnalysisController.class.getName(), false, true, "singleton"));
-            acsInterfaces.add(tf.createGCMItfType(ACSUtils.MONITORING_CONTROLLER, monClazz, false, true, "singleton"));
+            extraNfItfs.add(tf.createGCMItfType(ACSUtils.EXECUTION_CONTROLLER, ExecutionController.class.getName(), false, true, "singleton"));
+            extraNfItfs.add(tf.createGCMItfType(ACSUtils.PLANNING_CONTROLLER, PlanningController.class.getName(), false, true, "singleton"));
+            extraNfItfs.add(tf.createGCMItfType(ACSUtils.ANALYSIS_CONTROLLER, AnalysisController.class.getName(), false, true, "singleton"));
+            extraNfItfs.add(tf.createGCMItfType(ACSUtils.MONITORING_CONTROLLER, monClazz, false, true, "singleton"));
 
             // Add extra nf interfaces based of the f interfaces
-            for (InterfaceType itf : fnInterfaceTypes) {
+            for (InterfaceType fItfType : fInterfaceTypes) {
 
-                if (itf.isFcClientItf()) {
-                    // client interfaces needs an external monitor connection
-                    String name = itf.getFcItfName() + MonitoringControllerImpl.EXTERNAL_MONITORING_ITF;
-
-                    if (isSingleton(itf)) {
-                        acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
-                    } else if (itf instanceof PAGCMInterfaceType) {
+                // client interfaces needs an external monitor connection
+                if (fItfType.isFcClientItf()) {
+                    String name = fItfType.getFcItfName() + RemoteMonitoringManager.REMOTE_MONITORING_SUFFIX;
+                    if (isSingleton(fItfType)) {
+                        extraNfItfs.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
+                    } else if (fItfType instanceof PAGCMInterfaceType) {
                         // gcm special interfaces
-                        if (((PAGCMInterfaceType) itf).isGCMGathercastItf()) {
-                            acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
+                        if (((PAGCMInterfaceType) fItfType).isGCMGathercastItf()) {
+                            extraNfItfs.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
                         }
-                        if (((PAGCMInterfaceType) itf).isGCMMulticastItf()) {
-                            acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "multicast"));
+                        if (((PAGCMInterfaceType) fItfType).isGCMMulticastItf()) {
+                            extraNfItfs.add(tf.createGCMItfType(name, monClazz, true, true, "multicast"));
                         }
                     }
-                } else if (isSingleton(itf)) {
-                    // server interfaces needs an internal monitor connection
-                    String name = itf.getFcItfName() + MonitoringControllerImpl.INTERNAL_MONITORING_ITF;
-                    acsInterfaces.add(tf.createGCMItfType(name, monClazz, true, true, "singleton", true));
+                }
+
+                // server interfaces needs an internal monitor connection
+                else if (isSingleton(fItfType)) {
+                    String name = fItfType.getFcItfName() + RemoteMonitoringManager.REMOTE_MONITORING_SUFFIX;
+                    extraNfItfs.add(tf.createGCMItfType(name, monClazz, true, true, "singleton", true));
                 }
             }
-
-            // composite components needs and internal server monitor connection [does it?]
-            String name = MonitoringControllerImpl.INTERNAL_SERVER_MONITORING_ITF;
-            acsInterfaces.add(tf.createGCMItfType(name, monClazz, false, true, "singleton", true));
-
         } catch (InstantiationException e) {
             throw new ACSFactoryException("Couldn't create nf interface", e);
         }
 
-        return acsInterfaces;
+        return extraNfItfs;
     }
 
     /**
@@ -226,11 +214,19 @@ public class BuildHelper {
             stopMembrane(host, "addACSControllers");
         }
 
-        addController(ExecutionControllerImpl.CONTROLLER_NAME, ExecutionControllerImpl.class.getName(), getExecutionComponentType(), host);
-        addController(PlanningControllerImpl.CONTROLLER_NAME, PlanningControllerImpl.class.getName(), getPlanningComponentType(), host);
-        addController(AnalysisControllerImpl.CONTROLLER_NAME, AnalysisControllerImpl.class.getName(), getAnalysisComponentType(), host);
-        addController(MonitoringControllerImpl.CONTROLLER_NAME, MonitoringControllerImpl.class.getName(), getMonitorComponentType(host), host);
-        bindControllers(host);
+        Node hostNode = null;
+        try {
+            hostNode = getNode(host);
+        } catch (NodeException e) {
+            e.printStackTrace();
+        }
+
+        addMonitoringController(membrane, hostNode, host);
+        addAnalysisController(membrane, hostNode);
+        addPlanningController(membrane, hostNode);
+        addExecutionController(membrane, hostNode);
+
+        bindControllers(membrane, host);
 
         // Restoring old states
         if (membraneState.equals(PAMembraneController.MEMBRANE_STARTED)) {
@@ -241,166 +237,107 @@ public class BuildHelper {
         }
     }
 
-
-    private void bindControllers(Component host) throws ACSFactoryException {
+    private void addExecutionController(PAMembraneController membrane, Node hostNode) {
         try {
-            PAMembraneController m = Utils.getPAMembraneController(host);
+            Component executionController = ExecutionControllerFactory.getExecutionControllerInstance(tf, gf, hostNode);
+            membrane.nfAddFcSubComponent(executionController);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addPlanningController(PAMembraneController membrane, Node hostNode) {
+        try {
+            Component planningController = PlanningControllerFactory.getPlanningControllerInstance(tf, gf, hostNode);
+            membrane.nfAddFcSubComponent(planningController);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addAnalysisController(PAMembraneController membraneController, Node node) {
+        try {
+            Component analysisController = AnalysisControllerFactory.getAnalysisControllerInstance(tf, gf, node);
+            membraneController.nfAddFcSubComponent(analysisController);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addMonitoringController(PAMembraneController membraneController, Node hostNode, Component host) {
+        try {
+            String hierarchy = ((PAComponent) host).getComponentParameters().getHierarchicalType();
+            InterfaceType[] interfaceTypes = ((PAComponent) host).getComponentParameters().getInterfaceTypes();
+
+            Component monitoringManager = MonitoringManagerFactory.getMonitoringManagerInstance(tf, gf, hostNode);
+            Component eventListener = GCMPAEventListenerFactory.getGCMPAEventListenerInstance(tf, gf, hostNode);
+            Component metricStore = MetricStoreFactory.getMetricStoreInstance(tf, gf, hostNode, interfaceTypes, hierarchy);
+            Component recordStore = RecordStoreFactory.getRecordStoreInstance(tf, gf, hostNode);
+
+            membraneController.nfAddFcSubComponent(monitoringManager);
+            membraneController.nfAddFcSubComponent(eventListener);
+            membraneController.nfAddFcSubComponent(metricStore);
+            membraneController.nfAddFcSubComponent(recordStore);
+
+            membraneController.nfBindFc(MonitoringManagerFactory.COMPONENT_NAME + "." + MetricStore.ITF_NAME,
+                    MetricStoreFactory.COMPONENT_NAME + "." + MetricStore.ITF_NAME);
+
+            membraneController.nfBindFc(MonitoringManagerFactory.COMPONENT_NAME + "." + RemoteMonitoringManager.ITF_NAME,
+                    MetricStoreFactory.COMPONENT_NAME + "." + RemoteMonitoringManager.ITF_NAME);
+
+            membraneController.nfBindFc(MonitoringManagerFactory.COMPONENT_NAME + "." + GCMPAEventListener.ITF_NAME,
+                    GCMPAEventListenerFactory.COMPONENT_NAME + "." + GCMPAEventListener.ITF_NAME);
+
+            membraneController.nfBindFc(GCMPAEventListenerFactory.COMPONENT_NAME + "." + RecordEventListener.ITF_NAME,
+                    MetricStoreFactory.COMPONENT_NAME + "." + RecordEventListener.ITF_NAME);
+
+            membraneController.nfBindFc(GCMPAEventListenerFactory.COMPONENT_NAME + "." + RecordStore.ITF_NAME,
+                    RecordStoreFactory.COMPONENT_NAME + "." + RecordStore.ITF_NAME);
+
+            membraneController.nfBindFc(MetricStoreFactory.COMPONENT_NAME + "." + RecordStore.ITF_NAME,
+                    RecordStoreFactory.COMPONENT_NAME + "." + RecordStore.ITF_NAME);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void bindControllers(PAMembraneController m, Component host) throws ACSFactoryException {
+        try {
             String hostName = getComponentName(host);
 
             logger.trace("Binding monitoring on {}", hostName);
-            m.nfBindFc(ACSUtils.MONITORING_CONTROLLER, MonitoringControllerImpl.CONTROLLER_NAME + "." + MonitoringControllerImpl.MONITORING_CONTROLLER_SERVER_ITF);
-            m.nfBindFc(MonitoringControllerImpl.CONTROLLER_NAME + "." + MonitoringControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF,
-                    AnalysisControllerImpl.CONTROLLER_NAME + "." + AnalysisControllerImpl.METRIC_EVENT_LISTENER_SERVER_ITF);
+            m.nfBindFc(ACSUtils.MONITORING_CONTROLLER,
+                    MonitoringManagerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME);
+            m.nfBindFc(MetricStoreFactory.COMPONENT_NAME + "." + MetricEventListener.ITF_NAME,
+                    AnalysisControllerFactory.COMPONENT_NAME + "." + MetricEventListener.ITF_NAME);
 
             logger.trace("Binding analysis on {}", hostName);
-            m.nfBindFc(ACSUtils.ANALYSIS_CONTROLLER, AnalysisControllerImpl.CONTROLLER_NAME + "." + AnalysisControllerImpl.ANALYSIS_CONTROLLER_SERVER_ITF);
-            m.nfBindFc(AnalysisControllerImpl.CONTROLLER_NAME + "." + AnalysisControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF,
-                    MonitoringControllerImpl.CONTROLLER_NAME + "." + MonitoringControllerImpl.MONITORING_CONTROLLER_SERVER_ITF);
-            m.nfBindFc(AnalysisControllerImpl.CONTROLLER_NAME + "." + AnalysisControllerImpl.RULE_EVENT_LISTENER_CLIENT_ITF,
-                    PlanningControllerImpl.CONTROLLER_NAME + "." + PlanningControllerImpl.RULE_EVENT_LISTENER_SERVER_ITF);
+            m.nfBindFc(ACSUtils.ANALYSIS_CONTROLLER,
+                    AnalysisControllerFactory.COMPONENT_NAME + "." + AnalysisController.ITF_NAME);
+            m.nfBindFc(AnalysisControllerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME,
+                    MonitoringManagerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME);
+            m.nfBindFc(AnalysisControllerFactory.COMPONENT_NAME + "." + RuleEventListener.ITF_NAME,
+                    PlanningControllerFactory.COMPONENT_NAME + "." + RuleEventListener.ITF_NAME);
 
             logger.trace("Binding planning on {}", hostName);
-            m.nfBindFc(ACSUtils.PLANNING_CONTROLLER, PlanningControllerImpl.CONTROLLER_NAME + "." + PlanningControllerImpl.PLANNING_CONTROLLER_SERVER_ITF);
-            m.nfBindFc(PlanningControllerImpl.CONTROLLER_NAME + "." + PlanningControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF,
-                    MonitoringControllerImpl.CONTROLLER_NAME + "." + MonitoringControllerImpl.MONITORING_CONTROLLER_SERVER_ITF);
-            m.nfBindFc(PlanningControllerImpl.CONTROLLER_NAME + "." + PlanningControllerImpl.EXECUTION_CONTROLLER_CLIENT_ITF,
-                    ExecutionControllerImpl.CONTROLLER_NAME + "." + ExecutionControllerImpl.EXECUTION_CONTROLLER_SERVER_ITF);
+            m.nfBindFc(ACSUtils.PLANNING_CONTROLLER,
+                    PlanningControllerFactory.COMPONENT_NAME + "." + PlanningController.ITF_NAME);
+            m.nfBindFc(PlanningControllerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME,
+                    MonitoringManagerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME);
+            m.nfBindFc(PlanningControllerFactory.COMPONENT_NAME + "." + ExecutionController.ITF_NAME,
+                    ExecutionControllerImpl.CONTROLLER_NAME + "." + ExecutionController.ITF_NAME);
 
             logger.trace("Binding execution on {}", hostName);
-            m.nfBindFc(ACSUtils.EXECUTION_CONTROLLER, ExecutionControllerImpl.CONTROLLER_NAME + "." + ExecutionControllerImpl.EXECUTION_CONTROLLER_SERVER_ITF);
-        } catch (NoSuchInterfaceException | IllegalLifeCycleException |
+            m.nfBindFc(ACSUtils.EXECUTION_CONTROLLER,
+                    ExecutionControllerFactory.COMPONENT_NAME + "." + ExecutionController.ITF_NAME);
+        }
+        catch (NoSuchInterfaceException | IllegalLifeCycleException |
                 IllegalBindingException | NoSuchComponentException e) {
             throw new ACSFactoryException("Controllers binding fail", e);
         }
     }
 
-    private void addController(String name, String className, ComponentType componentType, Component host) throws ACSFactoryException {
-        try {
-            Utils.getPAMembraneController(host).nfAddFcSubComponent(gf.newNfFcInstance(
-                    componentType,
-                    new ControllerDescription(name, Constants.PRIMITIVE, CONTROLLER_CONFIG),
-                    new ContentDescription(className),
-                    getNode(host)
-            ));
-        } catch (InstantiationException e) {
-            throw new ACSFactoryException("Fail when instantiating controller", e);
-        } catch (NodeException e) {
-            throw new ACSFactoryException("Fail when getting the deployment node for controller", e);
-        } catch (IllegalLifeCycleException | IllegalContentException e) {
-            throw new ACSFactoryException("Fail when adding controller to its host component", e);
-        } catch (NoSuchInterfaceException e) {
-            throw new ACSFactoryException("Fail when getting the host component membrane controller", e);
-        }
-    }
-
-    private ComponentType getExecutionComponentType() throws ACSFactoryException {
-        try {
-            ArrayList<InterfaceType> itfTypes = new ArrayList<>();
-            itfTypes.add(tf.createGCMItfType(ExecutionControllerImpl.EXECUTION_CONTROLLER_SERVER_ITF,
-                    ExecutionController.class.getName(), false, false, "singleton"));
-
-            return tf.createFcType(itfTypes.toArray(new InterfaceType[itfTypes.size()]));
-        } catch (InstantiationException e) {
-            throw new ACSFactoryException("Fail when instantiating an interface for execution controller", e);
-        }
-    }
-
-    private ComponentType getPlanningComponentType() throws ACSFactoryException {
-        try {
-            ArrayList<InterfaceType> itfTypes = new ArrayList<>();
-            itfTypes.add(tf.createGCMItfType(PlanningControllerImpl.PLANNING_CONTROLLER_SERVER_ITF,
-                    PlanningController.class.getName(), false, false, "singleton"));
-            itfTypes.add(tf.createGCMItfType(PlanningControllerImpl.RULE_EVENT_LISTENER_SERVER_ITF,
-                    RuleEventListener.class.getName(), false, false, "singleton"));
-            itfTypes.add(tf.createGCMItfType(PlanningControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF,
-                    MonitoringController.class.getName(), true, false, "singleton"));
-            itfTypes.add(tf.createGCMItfType(PlanningControllerImpl.EXECUTION_CONTROLLER_CLIENT_ITF,
-                    ExecutionController.class.getName(), true, false, "singleton"));
-
-            return tf.createFcType(itfTypes.toArray(new InterfaceType[itfTypes.size()]));
-        } catch (InstantiationException e) {
-            throw new ACSFactoryException("Fail when instantiating an interface for planning controller", e);
-        }
-    }
-
-
-    private ComponentType getAnalysisComponentType() throws ACSFactoryException {
-        try {
-            ArrayList<InterfaceType> itfTypes = new ArrayList<>();
-            itfTypes.add(tf.createGCMItfType(AnalysisControllerImpl.ANALYSIS_CONTROLLER_SERVER_ITF,
-                    AnalysisController.class.getName(), false, false, "singleton"));
-            itfTypes.add(tf.createGCMItfType(AnalysisControllerImpl.METRIC_EVENT_LISTENER_SERVER_ITF,
-                    MetricEventListener.class.getName(), false, false, "singleton"));
-            itfTypes.add(tf.createGCMItfType(AnalysisControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF,
-                    MonitoringController.class.getName(), true, false, "singleton"));
-            itfTypes.add(tf.createGCMItfType(AnalysisControllerImpl.RULE_EVENT_LISTENER_CLIENT_ITF,
-                    RuleEventListener.class.getName(), true, false, "singleton"));
-
-            return tf.createFcType(itfTypes.toArray(new InterfaceType[itfTypes.size()]));
-        } catch (InstantiationException e) {
-            throw new ACSFactoryException("Fail when instantiating an interface for analysis controller", e);
-        }
-    }
-
-    /**
-     * Generates a monitor controller ComponentType based on the host component attributes
-     */
-    private ComponentType getMonitorComponentType(Component host) throws ACSFactoryException {
-
-        String monClazz = MonitoringController.class.getName();
-        ArrayList<InterfaceType> monItfTypes = new ArrayList<>();
-
-        try {
-            // Add monitor-controller main nf interfaces
-            monItfTypes.add(tf.createGCMItfType(MonitoringControllerImpl.MONITORING_CONTROLLER_SERVER_ITF, monClazz, false, false, "singleton"));
-            monItfTypes.add(tf.createGCMItfType(MonitoringControllerImpl.METRIC_EVENT_LISTENER_CLIENT_ITF,
-                    MetricEventListener.class.getName(), true, false, "singleton"));
-
-            // Add extra nf interfaces based of the host's f interfaces
-            for (InterfaceType itf : ((ComponentType) host.getFcType()).getFcInterfaceTypes()) {
-
-                // Ignore server interfaces
-                if (!itf.isFcClientItf()) {
-                    continue;
-                }
-
-                // Add communication with the external monitors
-                String name = itf.getFcItfName() + MonitoringControllerImpl.EXTERNAL_MONITORING_ITF;
-
-                if (isSingleton(itf)) {
-                    monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
-                } else if (itf instanceof PAGCMInterfaceType) {
-                    // gcm special interfaces
-                    if (((PAGCMInterfaceType) itf).isGCMGathercastItf()) {
-                        monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
-                    } else if (((PAGCMInterfaceType) itf).isGCMMulticastItf()) {
-                        monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
-                        // TODO: Singleton??
-                    }
-                }
-            }
-
-            // Composite also require internal client interfaces communication
-            if (Constants.COMPOSITE.equals(((PAComponent) host).getComponentParameters().getHierarchicalType())) {
-                for (InterfaceType itf : ((ComponentType) host.getFcType()).getFcInterfaceTypes()) {
-                    if (!itf.isFcClientItf() && isSingleton(itf)) {
-                        String name = itf.getFcItfName() + MonitoringControllerImpl.INTERNAL_MONITORING_ITF;
-                        monItfTypes.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
-                    }
-                }
-            }
-
-        } catch (InstantiationException e) {
-            throw new ACSFactoryException("Couldn't create interface for the monitor controller", e);
-        }
-
-        try {
-            // Create the monitor controller component Type
-            return tf.createFcType(monItfTypes.toArray(new InterfaceType[monItfTypes.size()]));
-        } catch (InstantiationException e) {
-            throw new ACSFactoryException("Couldn't create monitor controller component type", e);
-        }
-    }
 
     /**
      * Returns the deployment node of the component

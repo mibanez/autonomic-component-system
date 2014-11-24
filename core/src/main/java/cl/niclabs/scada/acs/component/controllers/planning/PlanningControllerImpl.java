@@ -186,14 +186,14 @@ public class PlanningControllerImpl extends AbstractPAComponentController
 
     @Override
     public String[] listFc() {
-        return new String[] { MONITORING_CONTROLLER_CLIENT_ITF, EXECUTION_CONTROLLER_CLIENT_ITF };
+        return new String[] { MonitoringController.ITF_NAME, ExecutionController.ITF_NAME };
     }
 
     @Override
     public Object lookupFc(String name) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITORING_CONTROLLER_CLIENT_ITF: return monitoringController;
-            case EXECUTION_CONTROLLER_CLIENT_ITF: return executionController;
+            case MonitoringController.ITF_NAME: return monitoringController;
+            case ExecutionController.ITF_NAME: return executionController;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -201,8 +201,8 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     @Override
     public void bindFc(String name, Object o) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITORING_CONTROLLER_CLIENT_ITF: monitoringController = (MonitoringController) o; break;
-            case EXECUTION_CONTROLLER_CLIENT_ITF: executionController = (ExecutionController) o; break;
+            case MonitoringController.ITF_NAME: monitoringController = (MonitoringController) o; break;
+            case ExecutionController.ITF_NAME: executionController = (ExecutionController) o; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -210,16 +210,10 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     @Override
     public void unbindFc(String name) throws NoSuchInterfaceException {
         switch (name) {
-            case MONITORING_CONTROLLER_CLIENT_ITF: monitoringController = null; break;
-            case EXECUTION_CONTROLLER_CLIENT_ITF: executionController = null; break;
+            case MonitoringController.ITF_NAME: monitoringController = null; break;
+            case ExecutionController.ITF_NAME: executionController = null; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }
-
-    public static final String CONTROLLER_NAME = "PlanningController";
-    public static final String PLANNING_CONTROLLER_SERVER_ITF = "planning-controller-server-itf-nf";
-    public static final String RULE_EVENT_LISTENER_SERVER_ITF = "rule-event-listener-server-itf-nf";
-    public static final String MONITORING_CONTROLLER_CLIENT_ITF = "monitor-controller-client-itf-nf";
-    public static final String EXECUTION_CONTROLLER_CLIENT_ITF = "execution-controller-client-itf-nf";
 
 }

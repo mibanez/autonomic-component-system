@@ -5,6 +5,7 @@ package cl.niclabs.scada.acs.component.controllers.analysis;
  */
 public interface RuleEventListener {
 
-    public void notifyAlarm(RuleEvent event);
+    static final String ITF_NAME = "rule-event-listener";
 
+    void notifyAlarm(RuleEvent event);
 }

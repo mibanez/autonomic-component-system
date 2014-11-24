@@ -30,13 +30,13 @@ public class ACSAnnotationProcessorTest {
 
         MethodGroup defaultGroup, acsGroup;
         Assert.assertNotNull((defaultGroup = groups.get(ACSAnnotationProcessor.DEFAULT_GROUP_NAME)));
-        Assert.assertNotNull((acsGroup = groups.get(ACSAnnotationProcessor.ACS_GROUP_NAME)));
+        Assert.assertNotNull((acsGroup = groups.get(ACSAnnotationProcessor.MONITORING_GROUP_NAME)));
 
         Assert.assertTrue(defaultGroup.name.equals(ACSAnnotationProcessor.DEFAULT_GROUP_NAME));
         Assert.assertTrue(defaultGroup.isCompatibleWith(acsGroup));
         Assert.assertFalse(defaultGroup.isSelfCompatible());
 
-        Assert.assertTrue(acsGroup.name.equals(ACSAnnotationProcessor.ACS_GROUP_NAME));
+        Assert.assertTrue(acsGroup.name.equals(ACSAnnotationProcessor.MONITORING_GROUP_NAME));
         Assert.assertTrue(acsGroup.isCompatibleWith(defaultGroup));
         Assert.assertFalse(acsGroup.isSelfCompatible());
 

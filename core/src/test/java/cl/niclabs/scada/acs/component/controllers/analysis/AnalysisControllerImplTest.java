@@ -3,7 +3,6 @@ package cl.niclabs.scada.acs.component.controllers.analysis;
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
-import cl.niclabs.scada.acs.component.controllers.monitoring.MetricEvent;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.gcmscript.CommunicationException;
 import org.junit.Assert;
@@ -60,7 +59,7 @@ public class AnalysisControllerImplTest {
 
         try {
             MonitoringController monitoringController = Mockito.mock(MonitoringController.class);
-            analysisController.bindFc(AnalysisControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF, monitoringController);
+            analysisController.bindFc(MonitoringController.ITF_NAME, monitoringController);
         }
         catch (NoSuchInterfaceException e) {
             Assert.fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
@@ -129,7 +128,7 @@ public class AnalysisControllerImplTest {
 
         try {
             MonitoringController monitoringController = Mockito.mock(MonitoringController.class);
-            analysisController.bindFc(AnalysisControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF, monitoringController);
+            analysisController.bindFc(MonitoringController.ITF_NAME, monitoringController);
         }
         catch (NoSuchInterfaceException e) {
             Assert.fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
@@ -142,10 +141,9 @@ public class AnalysisControllerImplTest {
             Assert.fail(e.getMessage());
         }
 
-        MetricEvent metricEvent = Mockito.mock(MetricEvent.class);
-        analysisController.notifyUpdate(metricEvent);
-        analysisController.notifyUpdate(metricEvent);
-        analysisController.notifyUpdate(metricEvent);
+        analysisController.notifyMetricChange("foo");
+        analysisController.notifyMetricChange("foo");
+        analysisController.notifyMetricChange("foo");
 
         assertEquals(ACSAlarm.ERROR, analysisController.verify("foo").unwrap());
     }

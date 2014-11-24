@@ -1,5 +1,6 @@
 package cl.niclabs.scada.acs.multiactivity.component.policy;
 
+import cl.niclabs.scada.acs.component.ACSUtils;
 import org.objectweb.proactive.core.body.request.RequestFilter;
 import org.objectweb.proactive.core.component.body.NFRequestFilterImpl;
 import org.objectweb.proactive.core.component.control.PAGCMLifeCycleController;
@@ -27,8 +28,8 @@ class ACSNFRequestFilter extends NFRequestFilterImpl implements RequestFilter, S
             return request.isControllerRequest();
         }
 
-        // When life-cycle is started, F requests have preference, then acs controller requests should be handled as F
-        if (request.getMethodCall().getComponentMetadata().getComponentInterfaceName().equals("monitor-controller")) {
+        // When life-cycle is started F requests have preference, the monitoring controller requests should be handled as F
+        if (request.getMethodCall().getComponentMetadata().getComponentInterfaceName().equals(ACSUtils.MONITORING_CONTROLLER)) {
             return false;
         }
 

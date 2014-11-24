@@ -5,8 +5,6 @@ import cl.niclabs.scada.acs.component.adl.ACSAdlFactory;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
-import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
-import cl.niclabs.scada.acs.component.controllers.monitoring.MulticastMonitoringController;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import com.google.gson.Gson;
 import org.objectweb.fractal.adl.ADLException;
@@ -22,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+
+import static cl.niclabs.scada.acs.component.controllers.monitoring.metrics.RemoteMonitoringManager.REMOTE_MONITORING_SUFFIX;
 
 public class ACSInterfaceLoader extends PAInterfaceLoader {
 
@@ -110,7 +110,8 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
 		if (functionalItfs.length > 0) {
 
 			addControllerInterfaces(functionalItfs[0], nfItfContainer);
-			
+
+			/**
 			// Add internal server nf autonomic interface on composite components.
 			if (hierarchy.equals("composite")) {
 
@@ -126,7 +127,7 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
 	
 				nfItfContainer.addInterface(nfItf);
                 logger.trace("adding NF internal server interface \"{}\"", MonitoringControllerImpl.INTERNAL_SERVER_MONITORING_ITF);
-			}
+			}**/
 		}
 
 		for (final Interface fItf : functionalItfs) {
@@ -139,7 +140,7 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
     			Interface autonomicNFItf = gson.fromJson(gson.toJson(fItf), fItf.getClass());
     			
     			Map<String, String> attr = autonomicNFItf.astGetAttributes();
-    			attr.put("name", attr.get("name") + MonitoringControllerImpl.INTERNAL_MONITORING_ITF);
+    			attr.put("name", attr.get("name") + REMOTE_MONITORING_SUFFIX);
     			attr.put("role", PATypeInterface.INTERNAL_CLIENT_ROLE);
     			attr.put("contingency", PATypeInterface.OPTIONAL_CONTINGENCY);
     			attr.put("cardinality", PATypeInterface.SINGLETON_CARDINALITY);
@@ -147,7 +148,7 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
         		autonomicNFItf.astSetAttributes(attr);
 
         		nfItfContainer.addInterface(autonomicNFItf);
-                logger.trace("adding NF internal client interface \"{}\"", attr.get("name") + MonitoringControllerImpl.INTERNAL_MONITORING_ITF);
+                logger.trace("adding NF internal client interface \"{}\"", attr.get("name") + REMOTE_MONITORING_SUFFIX);
     		}
   
     		// Add external client nf autonomic interface to monitor the external bound component
@@ -156,23 +157,23 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
     			Interface autonomicNFItf = gson.fromJson(gson.toJson(fItf), fItf.getClass());
     			
     			Map<String, String> attr = autonomicNFItf.astGetAttributes();
-    			attr.put("name", attr.get("name") + MonitoringControllerImpl.EXTERNAL_MONITORING_ITF);
+    			attr.put("name", attr.get("name") + REMOTE_MONITORING_SUFFIX);
     			attr.put("role", PATypeInterface.CLIENT_ROLE);
     			attr.put("contingency", PATypeInterface.OPTIONAL_CONTINGENCY);
 
     			String cardinality = autonomicNFItf.astGetAttributes().get("cardinality");
   
-    			if (cardinality != null && cardinality.equals(PATypeInterface.MULTICAST_CARDINALITY)) {
-    				attr.put("signature", MulticastMonitoringController.class.getName());
-    			} else {
+    			//if (cardinality != null && cardinality.equals(PATypeInterface.MULTICAST_CARDINALITY)) {
+    			//	attr.put("signature", MulticastMonitoringController.class.getName());
+    			//} else {
     				attr.put("cardinality", PATypeInterface.SINGLETON_CARDINALITY);
     				attr.put("signature", MonitoringController.class.getName());
-    			}
+    			//}
   
     			autonomicNFItf.astSetAttributes(attr);
 
         		nfItfContainer.addInterface(autonomicNFItf);
-                logger.trace("adding NF external client interface \"{}\"", attr.get("name") + MonitoringControllerImpl.EXTERNAL_MONITORING_ITF);
+                logger.trace("adding NF external client interface \"{}\"", attr.get("name") + REMOTE_MONITORING_SUFFIX);
     		}   		
 		}
 	}

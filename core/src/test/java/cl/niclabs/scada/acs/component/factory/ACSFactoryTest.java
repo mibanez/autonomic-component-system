@@ -1,8 +1,7 @@
 package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
-import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
-import cl.niclabs.scada.acs.component.factory.exceptions.ACSFactoryException;
+import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.RemoteMonitoringManager;
 import org.junit.Assert;
 import org.junit.Test;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -34,25 +33,17 @@ public class ACSFactoryTest extends AbstractComponentTest {
         PAComponentType paComponentType = (PAComponentType) componentType;
 
         try {
-            Assert.assertNotNull(paComponentType.getNfFcInterfaceType("client-itf" + MonitoringControllerImpl.EXTERNAL_MONITORING_ITF));
+            Assert.assertNotNull(paComponentType.getNfFcInterfaceType("client-itf" + RemoteMonitoringManager.REMOTE_MONITORING_SUFFIX));
         } catch (NoSuchInterfaceException e) {
             e.printStackTrace();
             Assert.fail("interface \"client-itf\" does not have its nf acs interface");
         }
 
         try {
-            Assert.assertNotNull(paComponentType.getNfFcInterfaceType("server-itf" + MonitoringControllerImpl.INTERNAL_MONITORING_ITF));
+            Assert.assertNotNull(paComponentType.getNfFcInterfaceType("server-itf" +RemoteMonitoringManager.REMOTE_MONITORING_SUFFIX));
         } catch (NoSuchInterfaceException e) {
             e.printStackTrace();
             Assert.fail("interface \"server-itf\" does not have its nf acs interface");
         }
-
-        try {
-            Assert.assertNotNull(paComponentType.getNfFcInterfaceType(MonitoringControllerImpl.INTERNAL_SERVER_MONITORING_ITF));
-        } catch (NoSuchInterfaceException e) {
-            e.printStackTrace();
-            Assert.fail("the nf acs interface \"internal-server\" does not exist");
-        }
     }
-
 }

@@ -2,7 +2,7 @@ package cl.niclabs.scada.acs.component.adl;
 
 import cl.niclabs.scada.acs.component.ACSUtils;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
-import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControllerImpl;
+import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.RemoteMonitoringManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,22 +48,13 @@ public class ACSAdlFactoryTest {
             }
         }
 
-        String name = "test" + MonitoringControllerImpl.INTERNAL_MONITORING_ITF;
+        String name = "test" + RemoteMonitoringManager.REMOTE_MONITORING_SUFFIX;
         Assert.assertTrue(itfMap.containsKey(name));
         PAGCMInterfaceType type = (PAGCMInterfaceType) itfMap.get(name).getFcItfType();
         Assert.assertEquals(PAGCMTypeFactory.SINGLETON_CARDINALITY, type.getGCMCardinality());
         Assert.assertEquals(MonitoringController.class.getName(), type.getFcItfSignature());
         Assert.assertEquals(PAGCMTypeFactory.CLIENT, type.isFcClientItf());
         Assert.assertEquals(PAGCMTypeFactory.INTERNAL, type.isInternal());
-
-        name = MonitoringControllerImpl.INTERNAL_SERVER_MONITORING_ITF;
-        Assert.assertTrue(itfMap.containsKey(name));
-        type = (PAGCMInterfaceType) itfMap.get(name).getFcItfType();
-        Assert.assertEquals(PAGCMTypeFactory.SINGLETON_CARDINALITY, type.getGCMCardinality());
-        Assert.assertEquals(MonitoringController.class.getName(), type.getFcItfSignature());
-        Assert.assertEquals(PAGCMTypeFactory.SERVER, type.isFcClientItf());
-        Assert.assertEquals(PAGCMTypeFactory.INTERNAL, type.isInternal());
-
 
 		Component master;
 		try {
@@ -86,7 +77,7 @@ public class ACSAdlFactoryTest {
             }
         }
 
-        name = "slave" + MonitoringControllerImpl.EXTERNAL_MONITORING_ITF;
+        name = "slave" + RemoteMonitoringManager.REMOTE_MONITORING_SUFFIX;
         Assert.assertTrue(itfMap.containsKey(name));
         type = (PAGCMInterfaceType) itfMap.get(name).getFcItfType();
         Assert.assertEquals(PAGCMTypeFactory.SINGLETON_CARDINALITY, type.getGCMCardinality());

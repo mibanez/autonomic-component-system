@@ -8,7 +8,14 @@
         </encoder>
     </appender>
 
-    <root level="trace">
+    <logger name="cl.niclabs.scada.acs.multiactivity.compatibility.ACSAnnotationProcessor" level="ERROR" />
+    <logger name="cl.niclabs.scada.acs.component.factory.BuildHelper" level="ERROR" />
+    <logger name="cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListenerImpl" level="ERROR" />
+    <logger name="cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController" level="TRACE" />
+    <logger name="cl.niclabs.scada.acs.component.factory.ACSFactory" level="TRACE" />
+    <logger name="cl.niclabs.scada.acs.component.ACSUtils" level="TRACE" />
+
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root>
 

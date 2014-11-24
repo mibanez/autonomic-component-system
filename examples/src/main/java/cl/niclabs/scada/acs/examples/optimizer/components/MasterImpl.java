@@ -1,7 +1,6 @@
 package cl.niclabs.scada.acs.examples.optimizer.components;
 
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
-import cl.niclabs.scada.acs.component.controllers.Wrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
@@ -57,15 +56,12 @@ public class MasterImpl implements Solver, BindingController {
         Wrapper<String> successResult = null;
         while(!results.isEmpty()) {
             Wrapper<String> result = results.pop();
-            try {
-                result.unwrap(); // force sequential
-                successResult = result;
-            } catch (CommunicationException ignore) {
-            }
+            result.unwrap(); // force sequential
+            successResult = result;
         }
 
         if (successResult == null) {
-            return new WrongWrapper<>(new PasswordNotFoundException("Password not found on this solver"));
+            return new WrongWrapper<>("Password not found on this solver");
         }
 
         return successResult;

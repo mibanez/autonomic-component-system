@@ -1,7 +1,6 @@
 package cl.niclabs.scada.acs.examples.optimizer.components;
 
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
-import cl.niclabs.scada.acs.component.controllers.Wrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
@@ -24,7 +23,6 @@ import static cl.niclabs.scada.acs.examples.optimizer.OptimizerConfig.TOTAL_SOLV
 })
 public class DispatcherImpl implements Dispatcher, BindingController {
 
-    public static final String DISPATCHER_SERVER_ITF = "dispatcher-server-itf";
     public static final String SOLVER_CLIENT_ITF(int index) {
         if (index >= 0 && index < TOTAL_SOLVERS_SLOTS) {
             return index + "-solver-client-itf";
@@ -74,7 +72,7 @@ public class DispatcherImpl implements Dispatcher, BindingController {
                     System.out.println("......next avialable index = " + availableIndex);
                     mutex.wait();
                 } catch (InterruptedException e) {
-                    return new WrongWrapper<>(e);
+                    return new WrongWrapper<>(e.getMessage());
                 }
             }
 
@@ -85,17 +83,12 @@ public class DispatcherImpl implements Dispatcher, BindingController {
         Wrapper<String> result = solvers[availableIndex].solve(task);
 
         System.out.println("Waiting result");
-        try {
-            result.unwrap(); // force sequential
-        } catch (CommunicationException e) {
-            e.printStackTrace();
-        } finally {
-            synchronized (mutex) {
-                busySolver[availableIndex] = false;
-                mutex.notifyAll();
-            }
-            return result;
+        result.unwrap(); // force sequential
+        synchronized (mutex) {
+            busySolver[availableIndex] = false;
+            mutex.notifyAll();
         }
+        return result;
     }
 
     private int getNextFreeIndex() {

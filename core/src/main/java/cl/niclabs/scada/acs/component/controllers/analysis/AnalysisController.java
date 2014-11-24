@@ -13,6 +13,9 @@ import java.util.HashSet;
  */
 public interface AnalysisController {
 
+    static final String ITF_NAME = "analysis-controller-nf";
+
+
     void add(String ruleId, String className) throws DuplicatedElementIdException, InvalidElementException;
 
     <RULE extends Rule> void add(String ruleId, Class<RULE> clazz) throws DuplicatedElementIdException, InvalidElementException;

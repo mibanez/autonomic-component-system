@@ -1,10 +1,10 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring.records;
 
+import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
 import org.objectweb.proactive.core.util.CircularArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +12,7 @@ import java.util.Map;
  * Stores acs event records
  *
  */
-public class RecordStoreImpl implements RecordStore, Serializable {
+public class RecordStoreImpl extends AbstractPAComponentController implements RecordStore {
 
     private final static Logger logger = LoggerFactory.getLogger(RecordStoreImpl.class);
 
@@ -27,12 +27,7 @@ public class RecordStoreImpl implements RecordStore, Serializable {
     private final Map<Long, OutgoingVoidRecord> outgoingVoidMap = new HashMap<>();
 
     // Store default size
-    private long maxSize = 64;
-
-
-    public RecordStoreImpl() {
-
-    }
+    private long maxSize = 256;
 
     @Override
     public void setMaxSize(int maxSize) {

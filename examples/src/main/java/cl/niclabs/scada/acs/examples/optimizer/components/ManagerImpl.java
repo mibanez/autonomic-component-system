@@ -1,9 +1,6 @@
 package cl.niclabs.scada.acs.examples.optimizer.components;
 
-import cl.niclabs.scada.acs.component.controllers.CommunicationException;
-import cl.niclabs.scada.acs.component.controllers.Wrapper;
-import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
-import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.fractal.api.control.IllegalBindingException;
@@ -16,7 +13,6 @@ import static cl.niclabs.scada.acs.examples.optimizer.OptimizerConfig.*;
 
 public class ManagerImpl implements Cracker, BindingController, Serializable {
 
-    public static final String DISPATCHER_CLIENT_ITF = "dispatcher-client-itf";
     private Dispatcher dispatcher;
 
     @Override
@@ -30,36 +26,34 @@ public class ManagerImpl implements Cracker, BindingController, Serializable {
         HashSet<Wrapper<String>> results = new HashSet<>();
 
         long counter = 0;
-        while (counter + TASK_SIZE < possibilities) {
+        for ( ; counter + TASK_SIZE < possibilities; counter += TASK_SIZE) {
             results.add(dispatcher.dispatch(new Task(counter, counter + TASK_SIZE - 1, encryptedPassword)));
-            counter += TASK_SIZE;
         }
         results.add(dispatcher.dispatch(new Task(counter, possibilities, encryptedPassword)));
 
-        String password = null;
+        Wrapper<String> password = null;
         for (Wrapper<String> result : results ) {
-            try {
-                if (result.unwrap() != null) {
-                    password = result.unwrap();
-                }
-            } catch (CommunicationException ignore) {
+
+            if (result.unwrap() != null) {
+                password = result;
+                // no retornar de inmediato
+                // forzar tiempo de ejecución iguales
             }
         }
 
-        return password != null ? new ValidWrapper<>(password)
-                : new WrongWrapper<String>(new PasswordNotFoundException("Cracker failed :("));
+        return password;
     }
 
 	// BINDING CONTROLLER
 
 	@Override
 	public String[] listFc() {
-		return new String[] { DISPATCHER_CLIENT_ITF };
+		return new String[] { Dispatcher.NAME };
 	}
 
 	@Override
 	public Object lookupFc(String clientItfName) throws NoSuchInterfaceException {
-		if (clientItfName.equals(DISPATCHER_CLIENT_ITF)) {
+		if (clientItfName.equals(Dispatcher.NAME)) {
             return dispatcher;
         }
         throw new NoSuchInterfaceException(clientItfName);
@@ -67,7 +61,7 @@ public class ManagerImpl implements Cracker, BindingController, Serializable {
 
 	@Override
 	public void bindFc(String name, Object server) throws NoSuchInterfaceException, IllegalBindingException {
-		if (name.equals(DISPATCHER_CLIENT_ITF)) {
+		if (name.equals(Dispatcher.NAME)) {
             if (server instanceof Dispatcher) {
                 dispatcher = (Dispatcher) server;
             } else {
@@ -80,7 +74,7 @@ public class ManagerImpl implements Cracker, BindingController, Serializable {
 
 	@Override
 	public void unbindFc(String name) throws NoSuchInterfaceException {
-        if (name.equals(DISPATCHER_CLIENT_ITF)) {
+        if (name.equals(Dispatcher.NAME)) {
             dispatcher = null;
         } else {
             throw new NoSuchInterfaceException(name);

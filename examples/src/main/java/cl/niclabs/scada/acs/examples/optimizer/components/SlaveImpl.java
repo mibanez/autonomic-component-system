@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs.examples.optimizer.components;
 
-import cl.niclabs.scada.acs.component.controllers.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
 
 import java.security.MessageDigest;
@@ -34,10 +34,10 @@ public class SlaveImpl implements Slave {
 	        }
         } catch(Exception e) {
         	e.printStackTrace();
-            return new WrongWrapper<>(e);
+            return new WrongWrapper<>(e.getMessage());
         }
         
-        return new WrongWrapper<>(new PasswordNotFoundException("password not found on this worker"));
+        return new WrongWrapper<>("password not found on this worker");
 	}
 
 	private String convertToBase(long decimal) {

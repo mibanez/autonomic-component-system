@@ -10,6 +10,8 @@ import java.io.Serializable;
  */
 public interface ExecutionController {
 
+    static final String ITF_NAME = "execution-controller-nf";
+
     /**
      * Loads procedure definitions from a file containing source code, and makes them available
      * for later invocation by name.

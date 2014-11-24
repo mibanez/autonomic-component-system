@@ -47,7 +47,7 @@ public class PlanningControllerImplTest {
 
         try {
             MonitoringController monitoringController = Mockito.mock(MonitoringController.class);
-            planningController.bindFc(PlanningControllerImpl.MONITORING_CONTROLLER_CLIENT_ITF, monitoringController);
+            planningController.bindFc(MonitoringController.ITF_NAME, monitoringController);
         }
         catch (NoSuchInterfaceException e) {
             Assert.fail("Fail when creating the MonitorControllerImpl: " + e.getMessage());
