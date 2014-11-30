@@ -1,10 +1,10 @@
 package cl.niclabs.scada.acs.gcmscript.monitoring;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
-import cl.niclabs.scada.acs.gcmscript.ACSModel;
-import cl.niclabs.scada.acs.gcmscript.controllers.monitoring.MetricNode;
+import cl.niclabs.scada.acs.gcmscript.model.ACSModel;
+import cl.niclabs.scada.acs.gcmscript.model.controllers.monitoring.MetricNode;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class MetricNodeTest  {
         }).when(monitoringController).setEnabled(metricId, true);
 
         host = mock(Component.class);
-        doReturn(monitoringController).when(host).getFcInterface(ACSUtils.MONITORING_CONTROLLER);
+        doReturn(monitoringController).when(host).getFcInterface(ACSManager.MONITORING_CONTROLLER);
 
         acsModel = mock(ACSModel.class, Mockito.RETURNS_MOCKS);
         Mockito.doReturn(new NodeKind("metric",

@@ -20,8 +20,8 @@ public class ACSFactoryTest extends AbstractComponentTest {
         ComponentType componentType = null;
         try {
             InterfaceType[] interfaceTypes = new InterfaceType[]{
-                    factory.createInterfaceType("server-itf", FooInterface.class.getName(), false, false),
-                    factory.createInterfaceType("client-itf", FooInterface.class.getName(), true, true)
+                    factory.createInterfaceType("server-itf", FooInterface.class, false, false),
+                    factory.createInterfaceType("client-itf", FooInterface.class, true, true)
             };
             componentType = factory.createComponentType(interfaceTypes);
         } catch (ACSFactoryException e) {

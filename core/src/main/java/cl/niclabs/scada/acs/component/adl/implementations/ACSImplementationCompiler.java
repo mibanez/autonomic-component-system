@@ -5,11 +5,14 @@ import org.objectweb.fractal.adl.Definition;
 import org.objectweb.fractal.adl.components.Component;
 import org.objectweb.fractal.adl.components.ComponentContainer;
 import org.objectweb.fractal.task.core.TaskMap;
+import org.objectweb.proactive.Body;
 import org.objectweb.proactive.core.component.Constants;
 import org.objectweb.proactive.core.component.ContentDescription;
 import org.objectweb.proactive.core.component.ControllerDescription;
 import org.objectweb.proactive.core.component.adl.implementations.PAImplementationCompiler;
+import org.objectweb.proactive.core.component.body.ComponentRunActive;
 import org.objectweb.proactive.core.component.type.Composite;
+import org.objectweb.proactive.multiactivity.component.ComponentMultiActiveService;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +25,15 @@ import java.util.Map;
 public class ACSImplementationCompiler extends PAImplementationCompiler {
 
     private static final String ACS_COMPONENT_CONFIG_FILE_LOCATION =
-            "/acs/component/default-acs-component-config.xml";
+            "/cl/niclabs/scada/acs/component/default-acs-component-config.xml";
+
+    private ComponentRunActive acsActive = new ComponentRunActive() {
+        @Override
+        public void runComponentActivity(Body body) {
+            body.setImmediateService("getValue", false);
+            (new ComponentMultiActiveService(body)).multiActiveServing();
+        }
+    };
 
     @Override
     public void compile(List<ComponentContainer> path, ComponentContainer container, TaskMap tasks,
@@ -44,8 +55,9 @@ public class ACSImplementationCompiler extends PAImplementationCompiler {
         // determines content description and controller description info
         setControllers(obj.getImplementation(), obj.getController(), obj.getName(), obj);
         // create the task that will be in charge of creating the component
-        end(tasks, container, context, obj.getName(), obj.getDefinition(), obj.getControllerDesc(), obj
-                .getContentDesc(), obj.getVn(), obj.isFunctional());
+
+        end(tasks, container, context, obj.getName(), obj.getDefinition(), obj.getControllerDesc(),
+                obj.getContentDesc(), obj.getVn(), obj.isFunctional());
     }
 
 
@@ -72,7 +84,7 @@ public class ACSImplementationCompiler extends PAImplementationCompiler {
             if ("composite".equals(controller) || (controller == null)) {
                 controllerDesc = new ControllerDescription(name, Constants.COMPOSITE,
                 		PAImplementationCompiler.getControllerPath(ACS_COMPONENT_CONFIG_FILE_LOCATION, name));
-                contentDesc = new ContentDescription(Composite.class.getName());
+                contentDesc = new ContentDescription(Composite.class.getName(), null, acsActive, null);
             } else {
                 controllerDesc = new ControllerDescription(name, Constants.COMPOSITE,
                         PAImplementationCompiler.getControllerPath(controller, name));
@@ -83,7 +95,7 @@ public class ACSImplementationCompiler extends PAImplementationCompiler {
             // a composite component with attributes 
             //    in that case it must have an Attributes node, and the class implementation must implement
             //    the Attributes signature
-            contentDesc = new ContentDescription(implementation);
+            contentDesc = new ContentDescription(implementation, null, acsActive, null);
 
             // treat it as a composite
             if ("composite".equals(controller) || (controller == null)) {
@@ -96,7 +108,7 @@ public class ACSImplementationCompiler extends PAImplementationCompiler {
 
         } else {
             // a primitive component
-            contentDesc = new ContentDescription(implementation);
+            contentDesc = new ContentDescription(implementation, null, acsActive, null);
 
             if ("primitive".equals(controller) || (controller == null)) {
                 controllerDesc = new ControllerDescription(name, Constants.PRIMITIVE,
@@ -111,5 +123,4 @@ public class ACSImplementationCompiler extends PAImplementationCompiler {
         obj.setContentDesc(contentDesc);
         obj.setControllerDesc(controllerDesc);
     }
-
 }

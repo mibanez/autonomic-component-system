@@ -1,10 +1,10 @@
 package cl.niclabs.scada.acs.component.controllers.analysis;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.DuplicatedElementIdException;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
-import cl.niclabs.scada.acs.gcmscript.CommunicationException;
+import cl.niclabs.scada.acs.gcmscript.model.CommunicationException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -54,7 +54,7 @@ public class AnalysisControllerImplTest {
 
         AnalysisControllerImpl analysisController = new AnalysisControllerImpl();
         Component host = mock(PAComponent.class);
-        doReturn(analysisController).when(host).getFcInterface(eq(ACSUtils.ANALYSIS_CONTROLLER));
+        doReturn(analysisController).when(host).getFcInterface(eq(ACSManager.ANALYSIS_CONTROLLER));
         analysisController.setHostComponent(host);
 
         try {
@@ -123,7 +123,7 @@ public class AnalysisControllerImplTest {
         AnalysisControllerImpl analysisController = new AnalysisControllerImpl();
 
         Component host = mock(PAComponent.class);
-        doReturn(analysisController).when(host).getFcInterface(eq(ACSUtils.ANALYSIS_CONTROLLER));
+        doReturn(analysisController).when(host).getFcInterface(eq(ACSManager.ANALYSIS_CONTROLLER));
         analysisController.setHostComponent(host);
 
         try {

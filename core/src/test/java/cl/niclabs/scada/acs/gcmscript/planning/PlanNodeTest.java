@@ -1,11 +1,11 @@
 package cl.niclabs.scada.acs.gcmscript.planning;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
-import cl.niclabs.scada.acs.gcmscript.ACSModel;
-import cl.niclabs.scada.acs.gcmscript.controllers.planning.PlanNode;
+import cl.niclabs.scada.acs.gcmscript.model.ACSModel;
+import cl.niclabs.scada.acs.gcmscript.model.controllers.planning.PlanNode;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class PlanNodeTest {
 
         host = mock(Component.class);
         try {
-            doReturn(planningController).when(host).getFcInterface(ACSUtils.PLANNING_CONTROLLER);
+            doReturn(planningController).when(host).getFcInterface(ACSManager.PLANNING_CONTROLLER);
         } catch (NoSuchInterfaceException e) {
             e.printStackTrace();
             Assert.fail();

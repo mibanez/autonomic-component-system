@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.factory;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import org.objectweb.proactive.Body;
 import org.objectweb.proactive.core.body.ft.protocols.FTManager;
 import org.objectweb.proactive.core.body.request.Request;
@@ -18,7 +18,7 @@ public class ACSRequestReceiver extends RequestReceiverImpl {
     public int receiveRequest(Request request, Body bodyReceiver) {
         if (request instanceof ComponentRequest) {
             String interfaceName = request.getMethodCall().getComponentMetadata().getComponentInterfaceName();
-            if (interfaceName.equals(ACSUtils.MONITORING_CONTROLLER)) {
+            if (interfaceName.equals(ACSManager.MONITORING_CONTROLLER)) {
                 if (request.getMethodName().equals("getValue")) {
                     this.inACSImmediateService.incrementAndGet();
                     try {

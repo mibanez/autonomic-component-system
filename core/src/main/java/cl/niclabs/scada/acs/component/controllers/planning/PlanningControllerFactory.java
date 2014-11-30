@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers.planning;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
@@ -46,7 +46,7 @@ public class PlanningControllerFactory {
     }
 
     private static ControllerDescription getControllerDescription() {
-        return new ControllerDescription(COMPONENT_NAME, Constants.PRIMITIVE, ACSUtils.CONTROLLER_CONFIG_PATH);
+        return new ControllerDescription(COMPONENT_NAME, Constants.PRIMITIVE, ACSManager.CONTROLLER_CONFIG_PATH);
     }
 
     private static ContentDescription getContentDescription() {

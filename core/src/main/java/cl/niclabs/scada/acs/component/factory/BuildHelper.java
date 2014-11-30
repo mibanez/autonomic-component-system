@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.factory;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisControllerFactory;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
@@ -145,10 +145,10 @@ public class BuildHelper {
 
         try {
             // Add controller main nf interface
-            extraNfItfs.add(tf.createGCMItfType(ACSUtils.EXECUTION_CONTROLLER, ExecutionController.class.getName(), false, true, "singleton"));
-            extraNfItfs.add(tf.createGCMItfType(ACSUtils.PLANNING_CONTROLLER, PlanningController.class.getName(), false, true, "singleton"));
-            extraNfItfs.add(tf.createGCMItfType(ACSUtils.ANALYSIS_CONTROLLER, AnalysisController.class.getName(), false, true, "singleton"));
-            extraNfItfs.add(tf.createGCMItfType(ACSUtils.MONITORING_CONTROLLER, monClazz, false, true, "singleton"));
+            extraNfItfs.add(tf.createGCMItfType(ACSManager.EXECUTION_CONTROLLER, ExecutionController.class.getName(), false, true, "singleton"));
+            extraNfItfs.add(tf.createGCMItfType(ACSManager.PLANNING_CONTROLLER, PlanningController.class.getName(), false, true, "singleton"));
+            extraNfItfs.add(tf.createGCMItfType(ACSManager.ANALYSIS_CONTROLLER, AnalysisController.class.getName(), false, true, "singleton"));
+            extraNfItfs.add(tf.createGCMItfType(ACSManager.MONITORING_CONTROLLER, monClazz, false, true, "singleton"));
 
             // Add extra nf interfaces based of the f interfaces
             for (InterfaceType fItfType : fInterfaceTypes) {
@@ -163,9 +163,12 @@ public class BuildHelper {
                         if (((PAGCMInterfaceType) fItfType).isGCMGathercastItf()) {
                             extraNfItfs.add(tf.createGCMItfType(name, monClazz, true, true, "singleton"));
                         }
-                        if (((PAGCMInterfaceType) fItfType).isGCMMulticastItf()) {
-                            extraNfItfs.add(tf.createGCMItfType(name, monClazz, true, true, "multicast"));
-                        }
+
+                        // not supported for now
+                        //
+                        // if (((PAGCMInterfaceType) fItfType).isGCMMulticastItf()) {
+                        //    extraNfItfs.add(tf.createGCMItfType(name, MulticastMonitoringController.class.getName(), true, true, "multicast"));
+                        // }
                     }
                 }
 
@@ -307,13 +310,13 @@ public class BuildHelper {
             String hostName = getComponentName(host);
 
             logger.trace("Binding monitoring on {}", hostName);
-            m.nfBindFc(ACSUtils.MONITORING_CONTROLLER,
+            m.nfBindFc(ACSManager.MONITORING_CONTROLLER,
                     MonitoringManagerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME);
             m.nfBindFc(MetricStoreFactory.COMPONENT_NAME + "." + MetricEventListener.ITF_NAME,
                     AnalysisControllerFactory.COMPONENT_NAME + "." + MetricEventListener.ITF_NAME);
 
             logger.trace("Binding analysis on {}", hostName);
-            m.nfBindFc(ACSUtils.ANALYSIS_CONTROLLER,
+            m.nfBindFc(ACSManager.ANALYSIS_CONTROLLER,
                     AnalysisControllerFactory.COMPONENT_NAME + "." + AnalysisController.ITF_NAME);
             m.nfBindFc(AnalysisControllerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME,
                     MonitoringManagerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME);
@@ -321,7 +324,7 @@ public class BuildHelper {
                     PlanningControllerFactory.COMPONENT_NAME + "." + RuleEventListener.ITF_NAME);
 
             logger.trace("Binding planning on {}", hostName);
-            m.nfBindFc(ACSUtils.PLANNING_CONTROLLER,
+            m.nfBindFc(ACSManager.PLANNING_CONTROLLER,
                     PlanningControllerFactory.COMPONENT_NAME + "." + PlanningController.ITF_NAME);
             m.nfBindFc(PlanningControllerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME,
                     MonitoringManagerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME);
@@ -329,7 +332,7 @@ public class BuildHelper {
                     ExecutionControllerImpl.CONTROLLER_NAME + "." + ExecutionController.ITF_NAME);
 
             logger.trace("Binding execution on {}", hostName);
-            m.nfBindFc(ACSUtils.EXECUTION_CONTROLLER,
+            m.nfBindFc(ACSManager.EXECUTION_CONTROLLER,
                     ExecutionControllerFactory.COMPONENT_NAME + "." + ExecutionController.ITF_NAME);
         }
         catch (NoSuchInterfaceException | IllegalLifeCycleException |

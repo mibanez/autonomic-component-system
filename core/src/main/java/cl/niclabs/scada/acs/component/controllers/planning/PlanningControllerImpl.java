@@ -92,36 +92,11 @@ public class PlanningControllerImpl extends AbstractPAComponentController
 
     // SUBSCRIPTION
 
-    @Override
-    public Wrapper<Boolean> globallySubscribe(String id, ACSAlarm alarm) {
-        if (plans.containsKey(id)) {
-            plans.get(id).globallySubscribe(alarm);
-            return new ValidWrapper<>(true);
-        }
-        return new ValidWrapper<>(false, "No plan registered with id " + id);
-    }
 
     @Override
-    public Wrapper<Boolean> globallyUnsubscribe(String id) {
+    public Wrapper<Boolean> subscribeTo(String id, String ruleId) {
         if (plans.containsKey(id)) {
-            plans.get(id).globallyUnsubscribe();
-            return new ValidWrapper<>(true);
-        }
-        return new ValidWrapper<>(false, "No plan registered with id " + id);
-    }
-
-    @Override
-    public Wrapper<ACSAlarm> getGlobalSubscription(String id) {
-        if (plans.containsKey(id)) {
-            new ValidWrapper<>(plans.get(id).getGlobalSubscription());
-        }
-        return new WrongWrapper<>("No plan registered with id " + id);
-    }
-
-    @Override
-    public Wrapper<Boolean> subscribeTo(String id, String ruleId, ACSAlarm alarmLevel) {
-        if (plans.containsKey(id)) {
-            plans.get(id).subscribeTo(ruleId, alarmLevel);
+            plans.get(id).subscribeTo(ruleId);
             return new ValidWrapper<>(true);
         }
         return new ValidWrapper<>(false, "No plan registered with id " + id);
@@ -137,7 +112,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     }
 
     @Override
-    public Wrapper<HashSet<AlarmSubscription>> getSubscriptions(String id) {
+    public Wrapper<HashSet<String>> getSubscriptions(String id) {
         if (plans.containsKey(id)) {
             return new ValidWrapper<>(plans.get(id).getSubscriptions());
         }
@@ -145,9 +120,9 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     }
 
     @Override
-    public Wrapper<Boolean> isSubscribedTo(String id, String ruleId, ACSAlarm alarmLevel) {
+    public Wrapper<Boolean> isSubscribedTo(String id, String ruleId) {
         if (plans.containsKey(id)) {
-            return new ValidWrapper<>(plans.get(id).isSubscribedTo(ruleId, alarmLevel));
+            return new ValidWrapper<>(plans.get(id).isSubscribedTo(ruleId));
         }
         return new WrongWrapper<>("No plan registered with id " + id);
     }
@@ -176,7 +151,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     @Override
     public void notifyAlarm(RuleEvent event) {
         for (Map.Entry<String, Plan> entry : plans.entrySet()) {
-            if (entry.getValue().isSubscribedTo(event.getRuleId(), event.getAlarm())) {
+            if (entry.getValue().isSubscribedTo(event.getRuleId())) {
                 entry.getValue().doPlanFor(event.getRuleId(), event.getAlarm(), monitoringController);
             }
         }

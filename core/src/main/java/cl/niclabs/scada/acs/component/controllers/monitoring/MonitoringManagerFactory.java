@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListener;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricStore;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.RemoteMonitoringManager;
@@ -35,26 +35,17 @@ public class MonitoringManagerFactory {
         );
     }
 
-    private static ComponentType getComponentType(PAGCMTypeFactory typeFactory) throws org.objectweb.fractal.api.factory.InstantiationException {
-        ArrayList<InterfaceType> itfs = new ArrayList<>();
-        itfs.add(typeFactory.createGCMItfType(
-                MonitoringController.ITF_NAME, MonitoringController.class.getName(), false, false, "singleton"
-        ));
-        itfs.add(typeFactory.createGCMItfType(
-                MetricStore.ITF_NAME, MetricStore.class.getName(), true, false, "singleton"
-        ));
-        itfs.add(typeFactory.createGCMItfType(
-                RemoteMonitoringManager.ITF_NAME, RemoteMonitoringManager.class.getName(), true, false, "singleton"
-        ));
-        itfs.add(typeFactory.createGCMItfType(
-                GCMPAEventListener.ITF_NAME, GCMPAEventListener.class.getName(), true, false, "singleton"
-        ));
-
-        return typeFactory.createFcType(itfs.toArray(new InterfaceType[itfs.size()]));
+    private static ComponentType getComponentType(PAGCMTypeFactory tf) throws org.objectweb.fractal.api.factory.InstantiationException {
+        ArrayList<InterfaceType> list = new ArrayList<>();
+        list.add(tf.createGCMItfType(MonitoringController.ITF_NAME, MonitoringController.class.getName(), false, false, "singleton"));
+        list.add(tf.createGCMItfType(MetricStore.ITF_NAME, MetricStore.class.getName(), true, false, "singleton"));
+        list.add(tf.createGCMItfType(RemoteMonitoringManager.ITF_NAME, RemoteMonitoringManager.class.getName(), true, false, "singleton"));
+        list.add(tf.createGCMItfType(GCMPAEventListener.ITF_NAME, GCMPAEventListener.class.getName(), true, false, "singleton"));
+        return tf.createFcType(list.toArray(new InterfaceType[list.size()]));
     }
 
     private static ControllerDescription getControllerDescription() {
-        return new ControllerDescription("MonitoringManager", Constants.PRIMITIVE, ACSUtils.CONTROLLER_CONFIG_PATH);
+        return new ControllerDescription("MonitoringManager", Constants.PRIMITIVE, ACSManager.CONTROLLER_CONFIG_PATH);
     }
 
     private static ContentDescription getContentDescription() {

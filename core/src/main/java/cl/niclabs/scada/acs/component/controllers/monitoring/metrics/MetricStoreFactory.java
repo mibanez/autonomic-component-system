@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring.metrics;
 
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEventListener;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
@@ -91,7 +91,7 @@ public class MetricStoreFactory {
     }
 
     private static ControllerDescription getControllerDescription() {
-        return new ControllerDescription(COMPONENT_NAME, Constants.PRIMITIVE, ACSUtils.CONTROLLER_CONFIG_PATH);
+        return new ControllerDescription(COMPONENT_NAME, Constants.PRIMITIVE, ACSManager.CONTROLLER_CONFIG_PATH);
     }
 
     private static ContentDescription getContentDescription() {

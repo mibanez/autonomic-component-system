@@ -2,7 +2,7 @@ package cl.niclabs.scada.acs.component.controllers.monitoring.records;
 
 import org.objectweb.proactive.core.jmx.notification.RequestNotificationData;
 
-public class OutgoingRecord extends AbstractRecord {
+public class OutgoingRecord extends Record {
 
     private long sentTime;
     private long futureReceivedTime;

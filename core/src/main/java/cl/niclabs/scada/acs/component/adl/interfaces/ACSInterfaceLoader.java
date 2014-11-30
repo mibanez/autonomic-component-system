@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.adl.interfaces;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.adl.ACSAdlFactory;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
@@ -185,7 +185,7 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
 		
 		// Monitor
 		Map<String, String> attr = nfItf.astGetAttributes();
-		attr.put("name", ACSUtils.MONITORING_CONTROLLER);
+		attr.put("name", ACSManager.MONITORING_CONTROLLER);
 		attr.put("role", PATypeInterface.SERVER_ROLE);
 		attr.put("cardinality", PATypeInterface.SINGLETON_CARDINALITY);
 		attr.put("contingency", PATypeInterface.OPTIONAL_CONTINGENCY);
@@ -196,7 +196,7 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
 		// Analyzer
 		nfItf = gson.fromJson(gson.toJson(nfItf), nfItf.getClass());
 		attr = nfItf.astGetAttributes();
-		attr.put("name", ACSUtils.ANALYSIS_CONTROLLER);
+		attr.put("name", ACSManager.ANALYSIS_CONTROLLER);
 		attr.put("signature", AnalysisController.class.getName());
 		nfItf.astSetAttributes(attr);
 		destination.addInterface(nfItf);
@@ -204,7 +204,7 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
 		// Planner
 		nfItf = gson.fromJson(gson.toJson(nfItf), nfItf.getClass());
 		attr = nfItf.astGetAttributes();
-		attr.put("name", ACSUtils.PLANNING_CONTROLLER);
+		attr.put("name", ACSManager.PLANNING_CONTROLLER);
 		attr.put("signature", PlanningController.class.getName());
 		nfItf.astSetAttributes(attr);
 		destination.addInterface(nfItf);
@@ -212,7 +212,7 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
 		// Executor
 		nfItf = gson.fromJson(gson.toJson(nfItf), nfItf.getClass());
 		attr = nfItf.astGetAttributes();
-		attr.put("name", ACSUtils.EXECUTION_CONTROLLER);
+		attr.put("name", ACSManager.EXECUTION_CONTROLLER);
 		attr.put("signature", ExecutionController.class.getName());
 		nfItf.astSetAttributes(attr);
 		destination.addInterface(nfItf);

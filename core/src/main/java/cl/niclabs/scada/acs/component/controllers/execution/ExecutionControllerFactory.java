@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers.execution;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.type.ComponentType;
 import org.objectweb.fractal.api.type.InterfaceType;
@@ -39,7 +39,7 @@ public class ExecutionControllerFactory {
     }
 
     private static ControllerDescription getControllerDescription() {
-        return new ControllerDescription(COMPONENT_NAME, Constants.PRIMITIVE, ACSUtils.CONTROLLER_CONFIG_PATH);
+        return new ControllerDescription(COMPONENT_NAME, Constants.PRIMITIVE, ACSManager.CONTROLLER_CONFIG_PATH);
     }
 
     private static ContentDescription getContentDescription() {

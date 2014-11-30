@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring.records;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.factory.InstantiationException;
 import org.objectweb.fractal.api.type.ComponentType;
@@ -41,7 +41,7 @@ public class RecordStoreFactory {
     }
 
     private static ControllerDescription getControllerDescription() {
-        return new ControllerDescription(COMPONENT_NAME, Constants.PRIMITIVE, ACSUtils.CONTROLLER_CONFIG_PATH);
+        return new ControllerDescription(COMPONENT_NAME, Constants.PRIMITIVE, ACSManager.CONTROLLER_CONFIG_PATH);
     }
 
     private static ContentDescription getContentDescription() {

@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring.events;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.factory.InstantiationException;
@@ -49,7 +49,7 @@ public class GCMPAEventListenerFactory {
     }
 
     private static ControllerDescription getControllerDescription() {
-        return new ControllerDescription(COMPONENT_NAME, Constants.PRIMITIVE, ACSUtils.CONTROLLER_CONFIG_PATH);
+        return new ControllerDescription(COMPONENT_NAME, Constants.PRIMITIVE, ACSManager.CONTROLLER_CONFIG_PATH);
     }
 
     private static ContentDescription getContentDescription() {

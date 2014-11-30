@@ -4,7 +4,7 @@
 <!-- This is the main, top-level component implementing the default GCMScript configuration. -->
 <definition name="cl.niclabs.scada.acs.gcmscript.ACSScript" extends="org.objectweb.proactive.extra.component.fscript.GCMScript">
 
-	<component name="model" definition="acs.gcmscript.ACSModel"/>
-	<component name="gcm-factory" definition="org.objectweb.proactive.extensions.autonomic.adl.AFactory"/>
+	<component name="model" definition="cl.niclabs.scada.acs.gcmscript.model.ACSModel"/>
+	<component name="gcm-factory" definition="cl.niclabs.scada.acs.component.adl.ACSAdlFactory"/>
 
 </definition>

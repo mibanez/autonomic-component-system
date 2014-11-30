@@ -2,6 +2,7 @@ package cl.niclabs.scada.acs.component.factory;
 
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
+import org.objectweb.fractal.api.control.IllegalLifeCycleException;
 import org.objectweb.fractal.api.factory.InstantiationException;
 import org.objectweb.fractal.api.type.ComponentType;
 import org.objectweb.fractal.api.type.InterfaceType;
@@ -93,19 +94,19 @@ public class ACSFactory {
 
     /** InterfaceType **/
 
-    public InterfaceType createInterfaceType(String name, String signature, boolean isClient, boolean isOptional)
+    public InterfaceType createInterfaceType(String name, Class<?> signature, boolean isClient, boolean isOptional)
             throws ACSFactoryException {
         return createInterfaceType(name, signature, isClient, isOptional, "singleton");
     }
 
-    public InterfaceType createInterfaceType(String name, String signature, boolean isClient, boolean isOptional, String cardinality) throws ACSFactoryException {
+    public InterfaceType createInterfaceType(String name, Class<?> signature, boolean isClient, boolean isOptional, String cardinality) throws ACSFactoryException {
         return createInterfaceType(name, signature, isClient, isOptional, cardinality, false);
     }
 
-    public InterfaceType createInterfaceType(String name, String signature, boolean isClient, boolean isOptional, String cardinality, boolean isInternal) throws ACSFactoryException {
+    public InterfaceType createInterfaceType(String name, Class<?> signature, boolean isClient, boolean isOptional, String cardinality, boolean isInternal) throws ACSFactoryException {
         try {
             checkFactories();
-            return tf.createGCMItfType(name, signature, isClient, isOptional, cardinality, isInternal);
+            return tf.createGCMItfType(name, signature.getName(), isClient, isOptional, cardinality, isInternal);
         } catch (InstantiationException e) {
             throw new ACSFactoryException(e);
         }
@@ -170,7 +171,7 @@ public class ACSFactory {
                             componentClass.getName(),
                             null,
                             acsActive,
-                            getACSMetaObjectFactory(componentType, controllerDescription)),
+                            null), //getACSMetaObjectFactory(componentType, controllerDescription)),
                     node);
 
         } catch (InstantiationException e) {
@@ -183,7 +184,12 @@ public class ACSFactory {
         logger.debug("adding acs controllers to {} component", name);
         buildHelper.addACSControllers(component);
 
-        //ACSUtils.startMembrane(component, "ACSFactory.createComponent()");
+        try {
+            Utils.getPAMembraneController(component).startMembrane();
+        } catch (IllegalLifeCycleException | NoSuchInterfaceException e) {
+            throw new ACSFactoryException("Can't start membrane: " + e.getMessage());
+        }
+
         return component;
     }
 

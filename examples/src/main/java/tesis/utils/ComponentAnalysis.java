@@ -1,6 +1,6 @@
 package tesis.utils;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.type.InterfaceType;
 import org.objectweb.proactive.core.component.ContentDescription;
@@ -20,7 +20,7 @@ public class ComponentAnalysis {
 
     public static void main(String[] args) throws Exception {
 
-        System.setProperty("java.security.policy", ACSUtils.class.getResource("/proactive.java.policy").getPath());
+        System.setProperty("java.security.policy", ACSManager.class.getResource("/proactive.java.policy").getPath());
         System.setSecurityManager(new SecurityManager());
         System.setProperty("gcm.provider", Fractive.class.getName());
 

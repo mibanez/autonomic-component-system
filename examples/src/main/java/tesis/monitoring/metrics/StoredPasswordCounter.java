@@ -22,7 +22,7 @@ public class StoredPasswordCounter extends Metric<Long> {
 
     @Override
     public Long calculate(RecordStore recordStore, MetricStore metricStore) {
-        value = recordStore.fromIncoming().whereRecordIsFinished().getRecords().size();
+        value = recordStore.countIncoming();
         return value;
     }
 }

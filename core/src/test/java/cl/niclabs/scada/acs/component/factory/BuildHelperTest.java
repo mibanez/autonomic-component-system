@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs.component.factory;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.RemoteMonitoringManager;
 import org.junit.Assert;
@@ -29,8 +29,8 @@ public class BuildHelperTest extends AbstractComponentTest {
         InterfaceType[] interfaceTypes = null;
         try {
             interfaceTypes = new InterfaceType[]{
-                    factory.createInterfaceType("server-itf", FooInterface.class.getName(), false, false),
-                    factory.createInterfaceType("client-itf", FooInterface.class.getName(), true, true)
+                    factory.createInterfaceType("server-itf", FooInterface.class, false, false),
+                    factory.createInterfaceType("client-itf", FooInterface.class, true, true)
             };
         } catch (ACSFactoryException e) {
             e.printStackTrace();
@@ -50,9 +50,9 @@ public class BuildHelperTest extends AbstractComponentTest {
             nameSet.add(itfType.getFcItfName());
         }
 
-        Assert.assertTrue(nameSet.contains(ACSUtils.MONITORING_CONTROLLER));
-        Assert.assertTrue(nameSet.contains(ACSUtils.ANALYSIS_CONTROLLER));
-        Assert.assertTrue(nameSet.contains(ACSUtils.PLANNING_CONTROLLER));
+        Assert.assertTrue(nameSet.contains(ACSManager.MONITORING_CONTROLLER));
+        Assert.assertTrue(nameSet.contains(ACSManager.ANALYSIS_CONTROLLER));
+        Assert.assertTrue(nameSet.contains(ACSManager.PLANNING_CONTROLLER));
 
         Assert.assertTrue(nameSet.contains("client-itf" + RemoteMonitoringManager.REMOTE_MONITORING_SUFFIX));
         Assert.assertTrue(nameSet.contains("server-itf" + RemoteMonitoringManager.REMOTE_MONITORING_SUFFIX));
@@ -65,8 +65,8 @@ public class BuildHelperTest extends AbstractComponentTest {
         Component foo = null;
         try {
             ComponentType componentType = factory.createComponentType(new InterfaceType[]{
-                    factory.createInterfaceType("server-itf", FooInterface.class.getName(), false, false),
-                    factory.createInterfaceType("client-itf", FooInterface.class.getName(), true, true)
+                    factory.createInterfaceType("server-itf", FooInterface.class, false, false),
+                    factory.createInterfaceType("client-itf", FooInterface.class, true, true)
             });
             foo = factory.getGenericFactory().newFcInstance(componentType,
                     new ControllerDescription("FooComponent", "primitive"),

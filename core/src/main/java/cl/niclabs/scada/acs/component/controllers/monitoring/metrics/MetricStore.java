@@ -3,7 +3,7 @@ package cl.niclabs.scada.acs.component.controllers.monitoring.metrics;
 
 import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEvent;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
-import cl.niclabs.scada.acs.gcmscript.CommunicationException;
+import cl.niclabs.scada.acs.gcmscript.model.CommunicationException;
 
 import java.io.Serializable;
 import java.util.ArrayList;

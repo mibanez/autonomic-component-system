@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring.metrics;
 
-import static cl.niclabs.scada.acs.component.ACSUtils.MONITORING_CONTROLLER;
+import static cl.niclabs.scada.acs.component.ACSManager.MONITORING_CONTROLLER;
 
 
 public interface RemoteMonitoringManager {

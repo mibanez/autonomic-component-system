@@ -1,6 +1,6 @@
 package cl.niclabs.scada.acs.component.controllers.planning;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEvent;
@@ -29,8 +29,7 @@ public class PlanningControllerImplTest {
     public static class FooPlan extends Plan {
         public static int counter = 0;
         FooPlan() {
-            subscribeTo("foo-rule", ACSAlarm.VIOLATION);
-            globallySubscribe(ACSAlarm.ERROR);
+            subscribeTo("foo-rule");
         }
         public void doPlanFor(String ruleName, ACSAlarm alarm, MonitoringController monitorController) {
             counter++;
@@ -42,7 +41,7 @@ public class PlanningControllerImplTest {
 
         PlanningControllerImpl planningController = new PlanningControllerImpl();
         Component host = mock(PAComponent.class);
-        doReturn(planningController).when(host).getFcInterface(eq(ACSUtils.PLANNING_CONTROLLER));
+        doReturn(planningController).when(host).getFcInterface(eq(ACSManager.PLANNING_CONTROLLER));
         planningController.setHostComponent(host);
 
         try {

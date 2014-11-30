@@ -79,34 +79,35 @@ public class GCMPAEventListenerImpl extends AbstractPAComponentController implem
 
         if (notification.getUserData() instanceof RequestNotificationData) {
             RequestNotificationData data = (RequestNotificationData) notification.getUserData();
+            long millisTime = notification.getTimeStamp()/1000;
             switch (notification.getType()) {
 
                 case NotificationType.requestReceived:      // REQUEST_RECEIVED
-                    requestReceived(data, notification.getTimeStamp());
+                    requestReceived(data, millisTime);
                     break;
                 case NotificationType.servingStarted:        // REQUEST_SERVICE_STARTED
-                    requestServiceStarted(data, notification.getTimeStamp());
+                    requestServiceStarted(data, millisTime);
                     break;
                 case NotificationType.realReplySent:        // REQUEST_SERVICE_ENDED
-                    requestServiceEnded(data, notification.getTimeStamp());
+                    requestServiceEnded(data, millisTime);
                     break;
                 case NotificationType.voidRequestServed:    // REQUEST_SERVICE_ENDED for void requests
-                    requestServiceEnded(data, notification.getTimeStamp());
+                    requestServiceEnded(data, millisTime);
                     break;
                 case NotificationType.requestSent:          // REQUEST_SENT
-                    requestSent(data, notification.getTimeStamp());
+                    requestSent(data, millisTime);
                     break;
                 case NotificationType.replyReceived:        // FUTURE_RECEIVED
-                    requestResponseReceived(data, notification.getTimeStamp());
+                    requestResponseReceived(data, millisTime);
                     break;
                 case NotificationType.realReplyReceived:    // RESPONSE_RECEIVED
                     // This happens when the reply received does not have any more Futures,
                     // therefore all the reply data is available.
-                    requestResponseCompleted(data, notification.getTimeStamp());
+                    requestResponseCompleted(data, millisTime);
                     break;
 
                 case NotificationType.voidRequestSent:      // VOID_REQUEST_SENT
-                    voidRequestSent(data, notification.getTimeStamp());
+                    voidRequestSent(data, millisTime);
                     break;
             }
         }

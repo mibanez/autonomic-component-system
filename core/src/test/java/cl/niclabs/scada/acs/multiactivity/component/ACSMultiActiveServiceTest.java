@@ -1,7 +1,7 @@
 package cl.niclabs.scada.acs.multiactivity.component;
 
 import cl.niclabs.scada.acs.AbstractComponentTest;
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.Metric;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricStore;
@@ -30,8 +30,8 @@ public class ACSMultiActiveServiceTest extends AbstractComponentTest {
     public void multiActiveServiceTest() {
         try {
             ComponentType componentType = factory.createComponentType(new InterfaceType[]{
-                    factory.createInterfaceType("server-itf", FooInterface.class.getName(), false, false, "singleton"),
-                    factory.createInterfaceType("client-itf", FooInterface.class.getName(), true, true, "singleton")
+                    factory.createInterfaceType("server-itf", FooInterface.class, false, false, "singleton"),
+                    factory.createInterfaceType("client-itf", FooInterface.class, true, true, "singleton")
             });
             Component foo = factory.createPrimitiveComponent("FooComponent", componentType, FooComponent.class, null);
 
@@ -39,7 +39,7 @@ public class ACSMultiActiveServiceTest extends AbstractComponentTest {
             Utils.getPAGCMLifeCycleController(foo).startFc();
 
             FooInterface fooItf = (FooInterface) foo.getFcInterface("server-itf");
-            MonitoringController monitoringController = ACSUtils.getMonitoringController(foo);
+            MonitoringController monitoringController = ACSManager.getMonitoringController(foo);
             monitoringController.add("foo-metric", FooMetric.class);
 
             fooItf.foo();

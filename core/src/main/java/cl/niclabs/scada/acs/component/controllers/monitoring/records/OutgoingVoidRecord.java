@@ -5,7 +5,7 @@ import org.objectweb.proactive.core.jmx.notification.RequestNotificationData;
 /**
  * Created by mibanez
  */
-public class OutgoingVoidRecord extends AbstractRecord {
+public class OutgoingVoidRecord extends Record {
 
     private long sentTime;
 

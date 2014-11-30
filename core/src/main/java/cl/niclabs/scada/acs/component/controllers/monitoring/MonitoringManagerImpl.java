@@ -7,7 +7,7 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.Metric;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricStore;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.RemoteMonitoringManager;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
-import cl.niclabs.scada.acs.gcmscript.CommunicationException;
+import cl.niclabs.scada.acs.gcmscript.model.CommunicationException;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;

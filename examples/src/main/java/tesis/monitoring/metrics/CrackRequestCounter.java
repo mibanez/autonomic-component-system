@@ -21,7 +21,7 @@ public class CrackRequestCounter extends Metric<Long> {
 
     @Override
     public Long calculate(RecordStore recordStore, MetricStore metricStore) {
-        counter = recordStore.fromIncoming().getRecords().size();
+        counter = recordStore.countIncoming();
         return counter;
     }
 }

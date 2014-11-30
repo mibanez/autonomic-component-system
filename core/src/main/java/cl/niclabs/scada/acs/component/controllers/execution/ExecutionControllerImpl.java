@@ -28,7 +28,6 @@ import java.util.Set;
 public class ExecutionControllerImpl extends AbstractPAComponentController implements ExecutionController {
 
     public static final String CONTROLLER_NAME = "ExecutionController";
-    public static final String EXECUTION_CONTROLLER_SERVER_ITF = "execution-controller-server-itf-nf";
     public static final String ACS_GCMSCRIPT_ADL = "cl.niclabs.scada.acs.gcmscript.ACSScript";
 
     private transient ScriptLoader loader;
@@ -55,7 +54,8 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
                 System.setProperty("fractal.provider", defaultFcProvider);
 
             } catch (Exception e) {
-                throw new ReconfigurationException("Unable to set new engine for reconfiguration controller", e);
+                throw new ReconfigurationException("Unable to set new engine for reconfiguration controller: "
+                        + e.getMessage(), e);
             }
         }
     }

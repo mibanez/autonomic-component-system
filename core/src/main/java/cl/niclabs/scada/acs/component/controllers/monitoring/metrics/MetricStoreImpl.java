@@ -7,7 +7,7 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
-import cl.niclabs.scada.acs.gcmscript.CommunicationException;
+import cl.niclabs.scada.acs.gcmscript.model.CommunicationException;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.fractal.api.control.IllegalBindingException;

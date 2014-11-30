@@ -11,7 +11,7 @@
 		<interface role="client" name="loader" signature="org.objectweb.fractal.adl.Loader"/>
 		<interface role="client" name="compiler" signature="org.objectweb.fractal.adl.Compiler"/>
 		<interface role="client" name="scheduler" signature="org.objectweb.fractal.task.core.Scheduler"/>
-		<content class="cl.niclabs.scada.acs.component.adl.ACSAdlBasicFactory"/>
+		<content class="cl.niclabs.scada.acs.component.adl.ACSAdlFactoryImpl"/>
 	</component>
 
 	<!-- Loader component -->

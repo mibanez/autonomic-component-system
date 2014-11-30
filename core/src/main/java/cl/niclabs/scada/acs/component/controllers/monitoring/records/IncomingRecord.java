@@ -5,7 +5,7 @@ import org.objectweb.proactive.core.jmx.notification.RequestNotificationData;
 /**
  * Created by mibanez
  */
-public class IncomingRecord extends AbstractRecord {
+public class IncomingRecord extends Record {
 
     private long receptionTime;
     private long serviceStartedTime;

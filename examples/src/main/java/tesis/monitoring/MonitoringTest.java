@@ -1,6 +1,6 @@
 package tesis.monitoring;
 
-import cl.niclabs.scada.acs.component.ACSUtils;
+import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.factory.ACSFactory;
 import org.objectweb.fractal.api.Component;
@@ -24,24 +24,24 @@ public class MonitoringTest {
         ACSFactory factory = new ACSFactory();
 
         ComponentType clientType = factory.createComponentType(new InterfaceType[]{
-                factory.createInterfaceType(Client.NAME, Client.class.getName(), false, false),
-                factory.createInterfaceType(Cracker.NAME, Cracker.class.getName(), true, false)
+                factory.createInterfaceType(Client.NAME, Client.class, false, false),
+                factory.createInterfaceType(Cracker.NAME, Cracker.class, true, false)
         });
         Component clientComponent = factory.createPrimitiveComponent("Client", clientType, ClientImpl.class, null);
 
         ComponentType compositeType = factory.createComponentType(new InterfaceType[]{
-                factory.createInterfaceType(Cracker.NAME, Cracker.class.getName(), false, false)
+                factory.createInterfaceType(Cracker.NAME, Cracker.class, false, false)
         });
         Component compositeComponent = factory.createCompositeComponent("Composite", compositeType, null);
 
         ComponentType crackerType = factory.createComponentType(new InterfaceType[]{
-                factory.createInterfaceType(Cracker.NAME, Cracker.class.getName(), false, false),
-                factory.createInterfaceType(Repository.NAME, Repository.class.getName(), true, false)
+                factory.createInterfaceType(Cracker.NAME, Cracker.class, false, false),
+                factory.createInterfaceType(Repository.NAME, Repository.class, true, false)
         });
         Component crackerComponent = factory.createPrimitiveComponent("Cracker", crackerType, CrackerImpl.class, null);
 
         ComponentType repoType = factory.createComponentType(new InterfaceType[]{
-                factory.createInterfaceType(Repository.NAME, Repository.class.getName(), false, false)
+                factory.createInterfaceType(Repository.NAME, Repository.class, false, false)
         });
         Component repoComponent = factory.createPrimitiveComponent("Repository", repoType, RepositoryImpl.class, null);
 
@@ -56,22 +56,18 @@ public class MonitoringTest {
         Utils.getPABindingController(crackerComponent).bindFc(Repository.NAME, repoComponent.getFcInterface(Repository.NAME));
 
         System.out.println(">>> Starting remote monitoring");
-        Utils.getPAMembraneController(clientComponent).startMembrane();
-        Utils.getPAMembraneController(crackerComponent).startMembrane();
-        Utils.getPAMembraneController(repoComponent).startMembrane();
-        Utils.getPAMembraneController(compositeComponent).startMembrane();
-        ACSUtils.enableRemoteMonitoring(clientComponent);
+        ACSManager.enableRemoteMonitoring(clientComponent);
 
         System.out.println(">>> Starting life-cycle");
         Utils.getPAGCMLifeCycleController(clientComponent).startFc();
         Utils.getPAGCMLifeCycleController(compositeComponent).startFc();
 
         System.out.println(">>> Adding metrics");
-        ACSUtils.getMonitoringController(repoComponent).add(StoredPasswordCounter.NAME, StoredPasswordCounter.class);
-        ACSUtils.getMonitoringController(crackerComponent).add(CrackRequestCounter.NAME, CrackRequestCounter.class);
-        ACSUtils.getMonitoringController(compositeComponent).add(PendingRequests.NAME, PendingRequests.class);
+        ACSManager.getMonitoringController(repoComponent).add(StoredPasswordCounter.NAME, StoredPasswordCounter.class);
+        ACSManager.getMonitoringController(crackerComponent).add(CrackRequestCounter.NAME, CrackRequestCounter.class);
+        ACSManager.getMonitoringController(compositeComponent).add(PendingRequests.NAME, PendingRequests.class);
 
-        MonitoringController clientMon = ACSUtils.getMonitoringController(clientComponent);
+        MonitoringController clientMon = ACSManager.getMonitoringController(clientComponent);
         clientMon.startMonitoring();
         Thread.sleep(2000);
 
