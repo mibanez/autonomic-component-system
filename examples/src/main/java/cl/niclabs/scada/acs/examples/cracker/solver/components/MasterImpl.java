@@ -32,7 +32,7 @@ public class MasterImpl implements MasterAttributes, Solver, BindingController {
 
         List<SolverTask> subTasks = new ArrayList<>();
 
-        long subTaskSize = Math.floorDiv(task.getTotal(), partitionsNumber);
+        long subTaskSize = task.getTotal() / partitionsNumber;
         long excess = task.getTotal() - subTaskSize * partitionsNumber;
 
         for (int i = 0; i < partitionsNumber; i++) {

@@ -39,7 +39,7 @@ public class DispatcherImpl implements Cracker, BindingController {
             passwords += Math.pow(ALPHABET.length(), i);
         }
 
-        long taskSize = Math.floorDiv(passwords, solvers.size());
+        long taskSize = passwords / solvers.size();
         long excess = passwords - taskSize * solvers.size();
 
         for (int i = 0; i < solvers.size(); i++) {
