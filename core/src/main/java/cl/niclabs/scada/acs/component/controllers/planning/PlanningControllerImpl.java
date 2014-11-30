@@ -32,8 +32,8 @@ public class PlanningControllerImpl extends AbstractPAComponentController
 
     private final HashMap<String, Plan> plans = new HashMap<>();
 
-    private MonitoringController monitoringController;
-    private ExecutionController executionController;
+    private MonitoringController monitoringCtrl;
+    private ExecutionController executionCtrl;
 
 
     @Override
@@ -83,7 +83,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     public Wrapper<Boolean> doPlanFor(String id, String ruleId, ACSAlarm alarm) {
         if (plans.containsKey(id)) {
             Plan plan = plans.get(id);
-            plan.doPlanFor(ruleId, alarm, monitoringController);
+            plan.doPlanFor(ruleId, alarm, monitoringCtrl, executionCtrl);
             return new ValidWrapper<>(true);
 
         }
@@ -152,7 +152,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     public void notifyAlarm(RuleEvent event) {
         for (Map.Entry<String, Plan> entry : plans.entrySet()) {
             if (entry.getValue().isSubscribedTo(event.getRuleId())) {
-                entry.getValue().doPlanFor(event.getRuleId(), event.getAlarm(), monitoringController);
+                entry.getValue().doPlanFor(event.getRuleId(), event.getAlarm(), monitoringCtrl, executionCtrl);
             }
         }
     }
@@ -167,8 +167,8 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     @Override
     public Object lookupFc(String name) throws NoSuchInterfaceException {
         switch (name) {
-            case MonitoringController.ITF_NAME: return monitoringController;
-            case ExecutionController.ITF_NAME: return executionController;
+            case MonitoringController.ITF_NAME: return monitoringCtrl;
+            case ExecutionController.ITF_NAME: return executionCtrl;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -176,8 +176,8 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     @Override
     public void bindFc(String name, Object o) throws NoSuchInterfaceException {
         switch (name) {
-            case MonitoringController.ITF_NAME: monitoringController = (MonitoringController) o; break;
-            case ExecutionController.ITF_NAME: executionController = (ExecutionController) o; break;
+            case MonitoringController.ITF_NAME: monitoringCtrl = (MonitoringController) o; break;
+            case ExecutionController.ITF_NAME: executionCtrl = (ExecutionController) o; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }
@@ -185,8 +185,8 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     @Override
     public void unbindFc(String name) throws NoSuchInterfaceException {
         switch (name) {
-            case MonitoringController.ITF_NAME: monitoringController = null; break;
-            case ExecutionController.ITF_NAME: executionController = null; break;
+            case MonitoringController.ITF_NAME: monitoringCtrl = null; break;
+            case ExecutionController.ITF_NAME: executionCtrl = null; break;
             default: throw new NoSuchInterfaceException(name);
         }
     }
