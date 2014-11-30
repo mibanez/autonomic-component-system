@@ -5,6 +5,7 @@ import cl.niclabs.scada.acs.component.controllers.InvalidElementException;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEvent;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
+import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,7 +32,9 @@ public class PlanningControllerImplTest {
         FooPlan() {
             subscribeTo("foo-rule");
         }
-        public void doPlanFor(String ruleName, ACSAlarm alarm, MonitoringController monitorController) {
+
+        @Override
+        public void doPlanFor(String ruleName, ACSAlarm alarm, MonitoringController monitorCtrl, ExecutionController executionCtrl) {
             counter++;
         }
     }
