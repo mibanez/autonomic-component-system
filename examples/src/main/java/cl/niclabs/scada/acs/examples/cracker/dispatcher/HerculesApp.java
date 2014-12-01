@@ -46,8 +46,9 @@ public class HerculesApp extends DispatcherAbstractApp {
     protected void extraConfiguration(Component cracker) throws MalformedURLException, URISyntaxException {
         try {
             ACSManager.getExecutionController(cracker).setGlobalVariable("herculesApp", herculesApp);
-            String path = "/user/mibanez/memoria/autonomic-component-system/examples/src/main/"
+            String path = "file:///user/mibanez/memoria/autonomic-component-system/examples/src/main/"
                 + "resources/cl/niclabs/scada/acs/examples/cracker/common/components/Solver.fscript";
+            System.out.println("****: PATH = " + new URL(path).toURI().getPath());
             Wrapper<String[]> result = ACSManager.getExecutionController(cracker).load(new URL(path).toURI().getPath());
 
             if (result.isValid()) {
