@@ -2,6 +2,7 @@ package cl.niclabs.scada.acs.component.controllers.analysis;
 
 
 import cl.niclabs.scada.acs.component.ACSManager;
+import cl.niclabs.scada.acs.component.body.ACSComponentRunActive;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricEventListener;
 import org.objectweb.fractal.api.Component;
@@ -11,7 +12,6 @@ import org.objectweb.proactive.Body;
 import org.objectweb.proactive.core.component.Constants;
 import org.objectweb.proactive.core.component.ContentDescription;
 import org.objectweb.proactive.core.component.ControllerDescription;
-import org.objectweb.proactive.core.component.body.ComponentRunActive;
 import org.objectweb.proactive.core.component.factory.PAGenericFactory;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 import org.objectweb.proactive.core.node.Node;
@@ -49,13 +49,11 @@ public class AnalysisControllerFactory {
     }
 
     private static ContentDescription getContentDescription() {
-        return new ContentDescription(AnalysisControllerImpl.class.getName(), null, new AnalysisControllerRunActive(), null);
-    }
-
-    public static class AnalysisControllerRunActive implements ComponentRunActive {
-        @Override
-        public void runComponentActivity(Body body) {
-            (new ComponentMultiActiveService(body)).multiActiveServing();
-        }
+        return new ContentDescription(AnalysisControllerImpl.class.getName(), null, new ACSComponentRunActive() {
+            @Override
+            public void runComponentActivity(Body body) {
+                (new ComponentMultiActiveService(body)).multiActiveServing();
+            }
+        }, null);
     }
 }

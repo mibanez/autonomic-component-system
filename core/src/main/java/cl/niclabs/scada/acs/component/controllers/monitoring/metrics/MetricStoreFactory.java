@@ -2,6 +2,7 @@ package cl.niclabs.scada.acs.component.controllers.monitoring.metrics;
 
 
 import cl.niclabs.scada.acs.component.ACSManager;
+import cl.niclabs.scada.acs.component.body.ACSComponentRunActive;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEventListener;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
@@ -12,7 +13,6 @@ import org.objectweb.proactive.Body;
 import org.objectweb.proactive.core.component.Constants;
 import org.objectweb.proactive.core.component.ContentDescription;
 import org.objectweb.proactive.core.component.ControllerDescription;
-import org.objectweb.proactive.core.component.body.ComponentRunActive;
 import org.objectweb.proactive.core.component.factory.PAGenericFactory;
 import org.objectweb.proactive.core.component.type.PAGCMInterfaceType;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
@@ -95,15 +95,13 @@ public class MetricStoreFactory {
     }
 
     private static ContentDescription getContentDescription() {
-        return new ContentDescription(MetricStoreImpl.class.getName(), null, new MetricStoreRunActive(), null);
-    }
-
-    public static class MetricStoreRunActive implements ComponentRunActive {
-        @Override
-        public void runComponentActivity(Body body) {
-            body.setImmediateService("getValue", false);
-            (new ComponentMultiActiveService(body)).multiActiveServing();
-        }
+        return new ContentDescription(MetricStoreImpl.class.getName(), null, new ACSComponentRunActive() {
+            @Override
+            public void runComponentActivity(Body body) {
+                body.setImmediateService("getValue", false);
+                (new ComponentMultiActiveService(body)).multiActiveServing();
+            }
+        }, null);
     }
 
     private static boolean isSingleton(InterfaceType itf) {

@@ -1,5 +1,7 @@
 package cl.niclabs.scada.acs.component.adl.implementations;
 
+import cl.niclabs.scada.acs.component.body.ACSComponentRunActive;
+
 import org.objectweb.fractal.adl.ADLException;
 import org.objectweb.fractal.adl.Definition;
 import org.objectweb.fractal.adl.components.Component;
@@ -28,9 +30,7 @@ public class ACSImplementationCompiler extends PAImplementationCompiler implemen
     private static final String ACS_COMPONENT_CONFIG_FILE_LOCATION =
             "/cl/niclabs/scada/acs/component/default-acs-component-config.xml";
 
-    protected interface ACSActive extends ComponentRunActive, Serializable { }
-
-    private ACSActive acsActive = new ACSActive() {
+    private ACSComponentRunActive = new ACSComponentRunActive() {
         @Override
         public void runComponentActivity(Body body) {
             body.setImmediateService("getValue", false);

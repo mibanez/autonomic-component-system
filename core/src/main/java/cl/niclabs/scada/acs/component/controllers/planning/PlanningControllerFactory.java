@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.planning;
 
 import cl.niclabs.scada.acs.component.ACSManager;
+import cl.niclabs.scada.acs.component.body.ACSComponentRunActive;
 import cl.niclabs.scada.acs.component.controllers.analysis.RuleEventListener;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
@@ -11,7 +12,6 @@ import org.objectweb.proactive.Body;
 import org.objectweb.proactive.core.component.Constants;
 import org.objectweb.proactive.core.component.ContentDescription;
 import org.objectweb.proactive.core.component.ControllerDescription;
-import org.objectweb.proactive.core.component.body.ComponentRunActive;
 import org.objectweb.proactive.core.component.factory.PAGenericFactory;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 import org.objectweb.proactive.core.node.Node;
@@ -50,14 +50,11 @@ public class PlanningControllerFactory {
     }
 
     private static ContentDescription getContentDescription() {
-        return new ContentDescription(PlanningControllerImpl.class.getName(), null, new PlanningControllerRunActive(), null);
+        return new ContentDescription(PlanningControllerImpl.class.getName(), null, new ACSComponentRunActive() {
+            @Override
+            public void runComponentActivity(Body body) {
+                (new ComponentMultiActiveService(body)).multiActiveServing();
+            }
+        }, null);
     }
-
-    public static class PlanningControllerRunActive implements ComponentRunActive {
-        @Override
-        public void runComponentActivity(Body body) {
-            (new ComponentMultiActiveService(body)).multiActiveServing();
-        }
-    }
-
 }
