@@ -113,7 +113,7 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
             for (Diagnostic d : e.getDiagnostics()) {
                 cause += d.getMessage() + ": " + d.getLocation().toString() + "\n";
             }
-            return new WrongWrapper<>("FScriptException: " + e.getMessage() + "\n" + cause, e);
+            return new WrongWrapper<>("FScriptException: " + e.getMessage() + "\n" + cause);
         }
     }
 
