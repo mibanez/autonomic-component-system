@@ -3,7 +3,6 @@ package cl.niclabs.scada.acs.examples.cracker.dispatcher;
 import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.examples.cracker.common.CrackerConfig;
-import cl.niclabs.scada.acs.examples.cracker.common.components.Solver;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.proactive.core.ProActiveException;
@@ -47,9 +46,9 @@ public class HerculesApp extends DispatcherAbstractApp {
     protected void extraConfiguration(Component cracker) throws MalformedURLException, URISyntaxException {
         try {
             ACSManager.getExecutionController(cracker).setGlobalVariable("herculesApp", herculesApp);
-            System.out.println("**\n**\n**\n**\n** " + Solver.class.getResource("Solver.fscript").getPath() + "\n**\n");
-            System.out.println("**\n** " + new URL(Solver.class.getResource("Solver.fscript").getPath()).toURI().getPath() + "\n**\n");
-            Wrapper<String[]> result = ACSManager.getExecutionController(cracker).load(new URL(Solver.class.getResource("Solver.fscript").getPath()).toURI().getPath());
+            String path = "/user/mibanez/memoria/autonomic-component-system/examples/src/main/"
+                + "resources/cl/niclabs/scada/acs/examples/cracker/common/components/Solver.fscript";
+            Wrapper<String[]> result = ACSManager.getExecutionController(cracker).load(new URL(path).toURI().getPath());
 
             if (result.isValid()) {
                 for (String s : result.unwrap()) {
