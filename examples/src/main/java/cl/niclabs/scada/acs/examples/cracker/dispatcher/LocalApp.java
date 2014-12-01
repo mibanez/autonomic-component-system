@@ -12,8 +12,8 @@ public class LocalApp extends DispatcherAbstractApp {
     }
 
     @Override
-    protected void configureSolver(Component solvers) {
-        // nada
+    protected void extraConfiguration(Component cracker) {
+
     }
 
     public static void main(String[] args) throws Exception {

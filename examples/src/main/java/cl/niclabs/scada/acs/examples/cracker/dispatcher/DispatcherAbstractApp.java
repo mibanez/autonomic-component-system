@@ -52,10 +52,6 @@ public abstract class DispatcherAbstractApp {
             Utils.getPABindingController(dispatcherComp).bindFc(Solver.NAME + "-" + i, solverComp.getFcInterface(Solver.NAME));
 
             ACSManager.getMonitoringController(solverComp).add(AvgResponseTime.NAME, AvgResponseTime.class);
-            ACSManager.getExecutionController(solverComp).load(DispatcherAbstractApp.class.getResource(
-                    "/cl/niclabs/scada/acs/examples/cracker/common/components/Solver.fscript").getPath());
-
-            configureSolver(solverComp);
         }
 
         ACSManager.getMonitoringController(crackerComp).add(DispatcherAvgResponseTime.NAME, DispatcherAvgResponseTime.class);
@@ -65,6 +61,7 @@ public abstract class DispatcherAbstractApp {
         ACSManager.getMonitoringController(crackerComp).startMonitoring();
         Thread.sleep(3000);
 
+        extraConfiguration(crackerComp);
         Utils.getPAGCMLifeCycleController(crackerComp).startFc();
         System.out.println("CRACKER ON: " + ((PAComponent) crackerComp).getID().toString());
 
@@ -75,6 +72,6 @@ public abstract class DispatcherAbstractApp {
 
     protected abstract Node[] getSolverNodes();
 
-    protected abstract void configureSolver(Component solvers);
+    protected abstract void extraConfiguration(Component cracker);
 
 }
