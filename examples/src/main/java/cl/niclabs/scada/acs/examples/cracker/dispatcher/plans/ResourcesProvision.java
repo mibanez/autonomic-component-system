@@ -14,6 +14,7 @@ import cl.niclabs.scada.acs.examples.cracker.dispatcher.rules.MinimumResponseTim
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import static cl.niclabs.scada.acs.examples.cracker.common.CrackerConfig.DEFAULT_MAX_N_OF_SLAVES;
 import static cl.niclabs.scada.acs.examples.cracker.common.CrackerConfig.DEFAULT_SOLVER_SLOTS;
 
 
@@ -21,6 +22,9 @@ public class ResourcesProvision extends Plan {
 
     public static final String NAME = "resources-provision-plan";
 
+    private boolean success = false;
+    private long initTime = 0;
+    private long delay = 60000;
 
     public ResourcesProvision() {
         subscribeTo(MinimumResponseTime.NAME);
@@ -29,6 +33,16 @@ public class ResourcesProvision extends Plan {
     @Override
     public void doPlanFor(String ruleName, ACSAlarm alarm, MonitoringController monitorCtrl,
             ExecutionController executionCtrl) {
+
+        if (success) {
+            long time = (System.currentTimeMillis() - initTime);
+            if (time > delay) {
+                success = false;
+            } else {
+                System.out.println("[PLANS][RESOURCE_PROVISION] sleeping... " + time + "/" + delay);
+                return;
+            }
+        }
 
         PriorityQueue<SolverTime> queue = new PriorityQueue<>(DEFAULT_SOLVER_SLOTS, new Comparator<SolverTime>() {
             @Override
@@ -47,12 +61,43 @@ public class ResourcesProvision extends Plan {
             }
         }
 
-        SolverTime solverTime = queue.poll();
 
-        //executionCtrl.execute("$this/child")
+        SolverTime worst = null;
+        String msg = "[PLANS][RESOURCE_PROVISION] from (";
+        while (!queue.isEmpty()) {
+            SolverTime solverTime = queue.poll();
+            Wrapper<Double> result = executionCtrl.execute("slaves-number($this/child::Solver" + solverTime.index + ");");
+            if (!result.isValid()) {
+                msg += "INVALID(" + result.getMessage() + "), ";
+                continue;
+            }
+            msg += result.unwrap() + ", ";
+            if (DEFAULT_MAX_N_OF_SLAVES > result.unwrap()) {
+                worst = solverTime;
+                while (!queue.isEmpty()) {
+                    SolverTime solverTime2 = queue.poll();
+                    Wrapper<Double> result2 = executionCtrl.execute("slaves-number($this/child::Solver" + solverTime2.index + ");");
+                    msg += result2.isValid() ? result2.unwrap() : ("INVALID(" + result2.getMessage() + ")");
+                    msg += ", ";
+                }
+            }
+        }
 
+        if (worst == null) {
+            System.out.println(msg + ") selected none. Nothing to do");
+            return;
+        }
 
-        System.out.println("[PLANS][RESOURCE_PROVISION] " + ruleName + " " + alarm);
+        msg += ") selected: " + worst.time + "(Solver" + worst.index + ")";
+        Wrapper<Boolean> result = executionCtrl.execute("add-slave($this/child::Solver" + worst.index + ", $herculesApp);");
+        if (!result.isValid() || !result.unwrap()) {
+            System.out.println(msg + ": add-slave fail..." + result.getMessage());
+            return;
+        }
+
+        System.out.println(msg + ": SUCCESS! sleeping for " + (delay/1000) + " seconds");
+        initTime = System.currentTimeMillis();
+        success = true;
     }
 
     class SolverTime {

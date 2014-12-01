@@ -1,6 +1,6 @@
 function contains-name(slaveName, slaves) {
     for slave : $slaves {
-        if ($slaveName == name(slave)) {
+        if ($slaveName == name($slave)) {
             return true();
         }
     }
@@ -34,9 +34,9 @@ function get-next-available-name(slaves) {
     }
 }
 
-action add-solver(solver, maxNumOfSlaves, herculesApp) {
+action add-slave(solver, maxNumOfSlaves, herculesApp) {
 
-    slaves = $solver/child::*[starts-with(name(.), "Slave"];
+    slaves = $solver/child::*[starts-with(name(.), "Slave")];
 
     if (size($slaves) < $maxNumOfSlaves) {
 
@@ -44,8 +44,8 @@ action add-solver(solver, maxNumOfSlaves, herculesApp) {
         set-name($slave, get-next-available-name($slaves));
 
         stop($solver);
-        add($solver, slave);
-        bind($solver/child::Master/interface::multicast-slave-itf, slave/interface::slave-itf);
+        add($solver, $slave);
+        bind($solver/child::Master/interface::multicast-slave-itf, $slave/interface::slave-itf);
         set-value($solver/child::Master/attribute::partitionsNumber, size($slaves) + 1);
         start($solver);
 
@@ -53,4 +53,8 @@ action add-solver(solver, maxNumOfSlaves, herculesApp) {
     }
 
     return false();
+}
+
+function slaves-number(solver) {
+    return size($solver/child::*[starts-with(name(.), "Slave")]);
 }
