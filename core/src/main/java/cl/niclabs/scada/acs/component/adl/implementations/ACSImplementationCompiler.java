@@ -30,7 +30,7 @@ public class ACSImplementationCompiler extends PAImplementationCompiler implemen
     private static final String ACS_COMPONENT_CONFIG_FILE_LOCATION =
             "/cl/niclabs/scada/acs/component/default-acs-component-config.xml";
 
-    private ACSComponentRunActive = new ACSComponentRunActive() {
+    private ACSComponentRunActive acsActive = new ACSComponentRunActive() {
         @Override
         public void runComponentActivity(Body body) {
             body.setImmediateService("getValue", false);
