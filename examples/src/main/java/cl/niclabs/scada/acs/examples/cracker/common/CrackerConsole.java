@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker.dispatcher;
+package cl.niclabs.scada.acs.examples.cracker.common;
 
 
 import cl.niclabs.scada.acs.gcmscript.console.ACSConsole;
@@ -6,13 +6,13 @@ import org.objectweb.proactive.core.component.Fractive;
 
 import java.util.Scanner;
 
-public class ProviderConsole {
+public class CrackerConsole {
 
     public static void main(String[] args) throws Exception {
         System.setProperty("gcm.provider", Fractive.class.getName());
-        System.setProperty("java.security.policy", ProviderConsole.class.getResource("/proactive.java.policy").getPath());
         System.setProperty("jline.terminal", "jline.UnsupportedTerminal");
 
+        System.out.print("Cracker component: ");
         String id = (new Scanner(System.in)).next();
         ACSConsole.main(new String[] {"-c", id});
     }
