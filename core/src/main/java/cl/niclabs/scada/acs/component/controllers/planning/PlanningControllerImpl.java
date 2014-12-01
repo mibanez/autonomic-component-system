@@ -11,11 +11,11 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControlle
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
+import org.apache.log4j.Logger;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.objectweb.proactive.core.util.log.ProActiveLogger;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,7 +28,7 @@ import java.util.Map;
 public class PlanningControllerImpl extends AbstractPAComponentController
         implements PlanningController, RuleEventListener, BindingController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PlanningController.class);
+    private static final Logger logger = ProActiveLogger.getLogger("ACS");
 
     private final HashMap<String, Plan> plans = new HashMap<>();
 

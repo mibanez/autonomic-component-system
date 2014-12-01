@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring.events;
 
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.*;
+import org.apache.log4j.Logger;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.fractal.api.control.IllegalBindingException;
@@ -12,8 +13,7 @@ import org.objectweb.proactive.core.jmx.naming.FactoryName;
 import org.objectweb.proactive.core.jmx.notification.NotificationType;
 import org.objectweb.proactive.core.jmx.notification.RequestNotificationData;
 import org.objectweb.proactive.core.jmx.util.JMXNotificationManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.objectweb.proactive.core.util.log.ProActiveLogger;
 
 import javax.management.Notification;
 import javax.management.NotificationListener;
@@ -37,7 +37,7 @@ import java.util.Queue;
 public class GCMPAEventListenerImpl extends AbstractPAComponentController implements GCMPAEventListener,
         NotificationListener, BindingController {
 
-    private static final Logger logger = LoggerFactory.getLogger(GCMPAEventListenerImpl.class);
+    private static final Logger logger = ProActiveLogger.getLogger("ACS");
 
     private RecordEventListener recordEventListener;
     private RecordStore recordStore;
@@ -52,7 +52,7 @@ public class GCMPAEventListenerImpl extends AbstractPAComponentController implem
         jmxNotificationManager = JMXNotificationManager.getInstance();
 
         try {
-            logger.debug("subscribing jmxNM to {}", objectName.getCanonicalKeyPropertyListString());
+            //logger.debug("subscribing jmxNM to {}", objectName.getCanonicalKeyPropertyListString());
             jmxNotificationManager.subscribe(objectName, this, completeRuntimeURL);
         } catch (IOException e) {
             throw new ProActiveRuntimeException("JMX subscription for the MonitorController has failed", e);
@@ -120,7 +120,7 @@ public class GCMPAEventListenerImpl extends AbstractPAComponentController implem
             recordStore.update(record);
             recordEventListener.notifyRecordEvent(RecordEvent.REQUEST_RECEIVED);
             if (logger.isTraceEnabled()) {
-                logger.trace("REQUEST RECEIVED --> {}", record);
+                //logger.trace("REQUEST RECEIVED --> {}", record);
             }
         } catch (CMTagNotFoundException ignored) {
         }
@@ -133,7 +133,7 @@ public class GCMPAEventListenerImpl extends AbstractPAComponentController implem
             recordStore.update(record);
             recordEventListener.notifyRecordEvent(RecordEvent.REQUEST_SERVICE_STARTED);
             if (logger.isTraceEnabled()) {
-                logger.trace("REQUEST SERVICE STARTED --> {}", record);
+                //logger.trace("REQUEST SERVICE STARTED --> {}", record);
             }
         } catch (CMTagNotFoundException ignored) {
         }
@@ -146,7 +146,7 @@ public class GCMPAEventListenerImpl extends AbstractPAComponentController implem
             recordStore.update(record);
             recordEventListener.notifyRecordEvent(RecordEvent.REQUEST_SERVICE_ENDED);
             if (logger.isTraceEnabled()) {
-                logger.trace("REQUEST SERVICE ENDED --> {}", record);
+                //logger.trace("REQUEST SERVICE ENDED --> {}", record);
             }
         } catch (CMTagNotFoundException ignored) {
         }
@@ -158,7 +158,7 @@ public class GCMPAEventListenerImpl extends AbstractPAComponentController implem
             recordStore.update(record);
             recordEventListener.notifyRecordEvent(RecordEvent.REQUEST_SENT);
             if (logger.isTraceEnabled()) {
-                logger.trace("REQUEST SENT --> {}", record);
+                //logger.trace("REQUEST SENT --> {}", record);
             }
         } catch (CMTagNotFoundException ignored) {
         }
@@ -171,7 +171,7 @@ public class GCMPAEventListenerImpl extends AbstractPAComponentController implem
             recordStore.update(record);
             recordEventListener.notifyRecordEvent(RecordEvent.FUTURE_RECEIVED);
             if (logger.isTraceEnabled()) {
-                logger.trace("REQUEST RESPONSE RECEIVED --> {}", record);
+                //logger.trace("REQUEST RESPONSE RECEIVED --> {}", record);
             }
         } catch (CMTagNotFoundException ignored) {
         }
@@ -184,7 +184,7 @@ public class GCMPAEventListenerImpl extends AbstractPAComponentController implem
             recordStore.update(record);
             recordEventListener.notifyRecordEvent(RecordEvent.RESPONSE_RECEIVED);
             if (logger.isTraceEnabled()) {
-                logger.trace("REQUEST RESPONSE COMPLETED --> {}", record);
+                //logger.trace("REQUEST RESPONSE COMPLETED --> {}", record);
             }
         } catch (CMTagNotFoundException ignored) {
         }
@@ -196,7 +196,7 @@ public class GCMPAEventListenerImpl extends AbstractPAComponentController implem
             recordStore.update(record);
             recordEventListener.notifyRecordEvent(RecordEvent.VOID_REQUEST_SENT);
             if (logger.isTraceEnabled()) {
-                logger.trace("VOID REQUEST SENT --> {}", record);
+                //logger.trace("VOID REQUEST SENT --> {}", record);
             }
         } catch (CMTagNotFoundException ignored) {
         }

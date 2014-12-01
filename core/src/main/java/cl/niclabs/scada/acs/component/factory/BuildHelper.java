@@ -20,6 +20,7 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStoreFactory;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningControllerFactory;
+import org.apache.log4j.Logger;
 import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -41,8 +42,7 @@ import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 import org.objectweb.proactive.core.node.Node;
 import org.objectweb.proactive.core.node.NodeException;
 import org.objectweb.proactive.core.node.NodeFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.objectweb.proactive.core.util.log.ProActiveLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,8 @@ import java.util.List;
 
 public class BuildHelper {
 
-    private static final Logger logger = LoggerFactory.getLogger(BuildHelper.class);
+    private static final Logger logger = ProActiveLogger.getLogger("ACS");
+
     private static final String CONTROLLER_CONFIG = "/org/objectweb/proactive/core/component/componentcontroller/config/default-component-controller-config.xml";
     private final PAGCMTypeFactory tf;
     private final PAGenericFactory gf;
@@ -110,29 +111,29 @@ public class BuildHelper {
                 component.getFcInterface(Constants.CONTENT_CONTROLLER);
                 membrane.setControllerObject(Constants.CONTENT_CONTROLLER, PAContentControllerImpl.class.getName());
             } catch (NoSuchInterfaceException e) {
-                logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
+                //logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
             }
             try {
                 component.getFcInterface(Constants.BINDING_CONTROLLER);
                 membrane.setControllerObject(Constants.BINDING_CONTROLLER, PABindingControllerImpl.class.getName());
                 logger.trace("[addObjectControllers] bindingController added");
             } catch (NoSuchInterfaceException e) {
-                logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
+                //logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
             }
             try {
                 component.getFcInterface(Constants.SUPER_CONTROLLER);
                 membrane.setControllerObject(Constants.SUPER_CONTROLLER, PASuperControllerImpl.class.getName());
             } catch (NoSuchInterfaceException e) {
-                logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
+                //logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
             }
             try {
                 component.getFcInterface(Constants.MULTICAST_CONTROLLER);
                 membrane.setControllerObject(Constants.MULTICAST_CONTROLLER, PAMulticastControllerImpl.class.getName());
             } catch (NoSuchInterfaceException e) {
-                logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
+                //logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
             }
         } catch (NoSuchInterfaceException e) {
-            logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
+            //logger.trace("[{}] NoSuchInterfaceException: {}", prompt, e.getMessage());
         }
     }
 
@@ -309,13 +310,13 @@ public class BuildHelper {
         try {
             String hostName = getComponentName(host);
 
-            logger.trace("Binding monitoring on {}", hostName);
+            //logger.trace("Binding monitoring on {}", hostName);
             m.nfBindFc(ACSManager.MONITORING_CONTROLLER,
                     MonitoringManagerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME);
             m.nfBindFc(MetricStoreFactory.COMPONENT_NAME + "." + MetricEventListener.ITF_NAME,
                     AnalysisControllerFactory.COMPONENT_NAME + "." + MetricEventListener.ITF_NAME);
 
-            logger.trace("Binding analysis on {}", hostName);
+            //logger.trace("Binding analysis on {}", hostName);
             m.nfBindFc(ACSManager.ANALYSIS_CONTROLLER,
                     AnalysisControllerFactory.COMPONENT_NAME + "." + AnalysisController.ITF_NAME);
             m.nfBindFc(AnalysisControllerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME,
@@ -323,7 +324,7 @@ public class BuildHelper {
             m.nfBindFc(AnalysisControllerFactory.COMPONENT_NAME + "." + RuleEventListener.ITF_NAME,
                     PlanningControllerFactory.COMPONENT_NAME + "." + RuleEventListener.ITF_NAME);
 
-            logger.trace("Binding planning on {}", hostName);
+            //logger.trace("Binding planning on {}", hostName);
             m.nfBindFc(ACSManager.PLANNING_CONTROLLER,
                     PlanningControllerFactory.COMPONENT_NAME + "." + PlanningController.ITF_NAME);
             m.nfBindFc(PlanningControllerFactory.COMPONENT_NAME + "." + MonitoringController.ITF_NAME,
@@ -331,7 +332,7 @@ public class BuildHelper {
             m.nfBindFc(PlanningControllerFactory.COMPONENT_NAME + "." + ExecutionController.ITF_NAME,
                     ExecutionControllerImpl.CONTROLLER_NAME + "." + ExecutionController.ITF_NAME);
 
-            logger.trace("Binding execution on {}", hostName);
+            //logger.trace("Binding execution on {}", hostName);
             m.nfBindFc(ACSManager.EXECUTION_CONTROLLER,
                     ExecutionControllerFactory.COMPONENT_NAME + "." + ExecutionController.ITF_NAME);
         }
@@ -375,7 +376,7 @@ public class BuildHelper {
     private void startLifeCycle(Component component, String where)
             throws ACSFactoryException {
         try {
-            logger.debug("{}: starting the life-cycle on component {}", where, getComponentName(component));
+            //logger.debug("{}: starting the life-cycle on component {}", where, getComponentName(component));
             Utils.getPAGCMLifeCycleController(component).startFc();
         } catch (NoSuchInterfaceException | IllegalLifeCycleException e) {
             String msg = where + ": LifeCycle cannot be started on component " + getComponentName(component);
@@ -387,7 +388,7 @@ public class BuildHelper {
     private void startMembrane(Component component, String where)
             throws ACSFactoryException {
         try {
-            logger.debug("{}: starting the membrane on component {}", where, getComponentName(component));
+            //logger.debug("{}: starting the membrane on component {}", where, getComponentName(component));
             Utils.getPAMembraneController(component).startMembrane();
         } catch (NoSuchInterfaceException | IllegalLifeCycleException e) {
             String msg = where + ": Membrane cannot be started on component " + getComponentName(component);
@@ -399,7 +400,7 @@ public class BuildHelper {
     private void stopLifeCycle(Component component, String where)
             throws ACSFactoryException {
         try {
-            logger.debug("{}: stopping the life-cycle on component {}", where, getComponentName(component));
+            //logger.debug("{}: stopping the life-cycle on component {}", where, getComponentName(component));
             Utils.getPAGCMLifeCycleController(component).stopFc();
         } catch (NoSuchInterfaceException | IllegalLifeCycleException e) {
             String msg = where + ": LifeCycle cannot be stopped on component " + getComponentName(component);
@@ -411,7 +412,7 @@ public class BuildHelper {
     private void stopMembrane(Component component, String where)
             throws ACSFactoryException {
         try {
-            logger.debug("{}: stopping the membrane on component {}", where, getComponentName(component));
+            //logger.debug("{}: stopping the membrane on component {}", where, getComponentName(component));
             Utils.getPAMembraneController(component).stopMembrane();
         } catch (NoSuchInterfaceException | IllegalLifeCycleException e) {
             String msg = where + ": Membrane cannot be stopped on component " + getComponentName(component);

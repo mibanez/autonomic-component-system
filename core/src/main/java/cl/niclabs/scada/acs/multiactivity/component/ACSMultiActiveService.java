@@ -3,6 +3,7 @@ package cl.niclabs.scada.acs.multiactivity.component;
 import cl.niclabs.scada.acs.multiactivity.compatibility.ACSAnnotationProcessor;
 import cl.niclabs.scada.acs.multiactivity.component.policy.ACSMembraneServingPolicy;
 import cl.niclabs.scada.acs.multiactivity.component.policy.ACSServingPolicy;
+import org.apache.log4j.Logger;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.proactive.Body;
 import org.objectweb.proactive.Service;
@@ -11,6 +12,7 @@ import org.objectweb.proactive.core.component.body.ComponentBody;
 import org.objectweb.proactive.core.component.control.PAGCMLifeCycleController;
 import org.objectweb.proactive.core.component.control.PAMembraneController;
 import org.objectweb.proactive.core.component.identity.PAComponentImpl;
+import org.objectweb.proactive.core.util.log.ProActiveLogger;
 import org.objectweb.proactive.multiactivity.ServingController;
 import org.objectweb.proactive.multiactivity.compatibility.CompatibilityTracker;
 import org.objectweb.proactive.multiactivity.component.ComponentMultiActiveService;
@@ -20,8 +22,6 @@ import org.objectweb.proactive.multiactivity.policy.DefaultServingPolicy;
 import org.objectweb.proactive.multiactivity.policy.ServingPolicy;
 import org.objectweb.proactive.multiactivity.priority.PriorityConstraint;
 import org.objectweb.proactive.multiactivity.priority.PriorityManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +36,8 @@ public class ACSMultiActiveService extends Service {
     public static final boolean LIMIT_ACTIVE_THREADS = false;
     public static final boolean REENTRANT_SAME_THREAD = true;
     public static final boolean REENTRANT_SEPARATE_THREAD = false;
-    private static final Logger logger = LoggerFactory.getLogger(ACSMultiActiveService.class);
+    private static final Logger logger = ProActiveLogger.getLogger("ACS");
+
     public int activeServes = 0;
     public LinkedList<Integer> serveHistory = new LinkedList<>();
     public LinkedList<Integer> serveTsts = new LinkedList<>();

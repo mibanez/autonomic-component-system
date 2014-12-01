@@ -1,12 +1,12 @@
 package cl.niclabs.scada.acs.component.adl.interfaces;
 
 import cl.niclabs.scada.acs.component.ACSManager;
-import cl.niclabs.scada.acs.component.adl.ACSAdlFactory;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import com.google.gson.Gson;
+import org.apache.log4j.Logger;
 import org.objectweb.fractal.adl.ADLException;
 import org.objectweb.fractal.adl.components.Component;
 import org.objectweb.fractal.adl.components.ComponentContainer;
@@ -16,8 +16,7 @@ import org.objectweb.fractal.adl.interfaces.Interface;
 import org.objectweb.fractal.adl.interfaces.InterfaceContainer;
 import org.objectweb.proactive.core.component.adl.interfaces.PAInterfaceLoader;
 import org.objectweb.proactive.core.component.adl.types.PATypeInterface;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.objectweb.proactive.core.util.log.ProActiveLogger;
 
 import java.util.Map;
 
@@ -25,7 +24,7 @@ import static cl.niclabs.scada.acs.component.controllers.monitoring.metrics.Remo
 
 public class ACSInterfaceLoader extends PAInterfaceLoader {
 
-    private static final Logger logger = LoggerFactory.getLogger(ACSAdlFactory.class);
+	private static final Logger logger = ProActiveLogger.getLogger("ACS");
     private final Gson gson = new Gson();
 
     /**
@@ -148,7 +147,7 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
         		autonomicNFItf.astSetAttributes(attr);
 
         		nfItfContainer.addInterface(autonomicNFItf);
-                logger.trace("adding NF internal client interface \"{}\"", attr.get("name") + REMOTE_MONITORING_SUFFIX);
+                //logger.trace("adding NF internal client interface \"{}\"", attr.get("name") + REMOTE_MONITORING_SUFFIX);
     		}
   
     		// Add external client nf autonomic interface to monitor the external bound component
@@ -173,7 +172,7 @@ public class ACSInterfaceLoader extends PAInterfaceLoader {
     			autonomicNFItf.astSetAttributes(attr);
 
         		nfItfContainer.addInterface(autonomicNFItf);
-                logger.trace("adding NF external client interface \"{}\"", attr.get("name") + REMOTE_MONITORING_SUFFIX);
+                //logger.trace("adding NF external client interface \"{}\"", attr.get("name") + REMOTE_MONITORING_SUFFIX);
     		}   		
 		}
 	}
