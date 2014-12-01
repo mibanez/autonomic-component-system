@@ -8,6 +8,7 @@ import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.Interface;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.fscript.*;
+import org.objectweb.fractal.fscript.diagnostics.Diagnostic;
 import org.objectweb.proactive.core.component.PAInterfaceImpl;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
 import org.objectweb.proactive.core.component.identity.PAComponent;
@@ -106,9 +107,13 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
             }
             return new ValidWrapper<>((REPLY) getRepresentation(result));
         } catch (ReconfigurationException e) {
-            return new WrongWrapper<>("ReconfigurationException: " + e.getMessage(), e);
+            return new WrongWrapper<>("ReconfigurationException: " + e.getMessage());
         } catch (FScriptException e) {
-            return new WrongWrapper<>("FScriptException: " + e.getMessage(), e);
+            String cause = "";
+            for (Diagnostic d : e.getDiagnostics()) {
+                cause += d.getMessage() + ": " + d.getLocation().toString() + "\n";
+            }
+            return new WrongWrapper<>("FScriptException: " + e.getMessage() + "\n" + cause, e);
         }
     }
 

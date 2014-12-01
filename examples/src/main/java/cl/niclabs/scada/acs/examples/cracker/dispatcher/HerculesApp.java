@@ -2,16 +2,15 @@ package cl.niclabs.scada.acs.examples.cracker.dispatcher;
 
 import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.examples.cracker.common.CrackerConfig;
-
+import cl.niclabs.scada.acs.examples.cracker.common.components.Solver;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.proactive.core.ProActiveException;
 import org.objectweb.proactive.core.node.Node;
 import org.objectweb.proactive.extensions.gcmdeployment.PAGCMDeployment;
+import org.objectweb.proactive.extra.component.fscript.exceptions.ReconfigurationException;
 import org.objectweb.proactive.gcmdeployment.GCMApplication;
 import org.objectweb.proactive.gcmdeployment.GCMVirtualNode;
-
-import java.io.File;
 
 public class HerculesApp extends DispatcherAbstractApp {
 
@@ -40,10 +39,13 @@ public class HerculesApp extends DispatcherAbstractApp {
     }
 
     @Override
-    protected void configureSolver(Component solver) {
+    protected void extraConfiguration(Component cracker) {
         try {
-            ACSManager.getExecutionController(solver).setGlobalVariable("herculesApp", herculesApp);
+            ACSManager.getExecutionController(cracker).setGlobalVariable("herculesApp", herculesApp);
+            ACSManager.getExecutionController(cracker).load(Solver.class.getResource("Solver.fscript").getPath());
         } catch (NoSuchInterfaceException e) {
+            e.printStackTrace();
+        } catch (ReconfigurationException e) {
             e.printStackTrace();
         }
     }
