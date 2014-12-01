@@ -1,7 +1,10 @@
-package cl.niclabs.scada.acs.examples.cracker;
+package cl.niclabs.scada.acs.examples.cracker.common;
 
 import cl.niclabs.scada.acs.component.factory.ACSFactory;
 import cl.niclabs.scada.acs.component.factory.ACSFactoryException;
+import cl.niclabs.scada.acs.examples.cracker.common.components.Client;
+import cl.niclabs.scada.acs.examples.cracker.common.components.ClientImpl;
+import cl.niclabs.scada.acs.examples.cracker.common.components.Cracker;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.type.ComponentType;
 import org.objectweb.fractal.api.type.InterfaceType;

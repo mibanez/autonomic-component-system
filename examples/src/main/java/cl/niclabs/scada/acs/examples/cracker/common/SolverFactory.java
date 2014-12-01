@@ -1,8 +1,8 @@
-package cl.niclabs.scada.acs.examples.cracker.solver;
+package cl.niclabs.scada.acs.examples.cracker.common;
 
 import cl.niclabs.scada.acs.component.factory.ACSFactory;
 import cl.niclabs.scada.acs.component.factory.ACSFactoryException;
-import cl.niclabs.scada.acs.examples.cracker.solver.components.*;
+import cl.niclabs.scada.acs.examples.cracker.common.components.*;
 import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;

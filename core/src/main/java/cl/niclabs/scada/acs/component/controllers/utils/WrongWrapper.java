@@ -6,9 +6,16 @@ import java.io.Serializable;
 public class WrongWrapper<TYPE extends Serializable> implements Wrapper<TYPE> {
 
     private final String msg;
+    private Exception cause;
 
     public WrongWrapper(String msg) {
         this.msg = msg;
+        this.cause = null;
+    }
+
+    public WrongWrapper(String msg, Exception cause) {
+        this.msg = msg;
+        this.cause = cause;
     }
 
     @Override
@@ -24,5 +31,9 @@ public class WrongWrapper<TYPE extends Serializable> implements Wrapper<TYPE> {
     @Override
     public String getMessage() {
         return msg;
+    }
+
+    public Exception getCause() {
+        return cause;
     }
 }

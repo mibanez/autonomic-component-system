@@ -1,5 +1,8 @@
-package cl.niclabs.scada.acs.examples.cracker;
+package cl.niclabs.scada.acs.examples.cracker.common.components;
 
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
+import cl.niclabs.scada.acs.examples.cracker.common.CrackerConfig;
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.fractal.api.control.IllegalBindingException;
@@ -10,10 +13,11 @@ import java.security.NoSuchAlgorithmException;
 
 public class ClientImpl implements Client, BindingController {
 
+    private final String alphabet = CrackerConfig.ALPHABET;
     private Cracker cracker;
 
     @Override
-    public void start(String alphabet, int maxLength, int numberOfTest, long delay) {
+    public void start(int maxLength, int numberOfTest, long delay) {
 
         MessageDigest md5 = null;
         try {
@@ -23,14 +27,28 @@ public class ClientImpl implements Client, BindingController {
             return;
         }
 
+        CircularFifoQueue<Long> times = new CircularFifoQueue<>(5);
         long initTime = System.currentTimeMillis();
+
         for (int i = 0; i < numberOfTest; i++) {
-            String password = getRandomWord(alphabet, maxLength);
+
+            String password = getRandomWord(maxLength);
+
             long start = System.currentTimeMillis();
-            String result = cracker.crack(md5.digest(password.getBytes())).unwrap();
+            Wrapper<String> result = cracker.crack(md5.digest(password.getBytes()), maxLength);
+            String crackedPassword = result.unwrap();
             long end = System.currentTimeMillis();
-            System.out.println("[CLIENT] " + (end - initTime) + "\t" + (end-start));
-            //System.out.println("[MAIN] Original password: " + password + " crackedPassword: " + result.unwrap() + " [" + result.getMessage() + "]");
+
+            times.add(end - start);
+            long avg = 0;
+            for (long t : times) {
+                avg += t;
+            }
+            avg /= times.size();
+
+
+            System.out.println("[CLIENT][" + result.isValid() + ": " + result.getMessage() + "] " + (end - initTime) + "\t" + avg);
+
             if (delay > 0) {
                 try {
                     Thread.sleep(delay);
@@ -41,7 +59,7 @@ public class ClientImpl implements Client, BindingController {
         }
     }
 
-    private static String getRandomWord(String alphabet, int maxLength) {
+    private String getRandomWord(int maxLength) {
         String word = "";
         int base = alphabet.length();
         for (int i = 0; i < maxLength; i ++) {

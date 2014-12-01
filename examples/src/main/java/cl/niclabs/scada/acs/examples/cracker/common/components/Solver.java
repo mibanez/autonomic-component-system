@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker.solver;
+package cl.niclabs.scada.acs.examples.cracker.common.components;
 
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 

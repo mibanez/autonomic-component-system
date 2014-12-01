@@ -1,12 +1,12 @@
 package cl.niclabs.scada.acs.gcmscript.model;
 
+import cl.niclabs.scada.acs.gcmscript.model.controllers.SubscriptionAxis;
 import cl.niclabs.scada.acs.gcmscript.model.controllers.analysis.AddRuleAction;
 import cl.niclabs.scada.acs.gcmscript.model.controllers.analysis.PrintRulesFunction;
+import cl.niclabs.scada.acs.gcmscript.model.controllers.analysis.RuleAxis;
 import cl.niclabs.scada.acs.gcmscript.model.controllers.analysis.RuleNode;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.monitoring.AddMetricAction;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.monitoring.MetricNode;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.monitoring.PrintMetricsFunction;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.monitoring.RemoveMetricAction;
+import cl.niclabs.scada.acs.gcmscript.model.controllers.monitoring.*;
+import cl.niclabs.scada.acs.gcmscript.model.controllers.planning.PlanAxis;
 import cl.niclabs.scada.acs.gcmscript.model.controllers.planning.PlanNode;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -31,6 +31,15 @@ public class ACSModel extends GCMModel {
         addKind("metric", getNodeKind("generic-element"), new Property("value", OBJECT, false));
         addKind("rule", getNodeKind("generic-element"), new Property("alarm", OBJECT, false));
         addKind("plan", getNodeKind("generic-element"));
+    }
+
+    @Override
+    protected void createAxes() {
+        super.createAxes();
+        this.addAxis(new MetricAxis(this));
+        this.addAxis(new RuleAxis(this));
+        this.addAxis(new PlanAxis(this));
+        this.addAxis(new SubscriptionAxis(this));
     }
 
     @Override

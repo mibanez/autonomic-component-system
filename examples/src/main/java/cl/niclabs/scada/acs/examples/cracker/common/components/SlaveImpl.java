@@ -1,16 +1,14 @@
-package cl.niclabs.scada.acs.examples.cracker.solver.components;
+package cl.niclabs.scada.acs.examples.cracker.common.components;
 
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
-import cl.niclabs.scada.acs.examples.cracker.solver.SolverTask;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import static cl.niclabs.scada.acs.examples.cracker.dispatcher.DispatcherConfig.ALPHABET;
-import static cl.niclabs.scada.acs.examples.cracker.dispatcher.DispatcherConfig.PASSWORD_MAX_LENGTH;
+import static cl.niclabs.scada.acs.examples.cracker.common.CrackerConfig.ALPHABET;
 
 
 public class SlaveImpl implements Slave {
@@ -27,22 +25,24 @@ public class SlaveImpl implements Slave {
 			}
 		}
 
+		String validPassword = null;
 		// ALGORITHM BASED ON http://code.google.com/p/javamd5cracker/ solution
 		for(long i = solverTask.getFirst(); i <= solverTask.getLast(); i++) {
 			String password = decimalToAlphabet(i);
-			//System.out.println("[MAIN][/CRACKER/SOLVER/WORKER] trying with: " + password);
 			do {
 				byte[] proposal = md5.digest(password.getBytes());
 				if (Arrays.equals(proposal, solverTask.getEncryptedPassword())) {
 					if (Arrays.equals(md5.digest(password.getBytes()), solverTask.getEncryptedPassword())) {
-						return new ValidWrapper<>(password);
+						validPassword = password;
+						// Do not return, i want to have similar performance on every slave
 					}
 				}
 				password = ALPHABET.charAt(0) + password;
-			} while(password.length() <= PASSWORD_MAX_LENGTH);
+			} while(password.length() <= solverTask.getMaxLength());
 		}
 
-        return new WrongWrapper<>("password not found on this worker");
+		return validPassword != null ? new ValidWrapper<>(validPassword) :
+				new WrongWrapper<String>("password not found on this worker");
 	}
 
 	private String decimalToAlphabet(long decimal) {

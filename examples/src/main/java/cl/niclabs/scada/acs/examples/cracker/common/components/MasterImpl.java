@@ -1,9 +1,7 @@
-package cl.niclabs.scada.acs.examples.cracker.solver.components;
+package cl.niclabs.scada.acs.examples.cracker.common.components;
 
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
-import cl.niclabs.scada.acs.examples.cracker.solver.Solver;
-import cl.niclabs.scada.acs.examples.cracker.solver.SolverTask;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.fractal.api.control.IllegalBindingException;
@@ -23,7 +21,7 @@ public class MasterImpl implements MasterAttributes, Solver, BindingController {
     }
 
     @Override
-    public double setPartitionsNumber() {
+    public double getPartitionsNumber() {
         return partitionsNumber;
     }
 
@@ -39,7 +37,7 @@ public class MasterImpl implements MasterAttributes, Solver, BindingController {
             long first = task.getFirst() + subTaskSize * i + (i <= excess ? i : excess);
             long last = task.getFirst() + subTaskSize * (i + 1) - 1 + (i + 1 <= excess ? i : excess);
             //System.out.println("[MAIN][/CRACKER/SOLVER/MASTER] sending subtask from: " + first + " to: " + last);
-            subTasks.add(new SolverTask(first, last, task.getEncryptedPassword()));
+            subTasks.add(new SolverTask(first, last, task.getEncryptedPassword(), task.getMaxLength()));
         }
 
         // Sending tasks

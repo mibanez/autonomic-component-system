@@ -33,11 +33,12 @@ public class ChangeCommand implements Command {
                         console.setPosition((PAComponent) element);
                         return element;
                     }
+                } else {
+                    console.printError("The argument must be a component (received " + value.getClass() + ": " + value.toString() + ")");
                 }
             } catch (NoSuchInterfaceException e) {
                 console.printError("Can't change position (NoSuchInterfaceException: " + e.getMessage() + ")");
             }
-            console.printError("The argument must be a component");
         } else {
             console.printError("Can't resolve: " + result.getMessage());
         }

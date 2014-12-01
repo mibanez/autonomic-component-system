@@ -2,10 +2,10 @@ package cl.niclabs.scada.acs.examples.cracker.dispatcher.components;
 
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.component.controllers.utils.WrongWrapper;
-import cl.niclabs.scada.acs.examples.cracker.Cracker;
-import cl.niclabs.scada.acs.examples.cracker.dispatcher.DispatcherConfig;
-import cl.niclabs.scada.acs.examples.cracker.solver.Solver;
-import cl.niclabs.scada.acs.examples.cracker.solver.SolverTask;
+import cl.niclabs.scada.acs.examples.cracker.common.CrackerConfig;
+import cl.niclabs.scada.acs.examples.cracker.common.components.Cracker;
+import cl.niclabs.scada.acs.examples.cracker.common.components.Solver;
+import cl.niclabs.scada.acs.examples.cracker.common.components.SolverTask;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
 import org.objectweb.fractal.api.control.IllegalBindingException;
@@ -20,22 +20,25 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class DispatcherImpl implements Cracker, BindingController {
 
-    public static final int SOLVER_SLOTS = 8;
-    private static final int PASSWORD_MAX_LENGTH = DispatcherConfig.PASSWORD_MAX_LENGTH;
-    private static final String ALPHABET = DispatcherConfig.ALPHABET;
+    public static final int SOLVER_SLOTS = CrackerConfig.DEFAULT_SOLVER_SLOTS;
+    private static final String ALPHABET = CrackerConfig.ALPHABET;
 
     private Map<String, Solver> solvers = new HashMap<>();
 
 
     @Override
-    public Wrapper<String> crack(byte[] encryptedPassword) {
+    public Wrapper<String> crack(byte[] encryptedPassword, int maxLength) {
+
+        if (solvers.size() <= 0) {
+            return new WrongWrapper<>("0 Solvers found. At least one Solver is needed.");
+        }
 
         final BlockingQueue<Wrapper<String>> results = new LinkedBlockingQueue<>(SOLVER_SLOTS);
         final Queue<Solver> solverQueue = new LinkedList<>();
         solverQueue.addAll(solvers.values());
 
         long passwords = 0;
-        for (int i = 0; i <= PASSWORD_MAX_LENGTH; i++) {
+        for (int i = 0; i <= maxLength; i++) {
             passwords += Math.pow(ALPHABET.length(), i);
         }
 
@@ -45,7 +48,7 @@ public class DispatcherImpl implements Cracker, BindingController {
         for (int i = 0; i < solvers.size(); i++) {
             long first = taskSize * i + (i <= excess ? i : excess);
             long last = taskSize * (i + 1) - 1 + (i + 1 <= excess ? i : excess);
-            SolverTask task = new SolverTask(first, last, encryptedPassword);
+            SolverTask task = new SolverTask(first, last, encryptedPassword, maxLength);
             //System.out.println("[MAIN][/CRACKER/DISPATCHER] sending task from: " + first + " to: " + last);
             getResultWaiter(solverQueue.remove(), task, results).start();
         }

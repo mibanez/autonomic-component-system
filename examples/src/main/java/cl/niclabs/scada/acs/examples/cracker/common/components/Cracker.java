@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker;
+package cl.niclabs.scada.acs.examples.cracker.common.components;
 
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 
@@ -9,6 +9,6 @@ public interface Cracker {
 
     static final String NAME = "cracker-itf";
 
-    Wrapper<String> crack(byte[] encryptedPassword);
+    Wrapper<String> crack(byte[] encryptedPassword, int maxLength);
 
 }

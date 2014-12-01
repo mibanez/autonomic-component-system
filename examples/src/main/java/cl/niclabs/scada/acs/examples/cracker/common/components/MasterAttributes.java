@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker.solver.components;
+package cl.niclabs.scada.acs.examples.cracker.common.components;
 
 import org.objectweb.fractal.api.control.AttributeController;
 
@@ -8,10 +8,12 @@ import org.objectweb.fractal.api.control.AttributeController;
  */
 public interface MasterAttributes extends AttributeController {
 
+	double getPartitionsNumber();
+
 	/**
 	 * Number of partitions used to split the SolverTask
 	 * (double is used because of gcm-script issues)
 	 **/
-	public void setPartitionsNumber(double number);
-	public double setPartitionsNumber();
+	void setPartitionsNumber(double number);
+
 }

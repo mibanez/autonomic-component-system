@@ -16,10 +16,12 @@ import org.objectweb.proactive.extra.component.fscript.exceptions.Reconfiguratio
 import org.objectweb.proactive.extra.component.fscript.model.GCMComponentNode;
 import org.objectweb.proactive.extra.component.fscript.model.GCMInterfaceNode;
 import org.objectweb.proactive.extra.component.fscript.model.GCMNodeFactory;
+import org.objectweb.proactive.gcmdeployment.GCMApplication;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,10 +34,10 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
 
     private transient ScriptLoader loader;
     private transient FScriptEngine engine;
-
+    private transient GCMNodeFactory nodeFactory;
 
     private void init() throws ReconfigurationException {
-        if (loader == null || engine == null) {
+        if (loader == null || engine == null || nodeFactory == null) {
             try {
                 String defaultFcProvider = System.getProperty("fractal.provider");
                 if (defaultFcProvider == null) {
@@ -49,7 +51,7 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
                 Component gcmScript = GCMScript.newEngineFromAdl(ACS_GCMSCRIPT_ADL);
                 loader = FScript.getScriptLoader(gcmScript);
                 engine = FScript.getFScriptEngine(gcmScript);
-                GCMNodeFactory nodeFactory = (GCMNodeFactory) FScript.getNodeFactory(gcmScript);
+                nodeFactory = (GCMNodeFactory) FScript.getNodeFactory(gcmScript);
                 engine.setGlobalVariable("this", nodeFactory.createGCMComponentNode(hostComponent));
                 System.setProperty("fractal.provider", defaultFcProvider);
 
@@ -85,6 +87,16 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
     }
 
     @Override
+    public void setGlobalVariable(String name, GCMApplication gcmApp) {
+        try {
+            init();
+            engine.setGlobalVariable(name, nodeFactory.createGCMApplicationNode(gcmApp));
+        } catch (ReconfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public <REPLY extends Serializable> Wrapper<REPLY> execute(String source) {
         try {
             init();
@@ -94,9 +106,9 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
             }
             return new ValidWrapper<>((REPLY) getRepresentation(result));
         } catch (ReconfigurationException e) {
-            return new WrongWrapper<>("ReconfigurationException: " + e.getMessage());
+            return new WrongWrapper<>("ReconfigurationException: " + e.getMessage(), e);
         } catch (FScriptException e) {
-            return new WrongWrapper<>("FScriptException: " + e.getMessage());
+            return new WrongWrapper<>("FScriptException: " + e.getMessage(), e);
         }
     }
 
@@ -110,7 +122,7 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
             try {
                 return String.format("[Not Serializable Component: %s]", GCM.getNameController(comp));
             } catch (NoSuchInterfaceException e) {
-                return "[Not Serializable Unknown Component]";
+                return "<Not Serializable Unknown Component>";
             }
         }
 
@@ -119,7 +131,15 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
             if (itf instanceof PAInterfaceImpl) {
                 return (PAInterfaceImpl) itf;
             }
-            return String.format("[Not Serializable Interface: %s]", itf.getFcItfName());
+            return String.format("<Not Serializable Interface: %s>", itf.getFcItfName());
+        }
+
+        if (object instanceof Set) {
+            HashSet<Serializable> set = new HashSet<>();
+            for (Object element : (Set) object) {
+                set.add(getRepresentation(element));
+            }
+            return set;
         }
 
         return object.toString();

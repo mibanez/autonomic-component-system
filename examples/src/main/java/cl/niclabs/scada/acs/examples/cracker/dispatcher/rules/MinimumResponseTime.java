@@ -3,7 +3,7 @@ package cl.niclabs.scada.acs.examples.cracker.dispatcher.rules;
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.analysis.Rule;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
-import cl.niclabs.scada.acs.examples.cracker.dispatcher.metrics.AvgResponseTime;
+import cl.niclabs.scada.acs.examples.cracker.common.metrics.AvgResponseTime;
 
 
 public class MinimumResponseTime extends Rule {

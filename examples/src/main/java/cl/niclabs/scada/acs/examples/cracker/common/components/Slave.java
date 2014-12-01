@@ -1,8 +1,7 @@
-package cl.niclabs.scada.acs.examples.cracker.solver.components;
+package cl.niclabs.scada.acs.examples.cracker.common.components;
 
 
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
-import cl.niclabs.scada.acs.examples.cracker.solver.SolverTask;
 
 public interface Slave {
 

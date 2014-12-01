@@ -24,6 +24,7 @@ import java.rmi.registry.Registry;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 
 public class ACSConsole implements Console, Runnable {
 
@@ -59,21 +60,29 @@ public class ACSConsole implements Console, Runnable {
             Wrapper<Serializable> result = console.getExecutionController().execute(args);
             if (result.isValid()) {
                 Object value = result.unwrap();
-                if (value instanceof PAComponent) {
-                    String componentName = ((PAComponent) value).getComponentParameters().getName();
-                    console.printMessage("[Component: " + componentName + "]");
-                } else if (value instanceof Interface) {
-                    console.printMessage("[Interface: " + ((Interface) value).getFcItfName() + "]");
-                } else if (value != null) {
-                    console.printMessage(value.toString());
-                } else {
-                    console.printMessage("");
-                }
+                console.printMessage(stringValueOf(value));
                 return value;
             } else {
                 console.printError("Can't resolve: " + result.getMessage());
                 return null;
             }
+        }
+
+        public String stringValueOf(Object value) {
+            if (value instanceof PAComponent) {
+                return "<Component: " + ((PAComponent) value).getComponentParameters().getName() + ">";
+            } else if (value instanceof Interface) {
+                return "<Interface: " + ((Interface) value).getFcItfName() + ">";
+            } else if (value instanceof Set) {
+                String set = "[";
+                for (Object subValue : (Set) value) {
+                    set += stringValueOf(subValue) + ", ";
+                }
+                return set.equals("[") ? "[]" : set.substring(0, set.lastIndexOf(", ")) + "]";
+            } else if (value != null) {
+                return value.toString();
+            }
+            return "";
         }
     }
 

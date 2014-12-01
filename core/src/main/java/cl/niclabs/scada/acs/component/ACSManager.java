@@ -5,6 +5,7 @@ import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricStoreFactory;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
+import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.BindingController;
@@ -59,36 +60,41 @@ public class ACSManager {
         }
 
         PAComponent pacomponent = (PAComponent) component;
-        String name = pacomponent.getFcItfName();
+
         String hierarchy = pacomponent.getComponentParameters().getHierarchicalType();
         InterfaceType[] interfaceTypes = pacomponent.getComponentParameters().getInterfaceTypes();
 
         try {
+            String name = GCM.getNameController(component).getFcName();
             PABindingController bindingCtrl = Utils.getPABindingController(component);
             PAMembraneController membraneCtrl = Utils.getPAMembraneController(component);
             Component[] parents = Utils.getPASuperController(component).getFcSuperComponents();
             Component parent = parents.length > 0 ? parents[0] : null;
 
-            enableRemoteMonitoring(component, parent, membraneCtrl, bindingCtrl, interfaceTypes, hierarchy, name);
+            enableRemoteMonitoring(parent, membraneCtrl, bindingCtrl, interfaceTypes, hierarchy, name);
         } catch (NoSuchInterfaceException e) {
-            throw new ACSException("Can't enable monitoring for " + name + ": " + e.getMessage(), e);
+            throw new ACSException("Can't enable monitoring for " + pacomponent + ": " + e.getMessage(), e);
         }
     }
 
-    private static void enableRemoteMonitoring(Component comp, Component parent, PAMembraneController membraneCtrl,
+    private static void enableRemoteMonitoring(Component parent, PAMembraneController membraneCtrl,
             BindingController bindingCtrl, InterfaceType[] interfaceTypes, String hierarchy, String name)
             throws ACSException {
 
         for(InterfaceType interfaceType : interfaceTypes) {
 
+            logger.trace("Enabling remote monitoring on {}.{}...", name, interfaceType.getFcItfName());
             PAGCMInterfaceType itfType = (PAGCMInterfaceType) interfaceType;
             String itfName = itfType.getFcItfName();
 
             try {
                 if (itfType.isFcClientItf()) {
+                    logger.trace("... is client");
                     if (itfType.isGCMSingletonItf() || itfType.isGCMGathercastItf()) {
+                        logger.trace("... is singleton/gathercast");
                         PAInterface serverItf = (PAInterface) bindingCtrl.lookupFc(itfType.getFcItfName());
                         if (serverItf != null) {
+                            logger.trace("..detected external client {}.{}", name, interfaceType.getFcItfName());
                             enableExternalRemote(parent, membraneCtrl, itfName, serverItf);
                         }
                     } else {
@@ -98,10 +104,12 @@ public class ACSManager {
                 else if (hierarchy.equals(Constants.COMPOSITE) && itfType.isGCMSingletonItf()) {
                     PAInterface serverItf = (PAInterface) bindingCtrl.lookupFc(itfType.getFcItfName());
                     if (serverItf != null) {
+                        logger.trace("..detected internal server {}.{}...", name, interfaceType.getFcItfName());
                         enableInternalRemote(membraneCtrl, itfName, serverItf);
                     }
                 }
             } catch (NoSuchInterfaceException e) {
+                logger.trace("Can't find server for interface {}: {}", itfType.getFcItfName(), e.getMessage());
                 throw new ACSException("Can't find server for interface " + itfType.getFcItfName(), e);
             }
         }
@@ -110,18 +118,22 @@ public class ACSManager {
     private static void enableExternalRemote(Component parent, PAMembraneController membraneCtrl, String itfName,
             PAInterface serverItf) throws ACSException {
         try {
-            if (membraneCtrl.nfLookupFc(itfName + REMOTE_MONITORING_SUFFIX) == null) {
+            if (membraneCtrl.nfLookupFc(itfName + REMOTE_MONITORING_SUFFIX) != null) {
+                logger.trace(".... already bound, bye!");
                 return; // break loops
             }
 
             Component serverComponent = serverItf.getFcItfOwner();
             boolean boundToParent = parent.equals(serverComponent);
+            logger.trace(".... is bound parent ? {}", boundToParent);
+
             MonitoringController serverCtrl = boundToParent ? (MonitoringController) serverComponent.getFcInterface(
                     serverItf.getFcItfName() + REMOTE_MONITORING_SUFFIX) : getMonitoringController(serverComponent);
 
             bindNFInterfaces(membraneCtrl, itfName, serverCtrl);
 
             if ( !boundToParent ) {
+                logger.trace(".... continuing to {}", GCM.getNameController(serverComponent).getFcName());
                 enableRemoteMonitoring(serverComponent);
             }
         } catch (NoSuchInterfaceException | NoSuchComponentException e) {

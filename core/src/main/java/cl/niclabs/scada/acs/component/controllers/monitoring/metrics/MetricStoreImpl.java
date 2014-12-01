@@ -176,7 +176,7 @@ public class MetricStoreImpl extends AbstractPAComponentController implements Me
     public void notifyRecordEvent(RecordEvent eventType) {
 
         for (Map.Entry<String, Metric> entry : metrics.entrySet()) {
-            if (entry.getValue().isSubscribedTo(eventType)) {
+            if (entry.getValue().isEnabled() && entry.getValue().isSubscribedTo(eventType)) {
                 entry.getValue().calculate(recordStore, this);
                 metricEventListener.notifyMetricChange(entry.getKey());
             }

@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker.solver;
+package cl.niclabs.scada.acs.examples.cracker.common.components;
 
 import java.io.Serializable;
 
@@ -14,10 +14,13 @@ public class SolverTask implements Serializable {
     private final long last;
 	private final byte[] encryptedPassword;
 
-	public SolverTask(long first, long last, byte[] encryptedPassword) {
+	private final int maxLength;
+
+	public SolverTask(long first, long last, byte[] encryptedPassword, int maxLength) {
 		this.first = first;
 		this.last = last;
 		this.encryptedPassword = encryptedPassword;
+		this.maxLength = maxLength;
 	}
 
 	public long getFirst() {
@@ -28,11 +31,15 @@ public class SolverTask implements Serializable {
 		return last;
 	}
 
+	public long getTotal() {
+		return last - first + 1;
+	}
+
 	public byte[] getEncryptedPassword() {
 		return encryptedPassword;
 	}
 
-	public long getTotal() {
-		return last - first + 1;
+	public int getMaxLength() {
+		return maxLength;
 	}
 }
