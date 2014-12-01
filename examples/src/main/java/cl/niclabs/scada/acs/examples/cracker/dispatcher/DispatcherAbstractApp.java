@@ -15,6 +15,8 @@ import org.objectweb.proactive.core.component.control.PAContentController;
 import org.objectweb.proactive.core.component.identity.PAComponent;
 import org.objectweb.proactive.core.node.Node;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,6 +74,6 @@ public abstract class DispatcherAbstractApp {
 
     protected abstract Node[] getSolverNodes();
 
-    protected abstract void extraConfiguration(Component cracker);
+    protected abstract void extraConfiguration(Component cracker) throws MalformedURLException, URISyntaxException;
 
 }

@@ -12,6 +12,10 @@ import org.objectweb.proactive.extra.component.fscript.exceptions.Reconfiguratio
 import org.objectweb.proactive.gcmdeployment.GCMApplication;
 import org.objectweb.proactive.gcmdeployment.GCMVirtualNode;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 public class HerculesApp extends DispatcherAbstractApp {
 
     private final int INIT_N_OF_SOLVERS = 2;
@@ -39,10 +43,12 @@ public class HerculesApp extends DispatcherAbstractApp {
     }
 
     @Override
-    protected void extraConfiguration(Component cracker) {
+    protected void extraConfiguration(Component cracker) throws MalformedURLException, URISyntaxException {
         try {
             ACSManager.getExecutionController(cracker).setGlobalVariable("herculesApp", herculesApp);
-            ACSManager.getExecutionController(cracker).load(Solver.class.getResource("Solver.fscript").getPath());
+            System.out.println("**\n**\n**\n**\n** " + Solver.class.getResource("Solver.fscript").getPath() + "\n**\n");
+            System.out.println("**\n** " + new URL(Solver.class.getResource("Solver.fscript").getPath()).toURI().getPath() + "\n**\n");
+            ACSManager.getExecutionController(cracker).load(new URL(Solver.class.getResource("Solver.fscript").getPath()).toURI().getPath());
         } catch (NoSuchInterfaceException e) {
             e.printStackTrace();
         } catch (ReconfigurationException e) {
