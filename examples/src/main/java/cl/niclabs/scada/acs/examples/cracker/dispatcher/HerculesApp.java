@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs.examples.cracker.dispatcher;
 
 import cl.niclabs.scada.acs.component.ACSManager;
+import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.examples.cracker.common.CrackerConfig;
 import cl.niclabs.scada.acs.examples.cracker.common.components.Solver;
 import org.objectweb.fractal.api.Component;
@@ -48,7 +49,14 @@ public class HerculesApp extends DispatcherAbstractApp {
             ACSManager.getExecutionController(cracker).setGlobalVariable("herculesApp", herculesApp);
             System.out.println("**\n**\n**\n**\n** " + Solver.class.getResource("Solver.fscript").getPath() + "\n**\n");
             System.out.println("**\n** " + new URL(Solver.class.getResource("Solver.fscript").getPath()).toURI().getPath() + "\n**\n");
-            ACSManager.getExecutionController(cracker).load(new URL(Solver.class.getResource("Solver.fscript").getPath()).toURI().getPath());
+            Wrapper<String[]> result = ACSManager.getExecutionController(cracker).load(new URL(Solver.class.getResource("Solver.fscript").getPath()).toURI().getPath());
+
+            for (String s : result.unwrap()) {
+                System.out.println("** load: " + s);
+            }
+            for(String s : ACSManager.getExecutionController(cracker).getGlobals().unwrap()) {
+                System.out.println("** global: " + s);
+            }
         } catch (NoSuchInterfaceException e) {
             e.printStackTrace();
         } catch (ReconfigurationException e) {
