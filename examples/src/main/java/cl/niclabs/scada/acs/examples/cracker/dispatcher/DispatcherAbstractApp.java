@@ -27,7 +27,7 @@ public abstract class DispatcherAbstractApp {
 
     public void run() throws Exception {
         System.setProperty("gcm.provider", Fractive.class.getName());
-        System.setProperty("java.security.policy", DispatcherAbstractApp.class.getResource("/proactive.java.policy").getPath());
+        //System.setProperty("java.security.policy", DispatcherAbstractApp.class.getResource("proactive.java.policy").getPath());
 
         ACSAdlFactory adlFactory = (ACSAdlFactory) ACSAdlFactoryFactory.getACSAdlFactory();
         Component crackerComp = (Component) adlFactory.newACSComponent(CRACKER_ADL, null);

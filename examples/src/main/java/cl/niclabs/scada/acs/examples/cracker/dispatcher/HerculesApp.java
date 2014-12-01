@@ -1,6 +1,8 @@
 package cl.niclabs.scada.acs.examples.cracker.dispatcher;
 
 import cl.niclabs.scada.acs.component.ACSManager;
+import cl.niclabs.scada.acs.examples.cracker.common.CrackerConfig;
+
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.proactive.core.ProActiveException;
@@ -13,14 +15,14 @@ import java.io.File;
 
 public class HerculesApp extends DispatcherAbstractApp {
 
-    private final String HERCULES_DESCRIPTOR = "/cl/niclabs/scada/acs/examples/cracker/common/hercules-app.xml";
     private final int INIT_N_OF_SOLVERS = 2;
 
     private GCMApplication herculesApp;
 
     public HerculesApp() throws ProActiveException {
-        File herculesAppDescriptor = new File(HerculesApp.class.getResource(HERCULES_DESCRIPTOR).getFile());
-        GCMApplication herculesApp = PAGCMDeployment.loadApplicationDescriptor(herculesAppDescriptor);
+        //File herculesAppDescriptor = new File(HerculesApp.class.getResource(HERCULES_DESCRIPTOR).getFile());
+        herculesApp = PAGCMDeployment.loadApplicationDescriptor(CrackerConfig.class.getResource(
+            "hercules-app.xml"));
         herculesApp.startDeployment();
         herculesApp.waitReady();
     }

@@ -7,32 +7,36 @@
         <proactive base="home" relpath="memoria/programming-multiactivities">
             <configuration>
                 <applicationClasspath>
-                    <pathElement base="home" relpath="memoria/autonomic-component-system/target/libs/*"/>
+                    <pathElement base="home" relpath="memoria/autonomic-component-system/target/lib/*"/>
+                    <pathElement base="home" relpath="memoria/autonomic-component-system/core/target/*"/>
+                    <pathElement base="home" relpath="memoria/autonomic-component-system/core/target/lib/*"/>
+                    <pathElement base="home" relpath="memoria/autonomic-component-system/examples/target/*"/>
+                    <pathElement base="home" relpath="memoria/autonomic-component-system/examples/target/lib/*"/>
                 </applicationClasspath>
                 <securityPolicy base="proactive" relpath="dist/proactive.java.policy"/>
                 <log4jProperties base="proactive" relpath="dist/proactive-log4j"/>
             </configuration>
 
+            <virtualNode id="SolverVN0" capacity="4">
+                <nodeProvider refid="solver0-provider"/>
+            </virtualNode>
             <virtualNode id="SolverVN1" capacity="4">
                 <nodeProvider refid="solver1-provider"/>
             </virtualNode>
             <virtualNode id="SolverVN2" capacity="4">
                 <nodeProvider refid="solver2-provider"/>
             </virtualNode>
-            <virtualNode id="SolverVN3" capacity="4">
-                <nodeProvider refid="solver3-provider"/>
-            </virtualNode>
         </proactive>
     </application>
 
     <resources>
-        <nodeProvider id="solver1-provider">
+        <nodeProvider id="solver0-provider">
             <file path="hercules-solver1-deployment.xml"/>
         </nodeProvider>
-        <nodeProvider id="solver2-provider">
+        <nodeProvider id="solver1-provider">
             <file path="hercules-solver2-deployment.xml"/>
         </nodeProvider>
-        <nodeProvider id="solver3-provider">
+        <nodeProvider id="solver2-provider">
             <file path="hercules-solver3-deployment.xml"/>
         </nodeProvider>
     </resources>

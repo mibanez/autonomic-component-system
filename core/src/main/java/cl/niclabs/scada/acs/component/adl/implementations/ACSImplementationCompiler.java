@@ -14,6 +14,7 @@ import org.objectweb.proactive.core.component.body.ComponentRunActive;
 import org.objectweb.proactive.core.component.type.Composite;
 import org.objectweb.proactive.multiactivity.component.ComponentMultiActiveService;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -22,12 +23,14 @@ import java.util.Map;
  * A copy of PAImplementationCompiler, this version overrides a private method.
  *
  */
-public class ACSImplementationCompiler extends PAImplementationCompiler {
+public class ACSImplementationCompiler extends PAImplementationCompiler implements Serializable {
 
     private static final String ACS_COMPONENT_CONFIG_FILE_LOCATION =
             "/cl/niclabs/scada/acs/component/default-acs-component-config.xml";
 
-    private ComponentRunActive acsActive = new ComponentRunActive() {
+    protected interface ACSActive extends ComponentRunActive, Serializable { }
+
+    private ACSActive acsActive = new ACSActive() {
         @Override
         public void runComponentActivity(Body body) {
             body.setImmediateService("getValue", false);
