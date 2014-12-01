@@ -5,12 +5,12 @@ import cl.niclabs.scada.acs.gcmscript.model.ACSModel;
 import cl.niclabs.scada.acs.gcmscript.model.controllers.analysis.RuleNode;
 import cl.niclabs.scada.acs.gcmscript.model.controllers.monitoring.MetricNode;
 import cl.niclabs.scada.acs.gcmscript.model.controllers.planning.PlanNode;
+import org.apache.log4j.Logger;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.fscript.model.AbstractAxis;
 import org.objectweb.fractal.fscript.model.Node;
 import org.objectweb.fractal.fscript.model.fractal.FractalModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.objectweb.proactive.core.util.log.ProActiveLogger;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public class SubscriptionAxis extends AbstractAxis {
 
-    private final static Logger logger = LoggerFactory.getLogger(SubscriptionAxis.class);
+    private static final Logger logger = ProActiveLogger.getLogger("ACS");
 
     public SubscriptionAxis(FractalModel model) {
         super(model, "subscription", "generic-element", "generic-element");
@@ -60,7 +60,7 @@ public class SubscriptionAxis extends AbstractAxis {
                 } catch (NoSuchInterfaceException ignore) {}
             }
         } else {
-            logger.debug("Invalid wrapper: {}", wrapper.getMessage());
+            //logger.debug("Invalid wrapper: {}", wrapper.getMessage());
         }
 
         return metricNodes;
@@ -78,7 +78,7 @@ public class SubscriptionAxis extends AbstractAxis {
                 } catch (NoSuchInterfaceException ignore) {}
             }
         } else {
-            logger.debug("Invalid wrapper: {}", wrapper.getMessage());
+            //logger.debug("Invalid wrapper: {}", wrapper.getMessage());
         }
 
         return ruleNodes;

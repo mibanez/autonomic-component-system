@@ -1,5 +1,6 @@
 package cl.niclabs.scada.acs.component.factory;
 
+import org.apache.log4j.Logger;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.api.control.IllegalLifeCycleException;
@@ -16,9 +17,8 @@ import org.objectweb.proactive.core.component.type.Composite;
 import org.objectweb.proactive.core.component.type.PAGCMInterfaceType;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 import org.objectweb.proactive.core.node.Node;
+import org.objectweb.proactive.core.util.log.ProActiveLogger;
 import org.objectweb.proactive.multiactivity.component.ComponentMultiActiveService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -28,7 +28,7 @@ import java.util.*;
  */
 public class ACSFactory {
 
-    private static final Logger logger = LoggerFactory.getLogger(ACSFactory.class);
+    private static final Logger logger = ProActiveLogger.getLogger("ACS");
     private static final String ACS_CONFIG = "/cl/niclabs/scada/acs/component/default-acs-component-config.xml";
 
     private static PAGCMTypeFactory tf;
@@ -162,7 +162,7 @@ public class ACSFactory {
                                      String hierarchy, Node node) throws ACSFactoryException {
         Component component;
         try {
-            logger.debug("instantiating component {} using generic factory", name);
+            //logger.debug("instantiating component {} using generic factory", name);
             ControllerDescription controllerDescription = new ControllerDescription(name, hierarchy);
             component = gf.newFcInstance(
                     componentType,
@@ -178,10 +178,10 @@ public class ACSFactory {
             throw new ACSFactoryException("Couldn't instantiate component " + name, e);
         }
 
-        logger.debug("adding object controller to {} component", name);
+        //logger.debug("adding object controller to {} component", name);
         buildHelper.addObjectControllers(component);
 
-        logger.debug("adding acs controllers to {} component", name);
+        //logger.debug("adding acs controllers to {} component", name);
         buildHelper.addACSControllers(component);
 
         try {

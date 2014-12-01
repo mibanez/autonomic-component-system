@@ -1,11 +1,11 @@
 package cl.niclabs.scada.acs.multiactivity.compatibility;
 
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
+import org.apache.log4j.Logger;
 import org.objectweb.proactive.annotation.multiactivity.MemberOf;
+import org.objectweb.proactive.core.util.log.ProActiveLogger;
 import org.objectweb.proactive.multiactivity.compatibility.AnnotationProcessor;
 import org.objectweb.proactive.multiactivity.compatibility.MethodGroup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class ACSAnnotationProcessor extends AnnotationProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(ACSAnnotationProcessor.class);
+    private static final Logger logger = ProActiveLogger.getLogger("ACS");
 
     public static final String DEFAULT_GROUP_NAME = "__UnlabeledMethods__";
     public static final String MONITORING_GROUP_NAME = "__MonitoringMethods__";
@@ -52,7 +52,7 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
     private void processAcsMethods() {
         for (Method method : MonitoringController.class.getMethods()) {
             String methodName = method.toString().substring(method.toString().indexOf(method.getName() + "("));
-            logger.trace("adding {} method to group {}", methodName, MONITORING_GROUP_NAME);
+            //logger.trace("adding {} method to group {}", methodName, MONITORING_GROUP_NAME);
             acsMemberships.put(methodName, acsGroups.get(MONITORING_GROUP_NAME));
         }
     }
@@ -69,7 +69,7 @@ public class ACSAnnotationProcessor extends AnnotationProcessor {
             if (method.getAnnotation(MemberOf.class) == null) {
                 String methodName = method.toString().substring(method.toString().indexOf(method.getName() + "("));
                 acsMemberships.put(methodName, acsGroups.get(DEFAULT_GROUP_NAME));
-                logger.trace("Adding {} interface to {} group.", methodName, DEFAULT_GROUP_NAME);
+                //logger.trace("Adding {} interface to {} group.", methodName, DEFAULT_GROUP_NAME);
             }
         }
     }

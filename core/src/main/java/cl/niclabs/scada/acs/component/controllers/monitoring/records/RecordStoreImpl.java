@@ -1,8 +1,8 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring.records;
 
+import org.apache.log4j.Logger;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.objectweb.proactive.core.util.log.ProActiveLogger;
 
 import java.util.*;
 
@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class RecordStoreImpl extends AbstractPAComponentController implements RecordStore {
 
-    private final static Logger logger = LoggerFactory.getLogger(RecordStoreImpl.class);
+    private static final Logger logger = ProActiveLogger.getLogger("ACS");
 
     private int maxSize = 256;
     private final LinkedList<IncomingRecord> inLinkedList = new LinkedList<>();
@@ -48,7 +48,7 @@ public class RecordStoreImpl extends AbstractPAComponentController implements Re
             }
             if (record.getReceptionTime() != 0) {
                 if (old.getReceptionTime() != 0) {
-                    logger.warn("incoming request record already exist! {}", record);
+                    //logger.warn("incoming request record already exist! {}", record);
                 } else {
                     old.setReceptionTime(record.getReceptionTime());
                 }
@@ -74,7 +74,7 @@ public class RecordStoreImpl extends AbstractPAComponentController implements Re
             }
             if (record.getSentTime() != 0) {
                 if (oldRecord.getSentTime() != 0) {
-                    logger.warn("incoming request record already exist! {}", record);
+                    //logger.warn("incoming request record already exist! {}", record);
                 } else {
                     oldRecord.setSentTime(record.getSentTime());
                 }
@@ -92,7 +92,7 @@ public class RecordStoreImpl extends AbstractPAComponentController implements Re
                 outVoidMap.remove(outVoidLinkedList.pollLast().getCurrentId());
             }
         } else {
-            logger.warn("outgoing void request record already exists! {}", record);
+            //logger.warn("outgoing void request record already exists! {}", record);
         }
     }
 

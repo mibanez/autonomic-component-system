@@ -5,6 +5,7 @@ import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricStoreFactory;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
+import org.apache.log4j.Logger;
 import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -18,8 +19,7 @@ import org.objectweb.proactive.core.component.control.PAMembraneController;
 import org.objectweb.proactive.core.component.exceptions.NoSuchComponentException;
 import org.objectweb.proactive.core.component.identity.PAComponent;
 import org.objectweb.proactive.core.component.type.PAGCMInterfaceType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.objectweb.proactive.core.util.log.ProActiveLogger;
 
 import static cl.niclabs.scada.acs.component.controllers.monitoring.metrics.RemoteMonitoringManager.INTERNAL_MONITORING_SUFFIX;
 import static cl.niclabs.scada.acs.component.controllers.monitoring.metrics.RemoteMonitoringManager.REMOTE_MONITORING_SUFFIX;
@@ -27,7 +27,7 @@ import static cl.niclabs.scada.acs.component.controllers.monitoring.metrics.Remo
 
 public class ACSManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(ACSManager.class);
+    private static final Logger logger = ProActiveLogger.getLogger("ACS");
 
     public static final String MONITORING_CONTROLLER = "monitoring-controller";
     public static final String ANALYSIS_CONTROLLER  = "analysis-controller";
@@ -83,7 +83,7 @@ public class ACSManager {
 
         for(InterfaceType interfaceType : interfaceTypes) {
 
-            logger.trace("Enabling remote monitoring on {}.{}...", name, interfaceType.getFcItfName());
+            logger.trace("Enabling remote monitoring on " + name +":" + interfaceType.getFcItfName());
             PAGCMInterfaceType itfType = (PAGCMInterfaceType) interfaceType;
             String itfName = itfType.getFcItfName();
 
@@ -94,7 +94,7 @@ public class ACSManager {
                         logger.trace("... is singleton/gathercast");
                         PAInterface serverItf = (PAInterface) bindingCtrl.lookupFc(itfType.getFcItfName());
                         if (serverItf != null) {
-                            logger.trace("..detected external client {}.{}", name, interfaceType.getFcItfName());
+                            //logger.trace("..detected external client {}.{}", name, interfaceType.getFcItfName());
                             enableExternalRemote(parent, membraneCtrl, itfName, serverItf);
                         }
                     } else {
@@ -104,12 +104,12 @@ public class ACSManager {
                 else if (hierarchy.equals(Constants.COMPOSITE) && itfType.isGCMSingletonItf()) {
                     PAInterface serverItf = (PAInterface) bindingCtrl.lookupFc(itfType.getFcItfName());
                     if (serverItf != null) {
-                        logger.trace("..detected internal server {}.{}...", name, interfaceType.getFcItfName());
+                        //logger.trace("..detected internal server {}.{}...", name, interfaceType.getFcItfName());
                         enableInternalRemote(membraneCtrl, itfName, serverItf);
                     }
                 }
             } catch (NoSuchInterfaceException e) {
-                logger.trace("Can't find server for interface {}: {}", itfType.getFcItfName(), e.getMessage());
+                //logger.trace("Can't find server for interface {}: {}", itfType.getFcItfName(), e.getMessage());
                 throw new ACSException("Can't find server for interface " + itfType.getFcItfName(), e);
             }
         }
@@ -119,13 +119,13 @@ public class ACSManager {
             PAInterface serverItf) throws ACSException {
         try {
             if (membraneCtrl.nfLookupFc(itfName + REMOTE_MONITORING_SUFFIX) != null) {
-                logger.trace(".... already bound, bye!");
+                //logger.trace(".... already bound, bye!");
                 return; // break loops
             }
 
             Component serverComponent = serverItf.getFcItfOwner();
             boolean boundToParent = parent.equals(serverComponent);
-            logger.trace(".... is bound parent ? {}", boundToParent);
+            //logger.trace(".... is bound parent ? {}", boundToParent);
 
             MonitoringController serverCtrl = boundToParent ? (MonitoringController) serverComponent.getFcInterface(
                     serverItf.getFcItfName() + REMOTE_MONITORING_SUFFIX) : getMonitoringController(serverComponent);
@@ -133,7 +133,7 @@ public class ACSManager {
             bindNFInterfaces(membraneCtrl, itfName, serverCtrl);
 
             if ( !boundToParent ) {
-                logger.trace(".... continuing to {}", GCM.getNameController(serverComponent).getFcName());
+                //logger.trace(".... continuing to {}", GCM.getNameController(serverComponent).getFcName());
                 enableRemoteMonitoring(serverComponent);
             }
         } catch (NoSuchInterfaceException | NoSuchComponentException e) {
