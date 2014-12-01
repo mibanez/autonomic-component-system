@@ -51,8 +51,12 @@ public class HerculesApp extends DispatcherAbstractApp {
             System.out.println("**\n** " + new URL(Solver.class.getResource("Solver.fscript").getPath()).toURI().getPath() + "\n**\n");
             Wrapper<String[]> result = ACSManager.getExecutionController(cracker).load(new URL(Solver.class.getResource("Solver.fscript").getPath()).toURI().getPath());
 
-            for (String s : result.unwrap()) {
-                System.out.println("** load: " + s);
+            if (result.isValid()) {
+                for (String s : result.unwrap()) {
+                    System.out.println("** load: " + s);
+                }
+            } else {
+                System.out.println("**************:::: LOAD:::: " + result.getMessage());
             }
             for(String s : ACSManager.getExecutionController(cracker).getGlobals().unwrap()) {
                 System.out.println("** global: " + s);
