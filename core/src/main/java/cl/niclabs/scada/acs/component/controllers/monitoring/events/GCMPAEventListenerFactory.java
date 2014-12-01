@@ -1,6 +1,7 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring.events;
 
 import cl.niclabs.scada.acs.component.ACSManager;
+import cl.niclabs.scada.acs.component.body.ACSComponentRunActive;
 import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.factory.InstantiationException;
@@ -10,7 +11,6 @@ import org.objectweb.proactive.Body;
 import org.objectweb.proactive.core.component.Constants;
 import org.objectweb.proactive.core.component.ContentDescription;
 import org.objectweb.proactive.core.component.ControllerDescription;
-import org.objectweb.proactive.core.component.body.ComponentRunActive;
 import org.objectweb.proactive.core.component.factory.PAGenericFactory;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 import org.objectweb.proactive.core.node.Node;
@@ -53,13 +53,11 @@ public class GCMPAEventListenerFactory {
     }
 
     private static ContentDescription getContentDescription() {
-        return new ContentDescription(GCMPAEventListenerImpl.class.getName(), null, new GCMPAEventListenerRunActive(), null);
-    }
-
-    public static class GCMPAEventListenerRunActive implements ComponentRunActive {
-        @Override
-        public void runComponentActivity(Body body) {
-            (new ComponentMultiActiveService(body)).multiActiveServing();
-        }
+        return new ContentDescription(GCMPAEventListenerImpl.class.getName(), null, new ACSComponentRunActive() {
+            @Override
+            public void runComponentActivity(Body body) {
+                (new ComponentMultiActiveService(body)).multiActiveServing();
+            }
+        }, null);
     }
 }

@@ -2,6 +2,7 @@ package cl.niclabs.scada.acs.component.controllers.monitoring;
 
 
 import cl.niclabs.scada.acs.component.ACSManager;
+import cl.niclabs.scada.acs.component.body.ACSComponentRunActive;
 import cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListener;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.MetricStore;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.RemoteMonitoringManager;
@@ -12,7 +13,6 @@ import org.objectweb.proactive.Body;
 import org.objectweb.proactive.core.component.Constants;
 import org.objectweb.proactive.core.component.ContentDescription;
 import org.objectweb.proactive.core.component.ControllerDescription;
-import org.objectweb.proactive.core.component.body.ComponentRunActive;
 import org.objectweb.proactive.core.component.factory.PAGenericFactory;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 import org.objectweb.proactive.core.node.Node;
@@ -49,15 +49,12 @@ public class MonitoringManagerFactory {
     }
 
     private static ContentDescription getContentDescription() {
-        return new ContentDescription(MonitoringManagerImpl.class.getName(), null, new MonitoringManagerRunActive(), null);
+        return new ContentDescription(MonitoringManagerImpl.class.getName(), null, new ACSComponentRunActive() {
+            @Override
+            public void runComponentActivity(Body body) {
+                body.setImmediateService("getValue", false);
+                (new ComponentMultiActiveService(body)).multiActiveServing();
+            }
+        }, null);
     }
-
-    public static class MonitoringManagerRunActive implements ComponentRunActive {
-        @Override
-        public void runComponentActivity(Body body) {
-            body.setImmediateService("getValue", false);
-            (new ComponentMultiActiveService(body)).multiActiveServing();
-        }
-    }
-
 }
