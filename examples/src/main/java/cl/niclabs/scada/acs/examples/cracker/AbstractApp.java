@@ -5,6 +5,7 @@ import cl.niclabs.scada.acs.component.adl.ACSAdlFactory;
 import cl.niclabs.scada.acs.component.adl.ACSAdlFactoryFactory;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
+import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.examples.cracker.autonomic.*;
@@ -73,8 +74,10 @@ public abstract class AbstractApp {
             ACSManager.getMonitoringController(solverComp).add(AvgRespTimeMetric.NAME, AvgRespTimeMetric.class);
         }
 
-        ACSManager.getMonitoringController(crackerComp).add(AvgRespTimeMetric.NAME, AvgRespTimeMetric.class);
-        ACSManager.getMonitoringController(crackerComp).add(DistributionPointMetric.NAME, DistributionPointMetric.class);
+        MonitoringController monitoringCtrl = ACSManager.getMonitoringController(crackerComp);
+        monitoringCtrl.add(AvgRespTimeMetric.NAME, AvgRespTimeMetric.class);
+        monitoringCtrl.add(DummyDistributionPointMetric.NAME, DummyDistributionPointMetric.class);
+        monitoringCtrl.add(DistributionPointMetric.NAME, DistributionPointMetric.class);
 
         AnalysisController analysisCtrl = ACSManager.getAnalysisController(crackerComp);
         analysisCtrl.add(MaxRespTimeRule.NAME, MaxRespTimeRule.class);

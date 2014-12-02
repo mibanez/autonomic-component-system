@@ -14,17 +14,18 @@ public class DistributionPointMetric extends Metric<DistributionPoint> {
 
     public static final String NAME = "distributionPoint";
 
-    private final String[] s1Path = new String[] { Cracker.NAME, Solver.NAME + "-0" };
-    private final String[] s2Path = new String[] { Cracker.NAME, Solver.NAME + "-1" };
-    private final String[] s3Path = new String[] { Cracker.NAME, Solver.NAME + "-2" };
+    protected final static String[] s1Path = new String[] { Cracker.NAME, Solver.NAME + "-0" };
+    protected final static String[] s2Path = new String[] { Cracker.NAME, Solver.NAME + "-1" };
+    protected final static String[] s3Path = new String[] { Cracker.NAME, Solver.NAME + "-2" };
 
-    private DistributionPoint lastPoint;
-    private String avgRespTimeMetric;
-    private int numberOfSkipped;
-    private int skippedCounter = 0;
-    private long initTime = 0;
+    protected DistributionPoint lastPoint;
+    protected String avgRespTimeMetric;
 
-    private int testLogCounter = 0;
+    protected int numberOfSkipped;
+
+    protected static int skippedCounter = 0;
+    protected static long initTime = 0;
+    protected static int testLogCounter = 0;
 
 
     public DistributionPointMetric() {
@@ -32,7 +33,6 @@ public class DistributionPointMetric extends Metric<DistributionPoint> {
         this.numberOfSkipped = CrackerConfig.SKIPPED_CALCULATIONS;
         this.avgRespTimeMetric = AvgRespTimeMetric.NAME;
 
-        setEnabled(true);
         subscribeTo(RecordEvent.RESPONSE_RECEIVED);
     }
 
@@ -54,18 +54,19 @@ public class DistributionPointMetric extends Metric<DistributionPoint> {
         Wrapper<Long> s2 = metricStore.getValue(avgRespTimeMetric, s2Path);
         Wrapper<Long> s3 = metricStore.getValue(avgRespTimeMetric, s3Path);
 
-        if (areValidValues(s1, s2, s3) && shouldCalculate()) {
-            lastPoint = calculateNewPoint(lastPoint, s1.unwrap(), s2.unwrap(), s3.unwrap());
+        if (areValidValues(s1, s2, s3)) {
+            if (shouldCalculate()) {
+                lastPoint = calculateNewPoint(lastPoint, s1.unwrap(), s2.unwrap(), s3.unwrap());
+            }
+            String testLogMsg = "[" + ++testLogCounter + "] " + String.valueOf(System.currentTimeMillis() - initTime);
+            testLogMsg += "," + s1.unwrap() + "," + s2.unwrap() + "," + s3.unwrap();
+            System.out.println(testLogMsg + "," + lastPoint.asTestLog());
         }
-
-        String testLogMsg = "[" + ++testLogCounter + "] " + String.valueOf(System.currentTimeMillis() - initTime);
-        testLogMsg += "," + s1.unwrap() + "," + s2.unwrap() + "," + s3.unwrap();
-        System.out.println(testLogMsg + "," + lastPoint.asTestLog());
 
         return lastPoint;
     }
 
-    private DistributionPoint calculateNewPoint(DistributionPoint lastPoint, long t1, long t2, long t3) {
+    protected DistributionPoint calculateNewPoint(DistributionPoint lastPoint, long t1, long t2, long t3) {
 
         // Lets "wi" be the percentage of work assigned to solver i.
         double w1 = lastPoint.getX();
@@ -91,7 +92,7 @@ public class DistributionPointMetric extends Metric<DistributionPoint> {
         return new DistributionPoint(p1/(p1 + p2 + p3), (p1 + p2)/(p1 + p2 + p3));
     }
 
-    private boolean shouldCalculate() {
+    protected boolean shouldCalculate() {
         if (++skippedCounter > numberOfSkipped) {
             skippedCounter = 0;
             return true;
@@ -99,7 +100,7 @@ public class DistributionPointMetric extends Metric<DistributionPoint> {
         return false;
     }
 
-    private boolean areValidValues(Wrapper<Long> s1, Wrapper<Long> s2, Wrapper<Long> s3) {
+    protected boolean areValidValues(Wrapper<Long> s1, Wrapper<Long> s2, Wrapper<Long> s3) {
         if ( !( s1.isValid() && s2.isValid() && s3.isValid() ) ) {
             String report = "\n" + s1.getMessage() + "\n" + s2.getMessage() + "\n" + s3.getMessage();
             System.err.println("[WARNING] DistributionPoint fail: " + report);

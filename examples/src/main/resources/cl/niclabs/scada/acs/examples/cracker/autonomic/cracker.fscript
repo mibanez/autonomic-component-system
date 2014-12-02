@@ -113,6 +113,8 @@ action remove-slave(solver) {
 }
 
 action enable-balancer(cracker) {
+    set-state($cracker/metric::dummyDistributionPoint, "DISABLED");
+    set-state($cracker/metric::distributionPoint, "ENABLED");
     set-state($cracker/rule::balanceState, "ENABLED");
     set-state($cracker/plan::balanceUpdater, "ENABLED");
 }
