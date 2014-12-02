@@ -1,0 +1,13 @@
+<!DOCTYPE definition PUBLIC "-//objectweb.org//DTD Fractal ADL 2.0//EN"
+        "classpath://org/objectweb/proactive/core/component/adl/xml/proactive.dtd">
+
+<definition name="tesis.monitoring.components.Cracker">
+
+    <interface name="cracker-itf" role="server" signature="tesis.monitoring.components.Cracker"/>
+    <interface name="repository-itf" role="client" contingency="optional" signature="tesis.monitoring.components.Repository"/>
+
+    <content class="tesis.monitoring.components.CrackerImpl"/>
+
+    <controller desc="primitive"/>
+
+</definition>

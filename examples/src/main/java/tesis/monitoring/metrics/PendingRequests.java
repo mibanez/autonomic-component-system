@@ -18,6 +18,7 @@ public class PendingRequests extends Metric<String> {
     private String progress = "none";
 
     public PendingRequests() {
+        setEnabled(true);
         subscribeTo(RecordEvent.VOID_REQUEST_SENT);
     }
 
