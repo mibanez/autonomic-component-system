@@ -3,7 +3,7 @@ package cl.niclabs.scada.acs.examples.cracker;
 
 public interface CrackerConfig {
 
-    static final String ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyz!¡?¿()[]{}<>+-.:,;_~@";
+    static final String ALPHABET = "0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ";
     static final int DEFAULT_MAX_LENGTH = 4;
     static final int DEFAULT_N_OF_TEST = 256;
     static final long DEFAULT_DELAY = 1000;

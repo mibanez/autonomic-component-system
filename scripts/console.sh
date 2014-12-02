@@ -7,7 +7,7 @@ acsCP=${acsHome}/target/lib/*:${acsHome}/core/target/*:${acsHome}/core/target/li
 acsCP=${acsCP}:${acsHome}/examples/target/*:${acsHome}/examples/target/lib/*
 acsCP=${acsCP}:${proactiveHome}/dist/lib/*
 
-app=cl.niclabs.scada.acs.examples.cracker.common.CrackerConsole
+app=cl.niclabs.scada.acs.examples.cracker.CrackerConsole
 vm=-Djava.security.manager
 vm="${vm} -Djava.security.policy=${proactiveHome}/dist/proactive.java.policy"
 
