@@ -1,8 +1,9 @@
 package cl.niclabs.scada.acs.component.controllers.execution;
 
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
+import org.objectweb.proactive.core.node.Node;
 import org.objectweb.proactive.extra.component.fscript.exceptions.ReconfigurationException;
-import org.objectweb.proactive.gcmdeployment.GCMApplication;
+
 
 import java.io.Serializable;
 
@@ -30,7 +31,8 @@ public interface ExecutionController {
      * @throws ReconfigurationException If an error occurred while getting global variable names.
      */
     Wrapper<String[]> getGlobals() throws ReconfigurationException;
-    void setGlobalVariable(String name, GCMApplication gcmApplication);
+
+    void setGlobalVariable(String name, Node value);
 
     /**
      * Executes a code fragment: either an FPath expression or a single FScript statement.

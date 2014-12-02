@@ -12,12 +12,12 @@ import org.objectweb.fractal.fscript.diagnostics.Diagnostic;
 import org.objectweb.proactive.core.component.PAInterfaceImpl;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
 import org.objectweb.proactive.core.component.identity.PAComponent;
+import org.objectweb.proactive.core.node.Node;
 import org.objectweb.proactive.extra.component.fscript.GCMScript;
 import org.objectweb.proactive.extra.component.fscript.exceptions.ReconfigurationException;
 import org.objectweb.proactive.extra.component.fscript.model.GCMComponentNode;
 import org.objectweb.proactive.extra.component.fscript.model.GCMInterfaceNode;
 import org.objectweb.proactive.extra.component.fscript.model.GCMNodeFactory;
-import org.objectweb.proactive.gcmdeployment.GCMApplication;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -25,9 +25,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by mibanez
- */
+
 public class ExecutionControllerImpl extends AbstractPAComponentController implements ExecutionController {
 
     public static final String CONTROLLER_NAME = "ExecutionController";
@@ -64,6 +62,16 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
     }
 
     @Override
+    public void setGlobalVariable(String name, Node node) {
+        try {
+            init();
+            engine.setGlobalVariable(name, nodeFactory.createGCMNodeNode(node));
+        } catch (ReconfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public Wrapper<String[]> load(String fileName) {
         try {
             init();
@@ -84,16 +92,6 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
             return new ValidWrapper<>(result.toArray(new String[result.size()]));
         } catch (ReconfigurationException re) {
             return new WrongWrapper<>("ReconfigurationException: " + re.getMessage());
-        }
-    }
-
-    @Override
-    public void setGlobalVariable(String name, GCMApplication gcmApp) {
-        try {
-            init();
-            engine.setGlobalVariable(name, nodeFactory.createGCMApplicationNode(gcmApp));
-        } catch (ReconfigurationException e) {
-            e.printStackTrace();
         }
     }
 
@@ -147,6 +145,10 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
             return set;
         }
 
-        return object.toString();
+        if (object instanceof Number) {
+            return (Number) object;
+        }
+
+        return object != null ? object.toString() : null;
     }
 }

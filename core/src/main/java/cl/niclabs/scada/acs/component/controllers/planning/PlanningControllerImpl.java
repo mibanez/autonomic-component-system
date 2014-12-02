@@ -151,7 +151,7 @@ public class PlanningControllerImpl extends AbstractPAComponentController
     @Override
     public void notifyAlarm(RuleEvent event) {
         for (Map.Entry<String, Plan> entry : plans.entrySet()) {
-            if (entry.getValue().isSubscribedTo(event.getRuleId())) {
+            if (entry.getValue().isEnabled() && entry.getValue().isSubscribedTo(event.getRuleId())) {
                 entry.getValue().doPlanFor(event.getRuleId(), event.getAlarm(), monitoringCtrl, executionCtrl);
             }
         }

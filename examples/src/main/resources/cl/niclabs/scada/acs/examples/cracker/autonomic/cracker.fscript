@@ -1,0 +1,136 @@
+function contains-name(slaveName, slaves) {
+    for slave : $slaves {
+        if ($slaveName == name($slave)) {
+            return true();
+        }
+    }
+    return false();
+}
+
+function get-next-available-name(slaves) {
+    if (not(contains-name("Slave0", $slaves))) {
+        return "Slave0";
+    }
+    if (not(contains-name("Slave1", $slaves))) {
+        return "Slave1";
+    }
+    if (not(contains-name("Slave2", $slaves))) {
+        return "Slave2";
+    }
+    if (not(contains-name("Slave3", $slaves))) {
+        return "Slave3";
+    }
+    if (not(contains-name("Slave4", $slaves))) {
+        return "Slave4";
+    }
+    if (not(contains-name("Slave5", $slaves))) {
+        return "Slave5";
+    }
+    if (not(contains-name("Slave6", $slaves))) {
+        return "Slave6";
+    }
+    if (not(contains-name("Slave7", $slaves))) {
+        return "Slave7";
+    }
+}
+
+function get-last-used-name(slaves) {
+    if (contains-name("Slave7", $slaves)) {
+        return "Slave7";
+    }
+    if (contains-name("Slave6", $slaves)) {
+        return "Slave6";
+    }
+    if (contains-name("Slave5", $slaves)) {
+        return "Slave5";
+    }
+    if (contains-name("Slave4", $slaves)) {
+        return "Slave4";
+    }
+    if (contains-name("Slave3", $slaves)) {
+        return "Slave3";
+    }
+    if (contains-name("Slave2", $slaves)) {
+        return "Slave2";
+    }
+    if (contains-name("Slave1", $slaves)) {
+        return "Slave1";
+    }
+    if (contains-name("Slave0", $slaves)) {
+        return "Slave0";
+    }
+}
+
+function slaves-number(solver) {
+    return size($solver/child::*[starts-with(name(.), "Slave")]);
+}
+
+action add-slave(solver) {
+
+    node = $solver/deployment-gcmnode::*;
+    slave = gcm-new("cl.niclabs.scada.acs.examples.cracker.solver.component.Slave", $node);
+
+    oldSlaves = $solver/child::*[starts-with(name(.), "Slave")];
+    set-name($slave, get-next-available-name($oldSlaves));
+
+    solverState = state($solver);
+    if ($solverState == "STARTED") {
+        stop($solver);
+    }
+
+    add($solver, $slave);
+    bind($solver/child::Master/interface::multicast-slave-itf, $slave/interface::slave-itf);
+    set-value($solver/child::Master/attribute::partitionsNumber, slaves-number($solver));
+
+    if ($solverState == "STARTED") {
+        start($solver);
+    }
+
+    return $slave;
+}
+
+action remove-slave(solver) {
+
+    currentSlaves = $solver/child::*[starts-with(name(.), "Slave")];
+    toRemove = $solver/child::*[name(.) == get-last-used-name($currentSlaves)];
+
+    solverState = state($solver);
+    if ($solverState == "STARTED") {
+        stop($solver);
+    }
+
+    unbind-unit($solver/child::Master/interface::multicast-slave-itf, $toRemove/interface::slave-itf);
+    remove($solver, $toRemove);
+    set-value($solver/child::Master/attribute::partitionsNumber, slaves-number($solver));
+
+    if ($solverState == "STARTED") {
+        start($solver);
+    }
+
+    return $toRemove;
+}
+
+action enable-balancer(cracker) {
+    for solver : $cracker/child::*[starts-with(name(.), "Solver")] {
+        set-state($solver/metric::avgRespTime, "ENABLED");
+    }
+    set-state($cracker/metric::distributionPoint, "ENABLED");
+    set-state($cracker/rule::balanceState, "ENABLED");
+    set-state($cracker/plan::balanceUpdater, "ENABLED");
+}
+
+action enable-adder(cracker) {
+    for solver : $cracker/child::*[starts-with(name(.), "Solver")] {
+        set-state($solver/metric::avgRespTime, "ENABLED");
+    }
+    set-state($cracker/metric::avgRespTime, "ENABLED");
+    set-state($cracker/rule::minRespTime, "ENABLED");
+    set-state($cracker/plan::slavesAdder, "ENABLED");
+}
+
+action adder-to-remover(cracker) {
+    set-state($cracker/rule::minRespTime, "DISABLED");
+    set-state($cracker/plan::slavesAdder, "DISABLED");
+    set-state($cracker/rule::maxRespTime, "ENABLED");
+    set-state($cracker/plan::slavesRemover, "ENABLED");
+}

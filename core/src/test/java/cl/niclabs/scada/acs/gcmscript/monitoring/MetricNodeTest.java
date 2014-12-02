@@ -4,7 +4,7 @@ import cl.niclabs.scada.acs.component.ACSManager;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.gcmscript.model.ACSModel;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.monitoring.MetricNode;
+import cl.niclabs.scada.acs.gcmscript.model.MetricNode;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

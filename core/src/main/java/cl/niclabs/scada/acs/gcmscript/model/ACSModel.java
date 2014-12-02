@@ -1,13 +1,6 @@
 package cl.niclabs.scada.acs.gcmscript.model;
 
-import cl.niclabs.scada.acs.gcmscript.model.controllers.SubscriptionAxis;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.analysis.AddRuleAction;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.analysis.PrintRulesFunction;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.analysis.RuleAxis;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.analysis.RuleNode;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.monitoring.*;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.planning.PlanAxis;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.planning.PlanNode;
+import cl.niclabs.scada.acs.gcmscript.procedures.*;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.fscript.model.Property;
@@ -17,17 +10,18 @@ import org.objectweb.proactive.extra.component.fscript.model.GCMProcedure;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.objectweb.fractal.fscript.types.PrimitiveType.*;
+import static org.objectweb.fractal.fscript.types.PrimitiveType.OBJECT;
+import static org.objectweb.fractal.fscript.types.PrimitiveType.STRING;
 
 /**
  * Created by mibanez
  */
-public class ACSModel extends GCMModel {
+public class ACSModel extends GCMModel implements ACSNodeFactory {
 
     @Override
     protected void createNodeKinds() {
         super.createNodeKinds();
-        addKind("generic-element", new Property("id", STRING, false), new Property("enabled", BOOLEAN, true));
+        addKind("generic-element", new Property("name", STRING, false), new Property("state", STRING, true));
         addKind("metric", getNodeKind("generic-element"), new Property("value", OBJECT, false));
         addKind("rule", getNodeKind("generic-element"), new Property("alarm", OBJECT, false));
         addKind("plan", getNodeKind("generic-element"));
@@ -40,6 +34,7 @@ public class ACSModel extends GCMModel {
         this.addAxis(new RuleAxis(this));
         this.addAxis(new PlanAxis(this));
         this.addAxis(new SubscriptionAxis(this));
+        this.addAxis(new DeploymentGCMNodeAxis(this));
     }
 
     @Override
@@ -47,12 +42,21 @@ public class ACSModel extends GCMModel {
         super.createAdditionalProcedures();
 
         List<GCMProcedure> procedures = new ArrayList<>();
+
         procedures.add(new AddMetricAction());
-        procedures.add(new RemoveMetricAction());
-        procedures.add(new PrintMetricsFunction());
         procedures.add(new AddRuleAction());
+        procedures.add(new AddPlanAction());
         procedures.add(new RemoveMetricAction());
+        procedures.add(new RemoveRuleAction());
+        procedures.add(new RemovePlanAction());
+
+        procedures.add(new PrintMetricsFunction());
         procedures.add(new PrintRulesFunction());
+        procedures.add(new PrintPlansFunction());
+
+        procedures.add(new ToStringFunction());
+        procedures.add(new RangeFunction());
+        procedures.add(new ACSNewAction());
 
         for (GCMProcedure procedure : procedures) {
             try {

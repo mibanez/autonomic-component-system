@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE definition PUBLIC "-//objectweb.org//DTD Fractal ADL 2.0//EN"
+        "classpath://org/objectweb/proactive/core/component/adl/xml/proactive.dtd">
+
+<definition name="cl.niclabs.scada.acs.examples.cracker.component.Cracker">
+    <interface name="cracker-itf" role="server" signature="cl.niclabs.scada.acs.examples.cracker.component.Cracker"/>
+    <component name="Balancer">
+        <interface name="cracker-itf" role="server" signature="cl.niclabs.scada.acs.examples.cracker.component.Cracker"/>
+        <interface name="solver-itf-0" role="client" contingency="optional" signature="cl.niclabs.scada.acs.examples.cracker.solver.component.Solver"/>
+        <interface name="solver-itf-1" role="client" contingency="optional" signature="cl.niclabs.scada.acs.examples.cracker.solver.component.Solver"/>
+        <interface name="solver-itf-2" role="client" contingency="optional" signature="cl.niclabs.scada.acs.examples.cracker.solver.component.Solver"/>
+        <content class="cl.niclabs.scada.acs.examples.cracker.component.BalancerImpl"/>
+        <attributes signature="cl.niclabs.scada.acs.examples.cracker.component.BalancerAttributes">
+            <attribute name="x" value="0.3333"/>
+            <attribute name="y" value="0.6664"/>
+        </attributes>
+        <controller desc="primitive"/>
+    </component>
+    <binding client="this.cracker-itf" server="Balancer.cracker-itf"/>
+    <controller desc="composite"/>
+</definition>
