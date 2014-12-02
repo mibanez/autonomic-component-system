@@ -27,6 +27,8 @@ public class ClientImpl implements Client, BindingController {
             return;
         }
 
+        System.out.println("[0][true] time,resp_time,avg_resp_time");
+
         CircularFifoQueue<Long> times = new CircularFifoQueue<>(5);
         long initTime = System.currentTimeMillis();
 
@@ -47,7 +49,8 @@ public class ClientImpl implements Client, BindingController {
             avg /= times.size();
 
 
-            System.out.println("[CLIENT][" + result.isValid() + ": " + result.getMessage() + "] " + (end - initTime) + "\t" + avg);
+            System.out.println("[" + (i+1) + "][" + result.isValid() + "] "
+                    + (end - initTime) + "," + (end-start) + "," +  avg);
 
             if (delay > 0) {
                 try {

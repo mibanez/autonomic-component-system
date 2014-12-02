@@ -17,13 +17,25 @@ public class DistributionPointMetric extends Metric<DistributionPoint> {
     private final String[] s1Path = new String[] { Cracker.NAME, Solver.NAME + "-0" };
     private final String[] s2Path = new String[] { Cracker.NAME, Solver.NAME + "-1" };
     private final String[] s3Path = new String[] { Cracker.NAME, Solver.NAME + "-2" };
-    private int counter = 0;
 
-    private DistributionPoint lastPoint = new DistributionPoint();
+    private DistributionPoint lastPoint;
+    private String avgRespTimeMetric;
+    private int numberOfSkipped;
+    private int skippedCounter = 0;
+    private long initTime = 0;
+
+    private int testLogCounter = 0;
+
 
     public DistributionPointMetric() {
-        this.subscribeTo(RecordEvent.RESPONSE_RECEIVED);
+        this.lastPoint = new DistributionPoint();
+        this.numberOfSkipped = CrackerConfig.SKIPPED_CALCULATIONS;
+        this.avgRespTimeMetric = AvgRespTimeMetric.NAME;
+
+        setEnabled(true);
+        subscribeTo(RecordEvent.RESPONSE_RECEIVED);
     }
+
     @Override
     public DistributionPoint getValue() {
         return lastPoint;
@@ -32,52 +44,70 @@ public class DistributionPointMetric extends Metric<DistributionPoint> {
     @Override
     public DistributionPoint calculate(RecordStore recordStore, MetricStore metricStore) {
 
-        if (++counter <= CrackerConfig.D_POINT_SKIPPED_REQUESTS) {
-            return lastPoint;
+        if (initTime <= 0) {
+            initTime = System.currentTimeMillis();
+            testLogCounter = 0;
+            System.out.println("[0] time,s1_time,s2_time,s3_time,s1_assignment,s2_assignment,s3_assignment");
         }
-        counter = 0;
 
-        Wrapper<Long> s1 = metricStore.getValue(AvgRespTimeMetric.NAME, s1Path);
-        Wrapper<Long> s2 = metricStore.getValue(AvgRespTimeMetric.NAME, s2Path);
-        Wrapper<Long> s3 = metricStore.getValue(AvgRespTimeMetric.NAME, s3Path);
+        Wrapper<Long> s1 = metricStore.getValue(avgRespTimeMetric, s1Path);
+        Wrapper<Long> s2 = metricStore.getValue(avgRespTimeMetric, s2Path);
+        Wrapper<Long> s3 = metricStore.getValue(avgRespTimeMetric, s3Path);
 
+        if (areValidValues(s1, s2, s3) && shouldCalculate()) {
+            lastPoint = calculateNewPoint(lastPoint, s1.unwrap(), s2.unwrap(), s3.unwrap());
+        }
+
+        String testLogMsg = "[" + ++testLogCounter + "] " + String.valueOf(System.currentTimeMillis() - initTime);
+        testLogMsg += "," + s1.unwrap() + "," + s2.unwrap() + "," + s3.unwrap();
+        System.out.println(testLogMsg + "," + lastPoint.asTestLog());
+
+        return lastPoint;
+    }
+
+    private DistributionPoint calculateNewPoint(DistributionPoint lastPoint, long t1, long t2, long t3) {
+
+        // Lets "wi" be the percentage of work assigned to solver i.
+        double w1 = lastPoint.getX();
+        double w2 = lastPoint.getY() - lastPoint.getX();
+        double w3 = 1 - lastPoint.getY();
+
+        // Lets define the power "pi" of a solver as the work
+        // divided by the time needed to solve it.
+        double p1 = w1/t1, p2 = w2/t2, p3 = w3/t3;
+
+        // We want equals time on each solver, by modifying the
+        // percentage of work assigned. So we search for a new
+        // work assignment wi' in order to have new times ti'
+        // such that:
+        //       t1' == t2' == t3'
+        //  <=>  w1'/p1 == w2'/p2 == w3'/p3
+        //
+        // Using the distribution point notation:
+        //  <=>  x/p1 == (y - x)/p2 == (1 - y)/p3
+        //   =>  x(p2/p1) + x == y  &&  x(p3/p1) + y == 1
+        //   =>  x == p1/(p1 + p2 + p3) && y == (p1 + p2)/(p1 + p2 + p3)
+
+        return new DistributionPoint(p1/(p1 + p2 + p3), (p1 + p2)/(p1 + p2 + p3));
+    }
+
+    private boolean shouldCalculate() {
+        if (++skippedCounter > numberOfSkipped) {
+            skippedCounter = 0;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean areValidValues(Wrapper<Long> s1, Wrapper<Long> s2, Wrapper<Long> s3) {
         if ( !( s1.isValid() && s2.isValid() && s3.isValid() ) ) {
             String report = "\n" + s1.getMessage() + "\n" + s2.getMessage() + "\n" + s3.getMessage();
             System.err.println("[WARNING] DistributionPoint fail: " + report);
+            return false;
         } else if (s1.unwrap() <= 0 || s2.unwrap() <= 0 || s3.unwrap() <= 0) {
             // avoid broken values
-            return lastPoint;
+            return false;
         }
-
-        // x0, y0 = old points
-        // x, y = new points
-        // e1, e2, e3 = solvers efficiency
-
-        // x0*e1 == solver 1 time =>
-        double e1 = s1.unwrap() / lastPoint.getX();
-
-        // (y0-x0)*e2 = solver 2 time =>
-        double e2 = s2.unwrap() / (lastPoint.getY() - lastPoint.getX());
-
-        // (1-y0)*e3 = time_s3
-        double e3 = s3.unwrap() / (1 - lastPoint.getY());
-
-        // We want all solvers take the same time, so
-        // ---> x*e1 == (y-x)*e2 == (1-y)*e3
-
-        // from 1 and 2: x == y*e2/(e1+e2) == y*k1
-        double k1 = e2 / (e1 + e2);
-
-        // from 1 and 3: x == (1-y)*e3/e1 == (1-y)*k2
-        double k2 = e3/e1;
-
-        // so, y == k2/(k1+k2) and x == y*k1
-        double y = k2 / (k1 + k2);
-        double x = y * k1;
-
-        lastPoint = new DistributionPoint(x, y);
-        System.out.println("[METRICS][DISTRIBUTION_POINT] " + lastPoint.toString());
-
-        return lastPoint;
+        return true;
     }
 }

@@ -22,6 +22,6 @@ public class BalanceUpdaterPlan extends Plan {
         Wrapper<DistributionPoint> wrapper = monitorCtrl.getValue(DistributionPointMetric.NAME);
         executionCtrl.execute("set-value($this/child::Balancer/attribute::x, " + wrapper.unwrap().getX() + ");");
         executionCtrl.execute("set-value($this/child::Balancer/attribute::y, " + wrapper.unwrap().getY() + ");");
-        System.out.println("[PLANS][BALANCER_UPDATER] distribution point updated.");
+        //System.out.println("[PLANS][BALANCER_UPDATER] distribution point updated.");
     }
 }
