@@ -65,7 +65,15 @@ function slaves-number(solver) {
     return size($solver/child::*[starts-with(name(.), "Slave")]);
 }
 
-action add-slave(solver) {
+action stopped-lifecycle-add-slaves(solver, number) {
+
+    if (state($solver) != "STOPPED") {
+        return false();
+    }
+
+    if ($number <= 0) {
+        return true();
+    }
 
     node = $solver/deployment-gcmnode::*;
     slave = gcm-new("cl.niclabs.scada.acs.examples.cracker.solver.component.Slave", $node);
@@ -73,44 +81,75 @@ action add-slave(solver) {
     oldSlaves = $solver/child::*[starts-with(name(.), "Slave")];
     set-name($slave, get-next-available-name($oldSlaves));
 
-    solverState = state($solver);
-    if ($solverState == "STARTED") {
-        stop($solver);
-    }
-
     add($solver, $slave);
     bind($solver/child::Master/interface::multicast-slave-itf, $slave/interface::slave-itf);
     set-value($solver/child::Master/attribute::partitionsNumber, slaves-number($solver));
 
-    if ($solverState == "STARTED") {
-        start($solver);
-    }
-
-    return $slave;
+    return stopped-lifecycle-add-slaves($solver, $number - 1);
 }
 
-action remove-slave(solver) {
-
-    currentSlaves = $solver/child::*[starts-with(name(.), "Slave")];
-    toRemove = $solver/child::*[name(.) == get-last-used-name($currentSlaves)];
+action add-slaves(solver, number) {
 
     solverState = state($solver);
     if ($solverState == "STARTED") {
         stop($solver);
     }
 
-    unbind-unit($solver/child::Master/interface::multicast-slave-itf, $toRemove/interface::slave-itf);
-    remove($solver, $toRemove);
-    set-value($solver/child::Master/attribute::partitionsNumber, slaves-number($solver));
-
-    kill($toRemove);
+    r = stopped-lifecycle-add-slaves($solver, $number);
 
     if ($solverState == "STARTED") {
         start($solver);
     }
 
-    return $toRemove;
+    return $r;
 }
+
+action add-slave(solver) {
+    add-slaves($solver, 1);
+}
+
+action stopped-lifecycle-remove-slaves(solver, number) {
+
+    if (state($solver) != "STOPPED") {
+        return false();
+    }
+
+    if ($number <= 0) {
+        return true();
+    }
+
+    currentSlaves = $solver/child::*[starts-with(name(.), "Slave")];
+    toRemove = $solver/child::*[name(.) == get-last-used-name($currentSlaves)];
+
+    unbind-unit($solver/child::Master/interface::multicast-slave-itf, $toRemove/interface::slave-itf);
+    remove($solver, $toRemove);
+    set-value($solver/child::Master/attribute::partitionsNumber, size($currentSlaves) - 1);
+
+    return stopped-lifecycle-remove-slaves($solver, $number - 1);
+}
+
+action remove-slaves(solver, number) {
+
+    solverState = state($solver);
+    if ($solverState == "STARTED") {
+        stop($solver);
+    }
+
+    r = stopped-lifecycle-remove-slaves($solver, $number);
+
+    if ($solverState == "STARTED") {
+        start($solver);
+    }
+
+    return $r;
+}
+
+action remove-slave(solver) {
+    remove-slaves($solver, 1);
+}
+
+
+-- TEST ---------------------------
 
 action enable-balancer(cracker) {
     set-state($cracker/metric::dummyDistributionPoint, "DISABLED");
@@ -133,4 +172,19 @@ action enable-remover(cracker) {
 
     set-state($cracker/rule::maxRespTime, "ENABLED");
     set-state($cracker/plan::slavesRemover, "ENABLED");
+}
+
+action phase1(cracker) {
+    add-slaves($this/child::Solver0, 2);
+}
+
+action phase2(cracker) {
+    add-slaves($this/child::Solver0, 3);
+    add-slaves($this/child::Solver2, 2);
+}
+
+action phase3(cracker) {
+    remove-slaves($this/child::Solver0, 5);
+    remove-slaves($this/child::Solver2, 2);
+    add-slaves($this/child::Solver1, 5);
 }
