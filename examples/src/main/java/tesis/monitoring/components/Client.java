@@ -5,7 +5,7 @@ package tesis.monitoring.components;
  */
 public interface Client {
 
-    static final String NAME = "client";
+    static final String NAME = "client-itf";
 
     void start(int numberOfTest, int delay);
 

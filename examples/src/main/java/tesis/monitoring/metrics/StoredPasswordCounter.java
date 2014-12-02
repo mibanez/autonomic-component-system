@@ -12,6 +12,7 @@ public class StoredPasswordCounter extends Metric<Long> {
     private long value = 0;
     long time = 0;
     public StoredPasswordCounter() {
+        setEnabled(true);
         subscribeTo(RecordEvent.REQUEST_SERVICE_ENDED);
     }
 

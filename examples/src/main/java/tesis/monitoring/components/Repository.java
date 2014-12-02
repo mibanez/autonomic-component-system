@@ -5,7 +5,7 @@ package tesis.monitoring.components;
  */
 public interface Repository {
 
-    static final String NAME = "repository";
+    static final String NAME = "repository-itf";
 
     void store(byte[] encryptedPassword, String password);
 

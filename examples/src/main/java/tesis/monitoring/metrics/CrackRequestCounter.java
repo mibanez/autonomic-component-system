@@ -11,6 +11,7 @@ public class CrackRequestCounter extends Metric<Long> {
     private long counter = 0;
 
     public CrackRequestCounter() {
+        setEnabled(true);
         subscribeTo(RecordEvent.REQUEST_RECEIVED);
     }
 
