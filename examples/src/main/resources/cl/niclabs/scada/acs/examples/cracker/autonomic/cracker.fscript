@@ -103,6 +103,8 @@ action remove-slave(solver) {
     remove($solver, $toRemove);
     set-value($solver/child::Master/attribute::partitionsNumber, slaves-number($solver));
 
+    kill($toRemove);
+
     if ($solverState == "STARTED") {
         start($solver);
     }

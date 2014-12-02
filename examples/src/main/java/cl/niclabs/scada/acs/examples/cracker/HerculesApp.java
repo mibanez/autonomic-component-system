@@ -19,7 +19,7 @@ public class HerculesApp extends AbstractApp {
     @Override
     protected String getGCMScriptLib() {
         return "/user/mibanez/memoria/autonomic-component-system/examples/src/main/resources/"
-            + "cl/niclabs/scada/acs/examples/cracker/components/cracker.fscript";
+            + "cl/niclabs/scada/acs/examples/cracker/autonomic/cracker.fscript";
     }
 
     @Override
