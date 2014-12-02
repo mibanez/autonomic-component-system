@@ -17,6 +17,8 @@ import org.objectweb.proactive.core.util.log.ProActiveLogger;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+
 /*
 @DefineGroups({
         @Group(name = "ImmediateMonitoring", selfCompatible = true),
@@ -120,6 +122,11 @@ public class MonitoringManagerImpl extends AbstractPAComponentController impleme
     //@MemberOf("Monitoring")
     public Wrapper<Boolean> isSubscribedTo(String id, RecordEvent eventType) throws CommunicationException {
         return metricStore.isSubscribedTo(id, eventType);
+    }
+
+    @Override
+    public Wrapper<HashSet<RecordEvent>> getSubscriptions(String id) {
+        return metricStore.getSubscriptions(id);
     }
 
     @Override

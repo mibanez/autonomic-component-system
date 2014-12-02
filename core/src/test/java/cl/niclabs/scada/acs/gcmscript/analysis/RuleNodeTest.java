@@ -4,7 +4,7 @@ import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.analysis.AnalysisController;
 import cl.niclabs.scada.acs.component.controllers.utils.ValidWrapper;
 import cl.niclabs.scada.acs.gcmscript.model.ACSModel;
-import cl.niclabs.scada.acs.gcmscript.model.controllers.analysis.RuleNode;
+import cl.niclabs.scada.acs.gcmscript.model.RuleNode;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

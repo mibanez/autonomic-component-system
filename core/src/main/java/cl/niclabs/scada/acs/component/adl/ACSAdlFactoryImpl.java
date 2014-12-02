@@ -14,7 +14,7 @@ public class ACSAdlFactoryImpl extends PABasicFactory implements ACSAdlFactory {
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public Object newACSComponent(String name, Map context) throws Exception {
+	public Component newACSComponent(String name, Map context) throws Exception {
         Component component = (Component) super.newComponent(name, context);
         addACSControllers(component, new BuildHelper(new ACSFactory()));
 		return component;

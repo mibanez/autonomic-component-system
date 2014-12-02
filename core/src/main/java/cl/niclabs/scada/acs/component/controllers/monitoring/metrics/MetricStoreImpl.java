@@ -17,10 +17,7 @@ import org.objectweb.proactive.core.component.Constants;
 import org.objectweb.proactive.core.component.componentcontroller.AbstractPAComponentController;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /*
 @DefineGroups({
@@ -169,6 +166,14 @@ public class MetricStoreImpl extends AbstractPAComponentController implements Me
             return new ValidWrapper<>(metrics.get(id).isSubscribedTo(eventType));
         }
         return new WrongWrapper<>("id not found: " + id);
+    }
+
+    @Override
+    public Wrapper<HashSet<RecordEvent>> getSubscriptions(String name) {
+        if (metrics.containsKey(name)) {
+            return new ValidWrapper<HashSet<RecordEvent>>(metrics.get(name).getSubscriptions());
+        }
+        return new WrongWrapper<>("No metric registered with name " + name);
     }
 
     @Override

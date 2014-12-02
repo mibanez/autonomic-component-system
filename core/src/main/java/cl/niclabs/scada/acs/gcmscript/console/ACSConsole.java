@@ -70,7 +70,13 @@ public class ACSConsole implements Console, Runnable {
 
         public String stringValueOf(Object value) {
             if (value instanceof PAComponent) {
-                return "<Component: " + ((PAComponent) value).getComponentParameters().getName() + ">";
+                String name;
+                try {
+                    name = GCM.getNameController((PAComponent) value).getFcName();
+                } catch (NoSuchInterfaceException ignore) {
+                    name = ((PAComponent) value).getComponentParameters().getName();
+                }
+                return "<Component: " + name + ">";
             } else if (value instanceof Interface) {
                 return "<Interface: " + ((Interface) value).getFcItfName() + ">";
             } else if (value instanceof Set) {

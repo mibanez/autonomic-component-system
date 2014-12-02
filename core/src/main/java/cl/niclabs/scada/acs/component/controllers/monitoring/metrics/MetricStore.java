@@ -7,6 +7,7 @@ import cl.niclabs.scada.acs.gcmscript.model.CommunicationException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public interface MetricStore {
 
@@ -26,6 +27,6 @@ public interface MetricStore {
     Wrapper<Boolean> subscribeTo(String id, RecordEvent eventType) throws CommunicationException;
     Wrapper<Boolean> unsubscribeFrom(String id, RecordEvent eventType) throws CommunicationException;
     Wrapper<Boolean> isSubscribedTo(String id, RecordEvent eventType) throws CommunicationException;
-
+    Wrapper<HashSet<RecordEvent>> getSubscriptions(String id);
 
 }

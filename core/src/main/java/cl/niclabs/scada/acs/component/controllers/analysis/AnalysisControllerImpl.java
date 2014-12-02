@@ -148,9 +148,11 @@ public class AnalysisControllerImpl extends AbstractPAComponentController
     @Override
     public void notifyMetricChange(String metricName) {
         for (Map.Entry<String, Rule> entry: rules.entrySet()) {
-            if (entry.getValue().isSubscribedTo(metricName)) {
+            if (entry.getValue().isEnabled() && entry.getValue().isSubscribedTo(metricName)) {
                 ACSAlarm alarm = entry.getValue().verify(monitoringController);
-                ruleEventListener.notifyAlarm(new RuleEvent(entry.getKey(), alarm));
+                if (alarm.getLevel() > ACSAlarm.OK.getLevel()) {
+                    ruleEventListener.notifyAlarm(new RuleEvent(entry.getKey(), alarm));
+                }
             }
         }
     }

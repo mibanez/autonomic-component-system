@@ -1,7 +1,9 @@
 package cl.niclabs.scada.acs.component.controllers.monitoring.events;
 
 
-public enum RecordEvent {
+import java.io.Serializable;
+
+public enum RecordEvent implements Serializable {
 
     // Incoming
     REQUEST_RECEIVED,

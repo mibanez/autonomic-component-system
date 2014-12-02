@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE definition PUBLIC "-//objectweb.org//DTD Fractal ADL 2.0//EN"
+        "classpath://org/objectweb/proactive/core/component/adl/xml/proactive.dtd">
+
+<definition name="cl.niclabs.scada.acs.examples.cracker.solver.component.Solver">
+
+    <interface name="solver-itf" role="server" signature="cl.niclabs.scada.acs.examples.cracker.solver.component.Solver"/>
+
+    <component name="Slave0" definition="cl.niclabs.scada.acs.examples.cracker.solver.component.Slave"/>
+    <component name="Master">
+        <interface name="solver-itf" role="server" signature="cl.niclabs.scada.acs.examples.cracker.solver.component.Solver"/>
+        <interface name="multicast-slave-itf" role="client" cardinality="multicast" contingency="optional" signature="cl.niclabs.scada.acs.examples.cracker.solver.component.SlaveMulticast"/>
+        <content class="cl.niclabs.scada.acs.examples.cracker.solver.component.MasterImpl"/>
+        <attributes signature="cl.niclabs.scada.acs.examples.cracker.solver.component.MasterAttributes">
+		    <attribute name="partitionsNumber" value="1"/>
+        </attributes>
+        <controller desc="primitive"/>
+    </component>
+
+    <binding client="this.solver-itf" server="Master.solver-itf"/>
+    <binding client="Master.multicast-slave-itf" server="Slave0.slave-itf"/>
+
+    <controller desc="composite"/>
+
+</definition>

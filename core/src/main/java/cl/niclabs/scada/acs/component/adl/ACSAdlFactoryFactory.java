@@ -12,8 +12,8 @@ public class ACSAdlFactoryFactory {
     private final static String ACS_FACTORY = "cl.niclabs.scada.acs.component.adl.ACSAdlFactory";
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static Factory getACSAdlFactory() throws ADLException {
-        return org.objectweb.fractal.adl.FactoryFactory.getFactory(ACS_FACTORY,
+    public static ACSAdlFactory getACSAdlFactory() throws ADLException {
+        return (ACSAdlFactory) org.objectweb.fractal.adl.FactoryFactory.getFactory(ACS_FACTORY,
         		FactoryFactory.PROACTIVE_BACKEND, new HashMap());
     }
     

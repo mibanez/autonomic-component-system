@@ -33,4 +33,7 @@ public abstract class Metric<TYPE extends Serializable> extends GenericElement {
         return subscriptions.contains(eventType);
     }
 
+    public HashSet<RecordEvent> getSubscriptions() {
+        return new HashSet<>(subscriptions);
+    }
 }
