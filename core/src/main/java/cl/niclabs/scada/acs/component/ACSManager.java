@@ -65,16 +65,23 @@ public class ACSManager {
         InterfaceType[] interfaceTypes = pacomponent.getComponentParameters().getInterfaceTypes();
 
         try {
-            String name = GCM.getNameController(component).getFcName();
             PABindingController bindingCtrl = Utils.getPABindingController(component);
-            PAMembraneController membraneCtrl = Utils.getPAMembraneController(component);
-            Component[] parents = Utils.getPASuperController(component).getFcSuperComponents();
-            Component parent = parents.length > 0 ? parents[0] : null;
+            try {
+                String name = GCM.getNameController(component).getFcName();
+                PAMembraneController membraneCtrl = Utils.getPAMembraneController(component);
+                Component[] parents = Utils.getPASuperController(component).getFcSuperComponents();
+                Component parent = parents.length > 0 ? parents[0] : null;
 
-            enableRemoteMonitoring(parent, membraneCtrl, bindingCtrl, interfaceTypes, hierarchy, name);
+                enableRemoteMonitoring(parent, membraneCtrl, bindingCtrl, interfaceTypes, hierarchy, name);
+            } catch (NoSuchInterfaceException e) {
+                throw new ACSException("Can't enable monitoring for " + pacomponent.getComponentParameters().getName()
+                        + ": " + e.getMessage(), e);
+            }
         } catch (NoSuchInterfaceException e) {
-            throw new ACSException("Can't enable monitoring for " + pacomponent + ": " + e.getMessage(), e);
+            return; // it has no interfaces to bind
         }
+
+
     }
 
     private static void enableRemoteMonitoring(Component parent, PAMembraneController membraneCtrl,
@@ -124,7 +131,7 @@ public class ACSManager {
             }
 
             Component serverComponent = serverItf.getFcItfOwner();
-            boolean boundToParent = parent.equals(serverComponent);
+            boolean boundToParent = parent != null && parent.equals(serverComponent);
             //logger.trace(".... is bound parent ? {}", boundToParent);
 
             MonitoringController serverCtrl = boundToParent ? (MonitoringController) serverComponent.getFcInterface(

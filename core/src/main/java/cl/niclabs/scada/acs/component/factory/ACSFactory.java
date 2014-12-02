@@ -43,6 +43,7 @@ public class ACSFactory {
             @Override
             public void runComponentActivity(Body body) {
                 body.setImmediateService("getValue", false);
+                body.setImmediateService("getValue", false);
                 //(new ACSMultiActiveService(body)).multiActiveServing();
                 (new ComponentMultiActiveService(body)).multiActiveServing();
             }

@@ -14,7 +14,7 @@ public class RecordStoreImpl extends AbstractPAComponentController implements Re
 
     private static final Logger logger = ProActiveLogger.getLogger("ACS");
 
-    private int maxSize = 256;
+    private int maxSize = 16;
     private final LinkedList<IncomingRecord> inLinkedList = new LinkedList<>();
     private final LinkedList<OutgoingRecord> outLinkedList = new LinkedList<>();
     private final LinkedList<OutgoingVoidRecord> outVoidLinkedList = new LinkedList<>();
