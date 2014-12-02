@@ -10,11 +10,18 @@ public class BalanceStateRule extends Rule {
 
     public static final String NAME = "balanceState";
 
-    private ACSAlarm alarm = ACSAlarm.OK;
-    private DistributionPoint lastPoint = new DistributionPoint();
+    private DistributionPoint lastPoint;
+    private String dstPointMetricName;
+    private double minDistance;
+    private ACSAlarm alarm;
+
+
 
     public BalanceStateRule() {
         subscribeTo(DistributionPointMetric.NAME);
+        dstPointMetricName = DistributionPointMetric.NAME;
+        minDistance = CrackerConfig.DST_POINT_MIN_DISTANCE;
+        lastPoint = new DistributionPoint();
     }
 
     @Override
@@ -23,28 +30,22 @@ public class BalanceStateRule extends Rule {
     }
 
     @Override
-    public ACSAlarm verify(MonitoringController monitoringController) {
+    public ACSAlarm verify(MonitoringController monitoringCtrl) {
 
-        Wrapper<DistributionPoint> result = monitoringController.getValue(DistributionPointMetric.NAME);
+        Wrapper<DistributionPoint> pointWrapper = monitoringCtrl.getValue(dstPointMetricName);
 
-        if (result.isValid()) {
-            DistributionPoint point = result.unwrap();
-            double dx = point.getX()-lastPoint.getX();
-            double dy = point.getY() - lastPoint.getY();
-            double d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-
-            if (d > CrackerConfig.D_POINT_MIN_DISTANCE) {
-                alarm = ACSAlarm.VIOLATION;
-                lastPoint = point;
-                //System.out.println("[RULES][DISTRIBUTION] " + point.toString() + " (ALARM! d = " + d + ")");
-                return alarm;
-            }
-            //System.out.println("[RULES][DISTRIBUTION] " + point.toString() + " (OK d = " + d + ")");
+        if ( !pointWrapper.isValid() ) {
+            alarm = ACSAlarm.ERROR;
+        } else if (getDistance(lastPoint, pointWrapper.unwrap()) >= minDistance) {
+            alarm = ACSAlarm.VIOLATION;
         } else {
-            System.err.println("[RULES][DISTRIBUTION][WARNING] wrong metric value: " + result.getMessage());
+            alarm = ACSAlarm.OK;
         }
 
-        alarm = ACSAlarm.OK;
         return alarm;
+    }
+
+    private double getDistance(DistributionPoint p1, DistributionPoint p2) {
+        return Math.sqrt(Math.pow(p1.getX()-p2.getX(), 2) + Math.pow(p1.getY() - p2.getY(), 2));
     }
 }

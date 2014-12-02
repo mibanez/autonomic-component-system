@@ -2,8 +2,13 @@ package cl.niclabs.scada.acs.examples.cracker.autonomic;
 
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class DistributionPoint implements Serializable {
+
+    private static final DecimalFormat df = new DecimalFormat("0.000", DecimalFormatSymbols.getInstance(Locale.US));
 
     private double x;
     private double y;
@@ -26,8 +31,7 @@ public class DistributionPoint implements Serializable {
         return y;
     }
 
-    @Override
-    public String toString() {
-        return String.format("[%.3f, %.3f, %.3f]", x*100, (y-x)*100, (1-y)*100);
+    public String asTestLog() {
+        return df.format(x*100) + "," + df.format((y-x)*100) + "," + df.format((1-y)*100);
     }
 }

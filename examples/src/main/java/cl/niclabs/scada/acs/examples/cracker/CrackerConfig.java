@@ -3,17 +3,21 @@ package cl.niclabs.scada.acs.examples.cracker;
 
 public interface CrackerConfig {
 
-    static final String ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyz";
+    static final String ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyz!¡?¿()[]{}<>+-.:,;_~@";
     static final int DEFAULT_MAX_LENGTH = 4;
     static final int DEFAULT_N_OF_TEST = 256;
     static final long DEFAULT_DELAY = 1000;
 
     // GENERAL
-    static final int AVG_REQUEST_TIME_SAMPLES = 5;
+
+    // Indicates how many records should be used to calculate the avg response time
+    static final int RECORD_SAMPLES_SIZE = 5;
 
     // BALANCER CONFIGURATION
-    static final int D_POINT_SKIPPED_REQUESTS = 5;
-    static final double D_POINT_MIN_DISTANCE = 0.025;
+
+    // Indicates how many times the recalculation must be skipped after a successful calculation
+    static final int SKIPPED_CALCULATIONS = RECORD_SAMPLES_SIZE;
+    static final double DST_POINT_MIN_DISTANCE = 0.025;
 
     // PROVIDER CONFIGURATION
     static final int MAX_SLAVES = 6;

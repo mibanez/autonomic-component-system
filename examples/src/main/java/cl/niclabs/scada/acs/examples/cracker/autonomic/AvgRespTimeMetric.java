@@ -14,38 +14,43 @@ import java.util.List;
 public class AvgRespTimeMetric extends Metric<Long> {
 
     public static final String NAME = "avgRespTime";
-    private long value = 0;
+
+    private long avgTime;
+    private int nOfRecords;
+    private RCondition<OutgoingRecord> finishedCondition;
+
 
     public AvgRespTimeMetric() {
+        this.avgTime = 0;
+        this.nOfRecords = CrackerConfig.RECORD_SAMPLES_SIZE;
+        this.finishedCondition = new RCondition<OutgoingRecord>() {
+            @Override
+            public boolean evaluate(OutgoingRecord record) {
+                return record.isFinished();
+            }
+        };
+
+        setEnabled(true);
         subscribeTo(RecordEvent.RESPONSE_RECEIVED);
     }
 
     @Override
     public Long getValue() {
-        return value;
+        return avgTime;
     }
 
     @Override
     public Long calculate(RecordStore recordStore, MetricStore metricStore) {
 
-        List<OutgoingRecord> records = recordStore.fromOutgoing(new RCondition<OutgoingRecord>() {
-            @Override
-            public boolean evaluate(OutgoingRecord record) {
-                return record.isFinished();
-            }
-        }, CrackerConfig.AVG_REQUEST_TIME_SAMPLES);
+        List<OutgoingRecord> records = recordStore.fromOutgoing(finishedCondition, nOfRecords);
 
-        long aux = 0;
+        long sumOfTimes = 0;
         for (OutgoingRecord record : records) {
-            aux += record.getResponseReceivedTime() - record.getSentTime();
+            sumOfTimes += record.getResponseReceivedTime() - record.getSentTime();
         }
 
-        value = records.size() == 0 ? 0 : aux/records.size();
-        printMessage();
-        return value;
-    }
+        avgTime = records.size() == 0 ? 0 : sumOfTimes/records.size();
 
-    protected void printMessage() {
-        System.out.println("[METRICS][AVG_RESPONSE_TIME] value = " + value);
+        return avgTime;
     }
 }

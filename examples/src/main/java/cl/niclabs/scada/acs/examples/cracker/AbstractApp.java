@@ -70,10 +70,10 @@ public abstract class AbstractApp {
             Utils.getPABindingController(balancerComp).bindFc(Solver.NAME + "-" + i,
                     solverComp.getFcInterface(Solver.NAME));
 
-            ACSManager.getMonitoringController(solverComp).add(AvgRespTimeMetric.NAME, getSolverAvgRespTimeMetric(i));
+            ACSManager.getMonitoringController(solverComp).add(AvgRespTimeMetric.NAME, AvgRespTimeMetric.class);
         }
 
-        ACSManager.getMonitoringController(crackerComp).add(CrackerAvgRespTimeMetric.NAME, CrackerAvgRespTimeMetric.class);
+        ACSManager.getMonitoringController(crackerComp).add(AvgRespTimeMetric.NAME, AvgRespTimeMetric.class);
         ACSManager.getMonitoringController(crackerComp).add(DistributionPointMetric.NAME, DistributionPointMetric.class);
 
         AnalysisController analysisCtrl = ACSManager.getAnalysisController(crackerComp);
@@ -112,13 +112,4 @@ public abstract class AbstractApp {
 
     protected abstract String getGCMScriptLib();
     protected abstract GCMApplication getGCMApplication();
-
-    private Class<? extends AvgRespTimeMetric> getSolverAvgRespTimeMetric(int i) {
-        switch (i) {
-            case 0: return Solver1AvgRespTimeMetric.class;
-            case 1: return Solver2AvgRespTimeMetric.class;
-            case 2: return Solver3AvgRespTimeMetric.class;
-            default: return null;
-        }
-    }
 }

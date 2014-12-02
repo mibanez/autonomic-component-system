@@ -113,26 +113,22 @@ action remove-slave(solver) {
 }
 
 action enable-balancer(cracker) {
-    for solver : $cracker/child::*[starts-with(name(.), "Solver")] {
-        set-state($solver/metric::avgRespTime, "ENABLED");
-    }
-    set-state($cracker/metric::distributionPoint, "ENABLED");
     set-state($cracker/rule::balanceState, "ENABLED");
     set-state($cracker/plan::balanceUpdater, "ENABLED");
 }
 
 action enable-adder(cracker) {
-    for solver : $cracker/child::*[starts-with(name(.), "Solver")] {
-        set-state($solver/metric::avgRespTime, "ENABLED");
-    }
-    set-state($cracker/metric::avgRespTime, "ENABLED");
+    set-state($cracker/rule::maxRespTime, "DISABLED");
+    set-state($cracker/plan::slavesRemover, "DISABLED");
+
     set-state($cracker/rule::minRespTime, "ENABLED");
     set-state($cracker/plan::slavesAdder, "ENABLED");
 }
 
-action adder-to-remover(cracker) {
+action enable-remover(cracker) {
     set-state($cracker/rule::minRespTime, "DISABLED");
     set-state($cracker/plan::slavesAdder, "DISABLED");
+
     set-state($cracker/rule::maxRespTime, "ENABLED");
     set-state($cracker/plan::slavesRemover, "ENABLED");
 }

@@ -9,8 +9,12 @@ import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.examples.cracker.CrackerConfig;
 import cl.niclabs.scada.acs.examples.cracker.solver.component.Solver;
 
+import java.io.Serializable;
 import java.util.PriorityQueue;
 import java.util.Queue;
+
+import static cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm.ERROR;
+import static cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm.VIOLATION;
 
 
 public class SlavesAdderPlan extends Plan {
@@ -23,8 +27,12 @@ public class SlavesAdderPlan extends Plan {
 
     private boolean sleeping = false;
     private long sleepStartTime = 0;
+    private int maxNOfSlaves;
+
 
     public SlavesAdderPlan() {
+        this.maxNOfSlaves = CrackerConfig.MAX_SLAVES;
+
         subscribeTo(MinRespTimeRule.NAME);
     }
 
@@ -32,31 +40,59 @@ public class SlavesAdderPlan extends Plan {
     public void doPlanFor(String ruleName, ACSAlarm alarm, MonitoringController monitorCtrl,
             ExecutionController executionCtrl) {
 
-        if (stillSleeping()) {
-            return;
+        if (alarm == ERROR) {
+            System.out.println("[WARNING] SlavesAdder: ERROR alarm received from " + ruleName);
+        } else if (alarm == VIOLATION) {
+
+            if (stillSleeping()) {
+                return;
+            }
+
+            Wrapper<Long> s1 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s1Path);
+            Wrapper<Long> s2 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s2Path);
+            Wrapper<Long> s3 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s3Path);
+
+            if (areValidValues(s1, s2, s3)) {
+
+                Queue<Pair> queue = new PriorityQueue<>();
+                queue.add(new Pair(0, s1.unwrap()));
+                queue.add(new Pair(1, s2.unwrap()));
+                queue.add(new Pair(2, s3.unwrap()));
+
+                addSlave(queue, executionCtrl);
+            }
         }
+    }
 
-        Wrapper<Long> s1 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s1Path);
-        Wrapper<Long> s2 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s2Path);
-        Wrapper<Long> s3 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s3Path);
+    private void addSlave(Queue<Pair> queue, ExecutionController executionCtrl) {
 
-        if (areValidValues(s1, s2, s3)) {
+        for (Pair pair : queue) {
 
-            Queue<Pair> queue = new PriorityQueue<>();
-            queue.add(new Pair(0, s1.unwrap()));
-            queue.add(new Pair(1, s2.unwrap()));
-            queue.add(new Pair(2, s3.unwrap()));
+            Wrapper<Double> nOfSlavesWrapper = executionCtrl.execute(getCountSlavesScript(pair.index));
 
-            for (Pair pair : queue) {
-                Wrapper<Double> result = executionCtrl.execute("slaves-number($this/child::Solver" + pair.index + ");");
-                if (result.unwrap().intValue() < CrackerConfig.MAX_SLAVES) {
-                    executionCtrl.execute("add-slave($this/child::Solver" + pair.index + ");");
+            if (!nOfSlavesWrapper.isValid()) {
+                System.out.println("[WARNING] couldn't count the number of slaves.");
+            } else if (nOfSlavesWrapper.unwrap() < maxNOfSlaves) {
+
+                Wrapper<Serializable> additionResult = executionCtrl.execute(getAddSlaveScript(pair.index));
+                if (!additionResult.isValid()) {
+                    System.out.println("[WARNING] couldn't add slave to Solver" + pair.index);
+                } else {
                     goToSleep();
-                    System.out.println("[PLANS][SLAVES_ADDER] New solver Added on Solver" + pair.index + " now: " + (result.unwrap() + 1));
+                    System.out.println("[ACTION] Slave added on Solver" + pair.index
+                            + " (now there is " + (queue.size() + 1) + " slaves).");
                     return;
                 }
             }
         }
+    }
+
+    private String getAddSlaveScript(int solverIndex) {
+        return String.format("add-slave($this/child::Solver%d);", solverIndex);
+    }
+
+    private String getCountSlavesScript(int solverIndex) {
+        return String.format("slaves-number($this/child::Solver%d);", solverIndex);
     }
 
     private void goToSleep() {
