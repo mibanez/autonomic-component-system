@@ -1,4 +1,4 @@
 target/
 *.iml
 .idea
-config
+config.java
