@@ -6,18 +6,18 @@
 
     <resources>
         <group refid="solver3">
-            <host refid="caleuche" />
+            <host refid="pillan" />
         </group>
     </resources>
 
     <infrastructure>
         <hosts>
-            <host id="caleuche" username="mibanez" os="unix" hostCapacity="1" vmCapacity="4">
+            <host id="pillan" username="mibanez" os="unix" hostCapacity="1" vmCapacity="4">
                 <homeDirectory base="root" relpath="/user/mibanez"/>
             </host>
         </hosts>
         <groups>
-            <sshGroup id="solver3" hostList="caleuche"/>
+            <sshGroup id="solver3" hostList="pillan"/>
         </groups>
     </infrastructure>
 
