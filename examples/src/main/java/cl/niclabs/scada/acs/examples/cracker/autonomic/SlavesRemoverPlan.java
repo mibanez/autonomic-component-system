@@ -23,7 +23,7 @@ public class SlavesRemoverPlan extends Plan {
     private long sleepStartTime = 0;
 
     public SlavesRemoverPlan() {
-        subscribeTo(MaxRespTimeRule.NAME);
+        subscribeTo(MinRespTimeRule.NAME);
     }
 
     @Override

@@ -159,18 +159,18 @@ action enable-balancer(cracker) {
 }
 
 action enable-adder(cracker) {
-    set-state($cracker/rule::maxRespTime, "DISABLED");
+    set-state($cracker/rule::minRespTime, "DISABLED");
     set-state($cracker/plan::slavesRemover, "DISABLED");
 
-    set-state($cracker/rule::minRespTime, "ENABLED");
+    set-state($cracker/rule::maxRespTime, "ENABLED");
     set-state($cracker/plan::slavesAdder, "ENABLED");
 }
 
 action enable-remover(cracker) {
-    set-state($cracker/rule::minRespTime, "DISABLED");
+    set-state($cracker/rule::maxRespTime, "DISABLED");
     set-state($cracker/plan::slavesAdder, "DISABLED");
 
-    set-state($cracker/rule::maxRespTime, "ENABLED");
+    set-state($cracker/rule::minRespTime, "ENABLED");
     set-state($cracker/plan::slavesRemover, "ENABLED");
 }
 

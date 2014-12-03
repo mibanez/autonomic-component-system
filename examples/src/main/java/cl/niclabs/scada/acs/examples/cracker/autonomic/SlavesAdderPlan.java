@@ -33,7 +33,7 @@ public class SlavesAdderPlan extends Plan {
     public SlavesAdderPlan() {
         this.maxNOfSlaves = CrackerConfig.MAX_SLAVES;
 
-        subscribeTo(MinRespTimeRule.NAME);
+        subscribeTo(MaxRespTimeRule.NAME);
     }
 
     @Override
