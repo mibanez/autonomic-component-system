@@ -26,6 +26,7 @@ public class SlavesAdderPlan extends Plan {
     private long sleepStartTime = 0;
     private int maxNOfSlaves;
 
+    private boolean full = false;
 
     public SlavesAdderPlan() {
         this.maxNOfSlaves = CrackerConfig.MAX_SLAVES;
@@ -77,7 +78,12 @@ public class SlavesAdderPlan extends Plan {
                 }
                 // max solvers reached
             }
-            System.out.println("[WARNING] couldn't add slave to Solver" + pair.index);
+            //System.out.println("[WARNING] couldn't add slave to Solver" + pair.index);
+        }
+
+        if (!full) {
+            full = true;
+            System.out.println("[WARNING] Solvers FULL");
         }
     }
 

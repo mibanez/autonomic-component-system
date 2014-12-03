@@ -1,0 +1,699 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+16:16:05,839 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+16:16:05,840 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+16:16:05,840 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
+16:16:05,841 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs multiple times on the classpath.
+16:16:05,841 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs at [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
+16:16:05,841 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs at [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
+16:16:05,854 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@170a2f29 - URL [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml] is not of type file
+16:16:05,883 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+16:16:05,885 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+16:16:05,892 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+16:16:05,906 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+16:16:05,940 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.multiactivity.compatibility.ACSAnnotationProcessor] to ERROR
+16:16:05,940 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.factory.BuildHelper] to ERROR
+16:16:05,941 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListenerImpl] to ERROR
+16:16:05,941 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController] to TRACE
+16:16:05,941 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.factory.ACSFactory] to TRACE
+16:16:05,941 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.ACSManager] to TRACE
+16:16:05,941 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
+16:16:05,941 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+16:16:05,942 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+16:16:05,943 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@1d9e3890 - Registering current configuration as safe fallback point
+
+SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]
+[INFO][main][org.mortbay.log] Logging to Logger[org.mortbay.log] via org.mortbay.log.Slf4jLog
+[INFO][main][org.mortbay.log] jetty-6.1.26
+[INFO][main][org.mortbay.log] Started SelectChannelConnector@0.0.0.0:48614
+24332@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
+24332@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
+24332@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
+24332@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
+24332@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
+24332@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
+24332@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
+24332@tripio - [INFO    communication.rmi] Created a new registry on port 1099
+Loaded on Balancer: enable-balanced-remover
+Loaded on Balancer: phase1
+Loaded on Balancer: enable-remover
+Loaded on Balancer: phase2
+Loaded on Balancer: enable-balancer
+Loaded on Balancer: phase3
+Loaded on Balancer: enable-adder
+Loaded on Balancer: enable-balanced-adder
+24332@tripio - [INFO      deployment.GCMD] Starting group id=solver1 #commands=1
+24332@tripio - [INFO                job.0] executing command=ssh titan 'java -cp "/user/mibanez/memoria/programming-multiactivities/dist/lib/ProActive.jar:/user/mibanez/memoria/autonomic-component-system/target/lib/*:/user/mibanez/memoria/autonomic-component-system/core/target/*:/user/mibanez/memoria/autonomic-component-system/core/target/lib/*:/user/mibanez/memoria/autonomic-component-system/examples/target/*:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/*" -Dlog4j.configuration="file:/user/mibanez/memoria/programming-multiactivities/dist/proactive-log4j" -Djava.security.policy="/user/mibanez/memoria/programming-multiactivities/dist/proactive.java.policy" org.objectweb.proactive.core.runtime.StartPARuntime -p rmi://tripio:1099/PA_JVM336043339 -c 4 -i 1 -d 3613052326628032602  '
+24332@tripio - [INFO      deployment.GCMD] Starting group id=solver2 #commands=1
+24332@tripio - [INFO                job.1] executing command=ssh caleuche 'java -cp "/user/mibanez/memoria/programming-multiactivities/dist/lib/ProActive.jar:/user/mibanez/memoria/autonomic-component-system/target/lib/*:/user/mibanez/memoria/autonomic-component-system/core/target/*:/user/mibanez/memoria/autonomic-component-system/core/target/lib/*:/user/mibanez/memoria/autonomic-component-system/examples/target/*:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/*" -Dlog4j.configuration="file:/user/mibanez/memoria/programming-multiactivities/dist/proactive-log4j" -Djava.security.policy="/user/mibanez/memoria/programming-multiactivities/dist/proactive.java.policy" org.objectweb.proactive.core.runtime.StartPARuntime -p rmi://tripio:1099/PA_JVM336043339 -c 4 -i 3 -d 3613052326628032602  '
+24332@tripio - [INFO      deployment.GCMD] Starting group id=solver3 #commands=1
+24332@tripio - [INFO                job.2] executing command=ssh pillan 'java -cp "/user/mibanez/memoria/programming-multiactivities/dist/lib/ProActive.jar:/user/mibanez/memoria/autonomic-component-system/target/lib/*:/user/mibanez/memoria/autonomic-component-system/core/target/*:/user/mibanez/memoria/autonomic-component-system/core/target/lib/*:/user/mibanez/memoria/autonomic-component-system/examples/target/*:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/*" -Dlog4j.configuration="file:/user/mibanez/memoria/programming-multiactivities/dist/proactive-log4j" -Djava.security.policy="/user/mibanez/memoria/programming-multiactivities/dist/proactive.java.policy" org.objectweb.proactive.core.runtime.StartPARuntime -p rmi://tripio:1099/PA_JVM336043339 -c 4 -i 5 -d 3613052326628032602  '
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:10,036 INFO    proactive.runtime] Starting a ProActiveRuntime on titan
+24332@tripio - [INFO                job.0] SLF4J: Class path contains multiple SLF4J bindings.
+24332@tripio - [INFO                job.0] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+24332@tripio - [INFO                job.0] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+24332@tripio - [INFO                job.0] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+24332@tripio - [INFO                job.0] SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+24332@tripio - [INFO                job.0] SLF4J: slf4j-api 1.6.x (or later) is incompatible with this binding.
+24332@tripio - [INFO                job.0] SLF4J: Your binding is version 1.5.5 or earlier.
+24332@tripio - [INFO                job.0] SLF4J: Upgrade your binding to version 1.6.x.
+24332@tripio - [INFO                job.0] 2014-12-03 16:16:10.307::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
+24332@tripio - [INFO                job.0] 2014-12-03 16:16:10.360::INFO:  jetty-6.1.x
+24332@tripio - [INFO                job.0] 2014-12-03 16:16:10.402::INFO:  Started SelectChannelConnector@0.0.0.0:38019
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:10,410 INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:10,411 INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:10,412 INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:10,413 INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:10,413 INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:10,414 INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:10,415 INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:10,439 INFO    communication.rmi] Created a new registry on port 1099
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:11,237 WARN    proactive.runtime] You don't seem to be running the latest released version of ProActive
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:11,238 WARN    proactive.runtime] Version you are using: 2014-11-30, latest version: 5.4.4
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:11,238 WARN    proactive.runtime] To download the latest release, please visit http://www.activeeon.com/community-downloads
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:16:11,238 WARN    proactive.runtime] To disable this check, set the proactive.runtime.ping property to false
+24332@tripio - [INFO                job.1] 38895@caleuche - [2014-12-03 16:16:19,698 INFO    proactive.runtime] Starting a ProActiveRuntime on caleuche
+24332@tripio - [INFO                job.1] SLF4J: Class path contains multiple SLF4J bindings.
+24332@tripio - [INFO                job.1] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+24332@tripio - [INFO                job.1] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+24332@tripio - [INFO                job.1] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+24332@tripio - [INFO                job.1] SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+24332@tripio - [INFO                job.1] SLF4J: slf4j-api 1.6.x (or later) is incompatible with this binding.
+24332@tripio - [INFO                job.1] SLF4J: Your binding is version 1.5.5 or earlier.
+24332@tripio - [INFO                job.1] SLF4J: Upgrade your binding to version 1.6.x.
+24332@tripio - [INFO                job.1] 2014-12-03 16:16:20.012::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
+24332@tripio - [INFO                job.1] 2014-12-03 16:16:20.073::INFO:  jetty-6.1.x
+24332@tripio - [INFO                job.1] 2014-12-03 16:16:20.120::INFO:  Started SelectChannelConnector@0.0.0.0:40483
+24332@tripio - [INFO                job.1] 38895@caleuche - [2014-12-03 16:16:20,129 INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
+24332@tripio - [INFO                job.1] 38895@caleuche - [2014-12-03 16:16:20,130 INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
+24332@tripio - [INFO                job.1] 38895@caleuche - [2014-12-03 16:16:20,131 INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
+24332@tripio - [INFO                job.1] 38895@caleuche - [2014-12-03 16:16:20,132 INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
+24332@tripio - [INFO                job.1] 38895@caleuche - [2014-12-03 16:16:20,132 INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
+24332@tripio - [INFO                job.1] 38895@caleuche - [2014-12-03 16:16:20,133 INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
+24332@tripio - [INFO                job.1] 38895@caleuche - [2014-12-03 16:16:20,134 INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
+24332@tripio - [INFO                job.1] 38895@caleuche - [2014-12-03 16:16:20,181 INFO    communication.rmi] Detected an existing RMI Registry on port 1099
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:22,824 INFO    proactive.runtime] Starting a ProActiveRuntime on pillan
+24332@tripio - [INFO                job.2] SLF4J: Class path contains multiple SLF4J bindings.
+24332@tripio - [INFO                job.2] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+24332@tripio - [INFO                job.2] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+24332@tripio - [INFO                job.2] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+24332@tripio - [INFO                job.2] SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+24332@tripio - [INFO                job.2] SLF4J: slf4j-api 1.6.x (or later) is incompatible with this binding.
+24332@tripio - [INFO                job.2] SLF4J: Your binding is version 1.5.5 or earlier.
+24332@tripio - [INFO                job.2] SLF4J: Upgrade your binding to version 1.6.x.
+24332@tripio - [INFO                job.2] 2014-12-03 16:16:23.270::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
+24332@tripio - [INFO                job.2] 2014-12-03 16:16:23.356::INFO:  jetty-6.1.x
+24332@tripio - [INFO                job.2] 2014-12-03 16:16:23.421::INFO:  Started SelectChannelConnector@0.0.0.0:35263
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:23,437 INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:23,438 INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:23,440 INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:23,441 INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:23,442 INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:23,443 INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:23,444 INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:23,508 INFO    communication.rmi] Detected an existing RMI Registry on port 1099
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:24,433 WARN    proactive.runtime] You don't seem to be running the latest released version of ProActive
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:24,434 WARN    proactive.runtime] Version you are using: 2014-11-30, latest version: 5.4.4
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:24,434 WARN    proactive.runtime] To download the latest release, please visit http://www.activeeon.com/community-downloads
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:16:24,434 WARN    proactive.runtime] To disable this check, set the proactive.runtime.ping property to false
+Loaded on Solver0: add-slave
+Loaded on Solver0: get-last-used-name
+Loaded on Solver0: remove-slaves
+Loaded on Solver0: add-slaves
+Loaded on Solver0: slaves-number
+Loaded on Solver0: remove-slave
+Loaded on Solver0: recursively-add-slaves
+Loaded on Solver0: get-next-available-name
+Loaded on Solver0: recursively-remove-slaves
+Loaded on Solver0: contains-name
+Loaded on Solver1: add-slave
+Loaded on Solver1: get-last-used-name
+Loaded on Solver1: remove-slaves
+Loaded on Solver1: add-slaves
+Loaded on Solver1: slaves-number
+Loaded on Solver1: remove-slave
+Loaded on Solver1: recursively-add-slaves
+Loaded on Solver1: get-next-available-name
+Loaded on Solver1: recursively-remove-slaves
+Loaded on Solver1: contains-name
+Loaded on Solver2: add-slave
+Loaded on Solver2: get-last-used-name
+Loaded on Solver2: remove-slaves
+Loaded on Solver2: add-slaves
+Loaded on Solver2: slaves-number
+Loaded on Solver2: remove-slave
+Loaded on Solver2: recursively-add-slaves
+Loaded on Solver2: get-next-available-name
+Loaded on Solver2: recursively-remove-slaves
+Loaded on Solver2: contains-name
+24332@tripio - [INFO            proactive] Success at binding url rmi://tripio:1099/PAJMXServer_PA_JVM336043339
+24332@tripio - [INFO                job.0] 29279@titan - [2014-12-03 16:17:23,382 INFO            proactive] Success at binding url rmi://titan:1099/PAJMXServer_PA_JVM1457787339
+24332@tripio - [INFO                job.1] 38895@caleuche - [2014-12-03 16:17:31,356 INFO            proactive] Success at binding url rmi://caleuche:1099/PAJMXServer_PA_JVM1986807613
+24332@tripio - [INFO                job.2] 41879@pillan - [2014-12-03 16:17:31,571 INFO            proactive] Success at binding url rmi://pillan:1099/PAJMXServer_PA_JVM1157940110
+CRACKER ON: ActiveObject_org.objectweb.proactive.core.component.type.Composite_90d9cbb-14a1194b02c--7fa7--d7594981cff39914-90d9cbb-14a1194b02c--8000
+[0] time,s1_time,s2_time,s3_time,s1_assignment,s2_assignment,s3_assignment
+[1] 95,5312,5663,8232,33.333,33.333,33.333
+[2] 8471,4259,4499,8221,33.333,33.333,33.333
+[3] 12972,3892,4112,8221,33.333,33.333,33.333
+[4] 17776,3710,3914,6384,33.333,33.333,33.333
+[5] 22580,3599,3804,6035,33.333,33.333,33.333
+[6] 27387,3172,3340,5328,33.333,33.333,33.333
+[7] 31894,3198,3349,5328,33.333,33.333,33.333
+[8] 36693,3231,3346,4573,33.333,33.333,33.333
+[9] 41198,3250,3351,4532,33.333,33.333,33.333
+[10] 45708,3270,3347,4532,33.333,33.333,33.333
+[11] 50510,3284,3345,4478,33.333,33.333,33.333
+[12] 55015,3263,3334,4471,33.333,33.333,33.333
+[13] 59816,3248,3333,4490,33.333,33.333,33.333
+[14] 64330,3243,3321,4490,33.333,33.333,33.333
+[15] 68833,3240,3316,4518,33.333,33.333,33.333
+[16] 73647,3241,3307,4490,33.333,33.333,33.333
+[17] 78441,3244,3309,4530,33.333,33.333,33.333
+[18] 82946,3248,3311,4511,33.333,33.333,33.333
+[19] 87456,3258,3318,4511,33.333,33.333,33.333
+[20] 91974,3262,3314,4490,33.333,33.333,33.333
+[21] 96758,3261,3325,4495,33.333,33.333,33.333
+[22] 101566,3268,3327,4512,33.333,33.333,33.333
+[23] 106382,3266,3321,4532,33.333,33.333,33.333
+[24] 111179,3264,3316,4568,33.333,33.333,33.333
+[25] 115686,3263,3312,4564,33.333,33.333,33.333
+[26] 120198,3265,3310,4534,33.333,33.333,33.333
+[ACTION] Slave added on Solver2
+[27] 123517,3257,3310,4158,33.333,33.333,33.333
+[28] 127106,3255,3313,3721,33.333,33.333,33.333
+[29] 130410,3249,3313,3296,33.333,33.333,33.333
+[30] 134013,3247,3317,2861,33.333,33.333,33.333
+[31] 137314,3246,3309,2445,33.333,33.333,33.333
+[32] 140626,3250,3309,2459,33.333,33.333,33.333
+[33] 144227,3253,3300,2606,33.333,33.333,33.333
+[34] 147533,3257,3300,2606,33.333,33.333,33.333
+[35] 151129,3255,3302,2842,33.333,33.333,33.333
+[36] 154440,3251,3302,2831,33.333,33.333,33.333
+[ACTION] Slave added on Solver1
+[37] 157760,3245,3018,2708,33.333,33.333,33.333
+[38] 161052,3245,2690,2549,33.333,33.333,33.333
+[39] 164652,3239,2368,2344,33.333,33.333,33.333
+[40] 167953,3243,2042,2259,33.333,33.333,33.333
+[41] 171264,3249,1720,2368,33.333,33.333,33.333
+[42] 174569,3249,1683,2413,33.333,33.333,33.333
+[43] 178164,3261,1692,2424,33.333,33.333,33.333
+[44] 181465,3262,1695,2490,33.333,33.333,33.333
+[45] 184781,3255,1702,2507,33.333,33.333,33.333
+[46] 188086,3247,1707,2403,33.333,33.333,33.333
+[ACTION] Slave added on Solver0
+[47] 190486,2963,1713,2403,33.333,33.333,33.333
+[48] 193187,2646,1701,2363,33.333,33.333,33.333
+[49] 195594,2334,1700,2363,33.333,33.333,33.333
+[50] 198299,2023,1692,2322,33.333,33.333,33.333
+[51] 201306,1713,1684,2401,33.333,33.333,33.333
+[52] 204008,1682,1677,2505,33.333,33.333,33.333
+[53] 206706,1684,1675,2561,33.333,33.333,33.333
+[54] 209110,1678,1669,2561,33.333,33.333,33.333
+[55] 211522,1683,1667,2571,33.333,33.333,33.333
+[56] 213914,1685,1665,2496,33.333,33.333,33.333
+[57] 216318,1684,1672,2383,33.333,33.333,33.333
+[58] 218724,1677,1677,2286,33.333,33.333,33.333
+[59] 221436,1684,1686,2286,33.333,33.333,33.333
+[ACTION] Slave added on Solver2
+[60] 223530,1680,1687,2237,33.333,33.333,33.333
+[61] 225336,1678,1683,2091,33.333,33.333,33.333
+[62] 227139,1685,1676,1949,33.333,33.333,33.333
+[63] 228945,1686,1670,1803,33.333,33.333,33.333
+[64] 230743,1677,1666,1554,33.333,33.333,33.333
+[65] 232547,1679,1674,1543,33.333,33.333,33.333
+[66] 234350,1677,1681,1568,33.333,33.333,33.333
+[67] 236153,1665,1690,1572,33.333,33.333,33.333
+[68] 237957,1667,1698,1583,33.333,33.333,33.333
+[69] 239760,1675,1693,1602,33.333,33.333,33.333
+[70] 241571,1672,1688,1578,33.333,33.333,33.333
+[71] 243373,1672,1688,1553,33.333,33.333,33.333
+[72] 245174,1677,1693,1546,33.333,33.333,33.333
+[73] 246979,1675,1688,1529,33.333,33.333,33.333
+[74] 248775,1668,1688,1512,33.333,33.333,33.333
+[75] 250583,1668,1701,1512,33.333,33.333,33.333
+[76] 252677,1678,1686,1521,33.333,33.333,33.333
+[ACTION] Slave added on Solver1
+[77] 254482,1677,1678,1534,33.333,33.333,33.333
+[78] 255991,1677,1588,1534,33.333,33.333,33.333
+[79] 257791,1680,1465,1538,33.333,33.333,33.333
+[80] 259596,1675,1356,1538,33.333,33.333,33.333
+[81] 261399,1671,1249,1530,33.333,33.333,33.333
+[82] 263203,1669,1144,1517,33.333,33.333,33.333
+[83] 265300,1668,1127,1567,33.333,33.333,33.333
+[84] 267103,1668,1130,1568,33.333,33.333,33.333
+[85] 268907,1670,1140,1603,33.333,33.333,33.333
+[86] 270714,1668,1144,1603,33.333,33.333,33.333
+[87] 272516,1671,1147,1622,33.333,33.333,33.333
+[88] 274324,1678,1137,1606,33.333,33.333,33.333
+[89] 276121,1679,1134,1640,33.333,33.333,33.333
+[90] 277921,1677,1128,1620,33.333,33.333,33.333
+[91] 279430,1677,1125,1620,33.333,33.333,33.333
+[92] 281529,1672,1122,1655,33.333,33.333,33.333
+[93] 283039,1672,1122,1616,33.333,33.333,33.333
+[94] 284842,1662,1123,1579,33.333,33.333,33.333
+[95] 286642,1663,1120,1561,33.333,33.333,33.333
+[ACTION] Slave added on Solver0
+[96] 288456,1571,1116,1537,33.333,33.333,33.333
+[97] 289951,1472,1115,1537,33.333,33.333,33.333
+[98] 291754,1369,1121,1513,33.333,33.333,33.333
+[99] 293559,1266,1128,1541,33.333,33.333,33.333
+[100] 295357,1165,1128,1583,33.333,33.333,33.333
+[101] 297170,1151,1127,1608,33.333,33.333,33.333
+[102] 298668,1152,1131,1608,33.333,33.333,33.333
+[103] 300472,1154,1122,1575,33.333,33.333,33.333
+[104] 301969,1156,1111,1575,33.333,33.333,33.333
+[105] 303478,1159,1115,1534,33.333,33.333,33.333
+[106] 305278,1158,1118,1524,33.333,33.333,33.333
+[107] 306781,1154,1116,1514,33.333,33.333,33.333
+[108] 308590,1150,1118,1505,33.333,33.333,33.333
+[109] 310384,1148,1121,1531,33.333,33.333,33.333
+[110] 311894,1140,1125,1531,33.333,33.333,33.333
+[111] 313691,1140,1127,1530,33.333,33.333,33.333
+[112] 315198,1144,1127,1530,33.333,33.333,33.333
+[113] 317006,1150,1134,1512,33.333,33.333,33.333
+[114] 318502,1148,1140,1512,33.333,33.333,33.333
+[ACTION] Slave added on Solver2
+[115] 320018,1150,1135,1461,33.333,33.333,33.333
+[116] 321213,1149,1133,1461,33.333,33.333,33.333
+[117] 322710,1148,1135,1344,33.333,33.333,33.333
+[118] 323912,1143,1138,1272,33.333,33.333,33.333
+[119] 325117,1149,1137,1272,33.333,33.333,33.333
+[120] 326323,1149,1137,1197,33.333,33.333,33.333
+[121] 327819,1150,1139,1149,33.333,33.333,33.333
+[122] 329022,1153,1140,1144,33.333,33.333,33.333
+[123] 330524,1150,1137,1167,33.333,33.333,33.333
+[124] 331730,1145,1131,1167,33.333,33.333,33.333
+[125] 332929,1146,1129,1167,33.333,33.333,33.333
+[126] 334138,1145,1129,1166,33.333,33.333,33.333
+[127] 335340,1145,1129,1160,33.333,33.333,33.333
+[128] 336837,1141,1122,1135,33.333,33.333,33.333
+[129] 338043,1141,1124,1139,33.333,33.333,33.333
+[130] 339249,1139,1125,1139,33.333,33.333,33.333
+[131] 340744,1140,1126,1165,33.333,33.333,33.333
+[132] 341946,1141,1126,1163,33.333,33.333,33.333
+[133] 343155,1143,1125,1163,33.333,33.333,33.333
+[134] 344357,1143,1125,1164,33.333,33.333,33.333
+[135] 345853,1149,1132,1144,33.333,33.333,33.333
+[136] 347056,1148,1128,1138,33.333,33.333,33.333
+[137] 348277,1153,1130,1138,33.333,33.333,33.333
+[138] 349467,1153,1130,1139,33.333,33.333,33.333
+[ACTION] Slave added on Solver0
+[139] 350974,1155,1129,1138,33.333,33.333,33.333
+[140] 352168,1155,1126,1138,33.333,33.333,33.333
+[141] 353672,1100,1126,1177,33.333,33.333,33.333
+[142] 355176,1047,1127,1215,33.333,33.333,33.333
+[143] 356685,989,1124,1215,33.333,33.333,33.333
+[144] 358482,933,1122,1363,33.333,33.333,33.333
+[145] 359693,873,1121,1363,33.333,33.333,33.333
+[146] 361191,877,1121,1403,33.333,33.333,33.333
+[147] 362396,878,1121,1389,33.333,33.333,33.333
+[148] 363909,881,1122,1274,33.333,33.333,33.333
+[149] 365097,886,1120,1209,33.333,33.333,33.333
+[150] 366300,887,1118,1167,33.333,33.333,33.333
+[151] 367510,884,1118,1167,33.333,33.333,33.333
+[152] 368720,886,1118,1141,33.333,33.333,33.333
+[153] 370208,884,1115,1139,33.333,33.333,33.333
+[154] 371413,886,1116,1138,33.333,33.333,33.333
+[155] 372921,885,1119,1190,33.333,33.333,33.333
+[156] 374122,883,1117,1190,33.333,33.333,33.333
+[157] 375636,881,1110,1205,33.333,33.333,33.333
+[158] 376827,881,1112,1208,33.333,33.333,33.333
+[159] 378029,877,1112,1208,33.333,33.333,33.333
+[160] 379236,878,1112,1211,33.333,33.333,33.333
+[161] 380438,878,1110,1158,33.333,33.333,33.333
+[162] 382238,877,1114,1200,33.333,33.333,33.333
+[163] 383746,874,1113,1247,33.333,33.333,33.333
+[ACTION] Slave added on Solver2
+[164] 384946,875,1112,1245,33.333,33.333,33.333
+[165] 386153,875,1112,1208,33.333,33.333,33.333
+[166] 387356,878,1116,1208,33.333,33.333,33.333
+[167] 388854,880,1128,1162,33.333,33.333,33.333
+[168] 390056,887,1129,1073,33.333,33.333,33.333
+[169] 391260,884,1129,1028,33.333,33.333,33.333
+[170] 392463,885,1122,1028,33.333,33.333,33.333
+[171] 393670,885,1122,1058,33.333,33.333,33.333
+[172] 394872,882,1116,1043,33.333,33.333,33.333
+[173] 396077,878,1111,1014,33.333,33.333,33.333
+[174] 397574,879,1116,1014,33.333,33.333,33.333
+[175] 398777,878,1118,979,33.333,33.333,33.333
+[176] 399981,874,1115,945,33.333,33.333,33.333
+[177] 401183,878,1116,922,33.333,33.333,33.333
+[178] 402387,875,1112,924,33.333,33.333,33.333
+[179] 403889,874,1116,984,33.333,33.333,33.333
+[180] 405094,874,1117,986,33.333,33.333,33.333
+[181] 406294,877,1118,1014,33.333,33.333,33.333
+[182] 407498,875,1118,1046,33.333,33.333,33.333
+[183] 408703,878,1118,1047,33.333,33.333,33.333
+[184] 409911,881,1123,1000,33.333,33.333,33.333
+[185] 411113,883,1120,999,33.333,33.333,33.333
+[186] 412315,887,1119,969,33.333,33.333,33.333
+[187] 413812,890,1122,937,33.333,33.333,33.333
+[ACTION] Slave added on Solver1
+[188] 415017,888,1120,951,33.333,33.333,33.333
+[189] 416217,887,1092,970,33.333,33.333,33.333
+[190] 417126,884,1039,970,33.333,33.333,33.333
+[191] 418624,883,983,1030,33.333,33.333,33.333
+[192] 419529,880,925,1030,33.333,33.333,33.333
+[193] 420728,880,866,1017,33.333,33.333,33.333
+[194] 421934,879,837,1017,33.333,33.333,33.333
+[195] 423139,879,834,1048,33.333,33.333,33.333
+[196] 424638,876,835,1062,33.333,33.333,33.333
+[197] 425542,876,837,1062,33.333,33.333,33.333
+[198] 426753,876,838,1072,33.333,33.333,33.333
+[199] 427648,875,839,1072,33.333,33.333,33.333
+[200] 428846,877,840,969,33.333,33.333,33.333
+[201] 429754,877,842,969,33.333,33.333,33.333
+[202] 430951,877,846,923,33.333,33.333,33.333
+[203] 431860,875,845,923,33.333,33.333,33.333
+[204] 433055,876,846,930,33.333,33.333,33.333
+[205] 433963,875,845,930,33.333,33.333,33.333
+[206] 435159,878,841,933,33.333,33.333,33.333
+[207] 436068,878,841,933,33.333,33.333,33.333
+[208] 437264,884,831,930,33.333,33.333,33.333
+[209] 438173,884,833,930,33.333,33.333,33.333
+[210] 439370,884,837,923,33.333,33.333,33.333
+[211] 440575,884,844,923,33.333,33.333,33.333
+[212] 441774,878,849,973,33.333,33.333,33.333
+[213] 442677,875,852,973,33.333,33.333,33.333
+[214] 443879,873,854,974,33.333,33.333,33.333
+[215] 444784,871,855,974,33.333,33.333,33.333
+[216] 445985,868,851,924,33.333,33.333,33.333
+[217] 446891,871,847,924,33.333,33.333,33.333
+[218] 448091,873,844,930,33.333,33.333,33.333
+[219] 449297,873,838,930,33.333,33.333,33.333
+[220] 450492,875,838,987,33.333,33.333,33.333
+[ACTION] Slave added on Solver2
+[221] 451400,878,838,987,33.333,33.333,33.333
+[222] 452598,878,840,970,33.333,33.333,33.333
+[223] 453500,878,841,936,33.333,33.333,33.333
+[224] 454408,878,841,936,33.333,33.333,33.333
+[225] 455604,880,838,817,33.333,33.333,33.333
+[226] 456508,880,842,779,33.333,33.333,33.333
+[227] 457412,880,842,778,33.333,33.333,33.333
+[228] 458614,885,841,793,33.333,33.333,33.333
+[229] 459513,886,841,791,33.333,33.333,33.333
+[230] 460422,886,845,791,33.333,33.333,33.333
+[231] 461617,889,842,788,33.333,33.333,33.333
+[232] 462521,879,842,789,33.333,33.333,33.333
+[233] 463428,879,842,773,33.333,33.333,33.333
+[234] 464625,882,839,774,33.333,33.333,33.333
+[235] 465528,881,837,780,33.333,33.333,33.333
+[236] 466436,881,837,780,33.333,33.333,33.333
+[237] 467631,877,840,808,33.333,33.333,33.333
+[238] 468532,877,841,809,33.333,33.333,33.333
+[239] 469442,877,841,811,33.333,33.333,33.333
+[240] 471539,868,838,780,33.333,33.333,33.333
+[241] 472441,868,839,779,33.333,33.333,33.333
+[242] 473349,868,839,780,33.333,33.333,33.333
+[243] 474553,870,837,791,33.333,33.333,33.333
+[244] 475448,871,839,812,33.333,33.333,33.333
+[245] 476352,871,839,815,33.333,33.333,33.333
+[246] 477551,878,837,814,33.333,33.333,33.333
+[247] 478454,879,837,812,33.333,33.333,33.333
+[248] 479360,879,837,798,33.333,33.333,33.333
+[249] 480558,883,835,775,33.333,33.333,33.333
+[250] 481461,882,838,777,33.333,33.333,33.333
+[251] 482368,882,838,777,33.333,33.333,33.333
+[252] 483565,884,840,790,33.333,33.333,33.333
+[253] 484468,883,840,793,33.333,33.333,33.333
+[254] 485378,883,840,797,33.333,33.333,33.333
+[255] 486579,877,837,795,33.333,33.333,33.333
+[256] 487474,878,837,785,33.333,33.333,33.333
+[257] 488376,870,837,781,33.333,33.333,33.333
+[258] 489284,870,838,779,33.333,33.333,33.333
+[259] 490490,873,843,775,33.333,33.333,33.333
+[260] 491389,873,843,775,33.333,33.333,33.333
+[261] 492585,872,850,832,33.333,33.333,33.333
+[262] 493494,874,851,832,33.333,33.333,33.333
+[263] 494396,874,851,860,33.333,33.333,33.333
+[264] 495591,870,846,876,33.333,33.333,33.333
+[265] 496493,871,839,838,33.333,33.333,33.333
+[266] 497401,871,839,824,33.333,33.333,33.333
+[267] 498597,873,839,796,33.333,33.333,33.333
+[268] 499497,872,841,781,33.333,33.333,33.333
+[269] 500407,872,841,780,33.333,33.333,33.333
+[270] 501603,875,838,779,33.333,33.333,33.333
+[271] 502506,875,841,778,33.333,33.333,33.333
+[272] 503708,878,842,819,33.333,33.333,33.333
+[273] 504614,880,847,822,33.333,33.333,33.333
+[274] 505514,880,847,822,33.333,33.333,33.333
+[275] 506421,880,847,820,33.333,33.333,33.333
+[276] 507618,880,847,818,33.333,33.333,33.333
+[277] 508520,878,842,779,33.333,33.333,33.333
+[278] 509427,878,842,775,33.333,33.333,33.333
+[279] 510623,880,838,775,33.333,33.333,33.333
+[280] 511526,880,835,777,33.333,33.333,33.333
+[281] 512432,880,835,787,33.333,33.333,33.333
+[282] 513631,877,835,788,33.333,33.333,33.333
+[283] 514533,879,834,787,33.333,33.333,33.333
+[284] 515439,879,834,788,33.333,33.333,33.333
+[285] 516642,878,833,788,33.333,33.333,33.333
+[286] 517542,881,831,779,33.333,33.333,33.333
+[287] 518446,881,831,783,33.333,33.333,33.333
+[288] 519643,881,834,785,33.333,33.333,33.333
+[289] 520546,881,841,815,33.333,33.333,33.333
+[290] 521453,881,841,815,33.333,33.333,33.333
+[291] 522661,887,850,872,33.333,33.333,33.333
+[292] 523559,887,850,872,33.333,33.333,33.333
+[293] 524754,885,851,872,33.333,33.333,33.333
+[294] 525662,885,851,843,33.333,33.333,33.333
+[295] 526564,885,847,843,33.333,33.333,33.333
+[296] 527760,873,837,797,33.333,33.333,33.333
+[297] 528663,871,835,792,33.333,33.333,33.333
+[298] 529569,871,835,790,33.333,33.333,33.333
+[299] 530473,869,837,790,33.333,33.333,33.333
+[300] 531672,872,843,780,33.333,33.333,33.333
+[301] 532579,872,843,780,33.333,33.333,33.333
+[302] 533480,874,845,780,33.333,33.333,33.333
+[303] 534678,877,844,797,33.333,33.333,33.333
+[304] 535581,875,841,795,33.333,33.333,33.333
+[305] 536486,875,841,795,33.333,33.333,33.333
+[306] 537683,879,837,848,33.333,33.333,33.333
+[307] 538594,879,837,856,33.333,33.333,33.333
+[308] 539491,876,841,846,33.333,33.333,33.333
+[309] 540696,880,843,844,33.333,33.333,33.333
+[310] 541607,880,843,824,33.333,33.333,33.333
+[311] 542498,877,847,794,33.333,33.333,33.333
+[312] 543696,879,847,777,33.333,33.333,33.333
+[313] 544597,879,847,778,33.333,33.333,33.333
+[314] 545506,882,849,779,33.333,33.333,33.333
+[315] 546702,880,844,803,33.333,33.333,33.333
+[316] 547609,878,844,819,33.333,33.333,33.333
+[317] 548505,878,845,819,33.333,33.333,33.333
+[318] 549711,875,841,829,33.333,33.333,33.333
+[ACTION] Slave removed on Solver2
+[319] 550912,874,838,906,33.333,33.333,33.333
+[320] 551818,874,838,906,33.333,33.333,33.333
+[321] 553017,874,842,922,33.333,33.333,33.333
+[322] 553924,874,842,922,33.333,33.333,33.333
+[323] 555121,873,842,965,33.333,33.333,33.333
+[324] 556029,873,842,965,33.333,33.333,33.333
+[325] 557537,874,840,959,33.333,33.333,33.333
+[326] 558428,876,835,959,33.333,33.333,33.333
+[327] 559630,878,834,960,33.333,33.333,33.333
+[328] 560532,877,835,966,33.333,33.333,33.333
+[329] 561734,876,836,957,33.333,33.333,33.333
+[330] 562637,877,840,923,33.333,33.333,33.333
+[331] 563545,877,840,923,33.333,33.333,33.333
+[332] 564748,879,846,938,33.333,33.333,33.333
+[333] 565943,881,852,934,33.333,33.333,33.333
+[334] 566852,881,848,936,33.333,33.333,33.333
+[335] 568056,878,844,939,33.333,33.333,33.333
+[336] 568958,878,841,941,33.333,33.333,33.333
+[337] 570153,877,836,925,33.333,33.333,33.333
+[338] 571060,877,836,923,33.333,33.333,33.333
+[339] 572258,878,835,932,33.333,33.333,33.333
+[340] 573460,880,836,943,33.333,33.333,33.333
+[341] 574371,879,839,958,33.333,33.333,33.333
+[342] 575569,878,840,974,33.333,33.333,33.333
+[343] 576768,878,838,977,33.333,33.333,33.333
+[344] 577671,880,841,969,33.333,33.333,33.333
+[345] 578872,882,839,956,33.333,33.333,33.333
+[346] 579777,885,842,939,33.333,33.333,33.333
+[347] 580684,885,842,939,33.333,33.333,33.333
+[348] 581882,891,846,922,33.333,33.333,33.333
+[ACTION] Slave removed on Solver1
+[349] 583088,890,846,922,33.333,33.333,33.333
+[350] 584586,884,977,967,33.333,33.333,33.333
+[351] 585796,881,1025,977,33.333,33.333,33.333
+[352] 586994,880,1079,1012,33.333,33.333,33.333
+[353] 588198,875,1079,1045,33.333,33.333,33.333
+[354] 589395,873,1131,1046,33.333,33.333,33.333
+[355] 590606,873,1106,1000,33.333,33.333,33.333
+[356] 591808,870,1110,993,33.333,33.333,33.333
+[357] 593011,869,1114,958,33.333,33.333,33.333
+[358] 594507,872,1122,923,33.333,33.333,33.333
+[359] 595720,873,1126,920,33.333,33.333,33.333
+[360] 596914,875,1126,927,33.333,33.333,33.333
+[361] 598116,880,1126,962,33.333,33.333,33.333
+[362] 599322,879,1124,970,33.333,33.333,33.333
+[363] 600526,878,1118,983,33.333,33.333,33.333
+[364] 601728,879,1118,997,33.333,33.333,33.333
+[365] 603226,881,1114,1010,33.333,33.333,33.333
+[366] 604429,879,1116,992,33.333,33.333,33.333
+[367] 605641,881,1118,991,33.333,33.333,33.333
+[368] 606836,883,1118,978,33.333,33.333,33.333
+[369] 608039,885,1116,964,33.333,33.333,33.333
+[370] 609241,887,1114,965,33.333,33.333,33.333
+[371] 610450,887,1116,962,33.333,33.333,33.333
+[372] 611649,891,1115,991,33.333,33.333,33.333
+[373] 612852,890,1114,1010,33.333,33.333,33.333
+[ACTION] Slave removed on Solver0
+[374] 614361,890,1114,1014,33.333,33.333,33.333
+[375] 615569,890,1113,1025,33.333,33.333,33.333
+[376] 616760,966,1113,1030,33.333,33.333,33.333
+[377] 618258,1069,1116,1000,33.333,33.333,33.333
+[378] 619464,1117,1117,1033,33.333,33.333,33.333
+[379] 620664,1117,1117,1046,33.333,33.333,33.333
+[380] 621869,1167,1115,1050,33.333,33.333,33.333
+[381] 623072,1141,1120,1035,33.333,33.333,33.333
+[382] 624600,1139,1114,1090,33.333,33.333,33.333
+[383] 625779,1139,1114,1042,33.333,33.333,33.333
+[384] 626978,1139,1121,1023,33.333,33.333,33.333
+[385] 628477,1140,1120,992,33.333,33.333,33.333
+[386] 629682,1140,1121,1044,33.333,33.333,33.333
+[387] 630886,1140,1121,994,33.333,33.333,33.333
+[388] 632087,1138,1124,1018,33.333,33.333,33.333
+[389] 633587,1144,1119,1032,33.333,33.333,33.333
+[390] 634791,1139,1119,1034,33.333,33.333,33.333
+[391] 635992,1139,1130,1003,33.333,33.333,33.333
+[392] 637198,1136,1125,991,33.333,33.333,33.333
+[393] 638401,1133,1134,990,33.333,33.333,33.333
+[394] 639898,1127,1133,987,33.333,33.333,33.333
+[395] 641102,1130,1123,1006,33.333,33.333,33.333
+[396] 642302,1133,1117,1001,33.333,33.333,33.333
+[397] 643512,1133,1117,1002,33.333,33.333,33.333
+[398] 644715,1134,1105,981,33.333,33.333,33.333
+[399] 645916,1134,1109,977,33.333,33.333,33.333
+[ACTION] Slave removed on Solver2
+[400] 647429,1136,1107,1043,33.333,33.333,33.333
+[401] 649215,1135,1109,1131,33.333,33.333,33.333
+[402] 650430,1136,1112,1176,33.333,33.333,33.333
+[403] 651628,1136,1112,1214,33.333,33.333,33.333
+[404] 652829,1137,1113,1252,33.333,33.333,33.333
+[405] 654324,1138,1112,1207,33.333,33.333,33.333
+[406] 655527,1138,1115,1139,33.333,33.333,33.333
+[407] 656730,1138,1115,1139,33.333,33.333,33.333
+[408] 658235,1136,1119,1167,33.333,33.333,33.333
+[409] 659437,1132,1119,1166,33.333,33.333,33.333
+[410] 660648,1132,1123,1162,33.333,33.333,33.333
+[411] 662143,1136,1120,1162,33.333,33.333,33.333
+[412] 663349,1136,1120,1222,33.333,33.333,33.333
+[413] 664846,1140,1112,1222,33.333,33.333,33.333
+[414] 666049,1142,1104,1195,33.333,33.333,33.333
+[415] 667251,1142,1104,1193,33.333,33.333,33.333
+[416] 668458,1140,1105,1158,33.333,33.333,33.333
+[417] 669962,1140,1105,1141,33.333,33.333,33.333
+[418] 671168,1142,1104,1158,33.333,33.333,33.333
+[419] 672366,1142,1104,1158,33.333,33.333,33.333
+[420] 673566,1146,1110,1162,33.333,33.333,33.333
+[421] 675064,1156,1116,1161,33.333,33.333,33.333
+[422] 676266,1156,1116,1162,33.333,33.333,33.333
+[423] 677474,1153,1122,1160,33.333,33.333,33.333
+[ACTION] Slave removed on Solver1
+[424] 679572,1144,1252,1158,33.333,33.333,33.333
+[425] 681376,1139,1367,1156,33.333,33.333,33.333
+[426] 683178,1131,1480,1151,33.333,33.333,33.333
+[427] 684984,1132,1596,1179,33.333,33.333,33.333
+[428] 686784,1132,1712,1226,33.333,33.333,33.333
+[429] 688588,1133,1684,1209,33.333,33.333,33.333
+[430] 690408,1134,1679,1210,33.333,33.333,33.333
+[431] 692194,1136,1686,1211,33.333,33.333,33.333
+[432] 693999,1137,1680,1188,33.333,33.333,33.333
+[433] 695802,1135,1680,1140,33.333,33.333,33.333
+[434] 697605,1135,1696,1141,33.333,33.333,33.333
+[435] 699413,1135,1702,1144,33.333,33.333,33.333
+[436] 701211,1137,1700,1146,33.333,33.333,33.333
+[437] 703016,1139,1698,1137,33.333,33.333,33.333
+[438] 704816,1140,1704,1141,33.333,33.333,33.333
+[439] 706616,1140,1684,1141,33.333,33.333,33.333
+[440] 708419,1146,1679,1140,33.333,33.333,33.333
+[441] 710226,1146,1677,1137,33.333,33.333,33.333
+[ACTION] Slave removed on Solver2
+[442] 712026,1145,1658,1137,33.333,33.333,33.333
+[443] 713828,1145,1660,1312,33.333,33.333,33.333
+[444] 715636,1144,1667,1312,33.333,33.333,33.333
+[445] 717435,1139,1669,1422,33.333,33.333,33.333
+[446] 719242,1135,1669,1622,33.333,33.333,33.333
+[447] 721042,1134,1667,1588,33.333,33.333,33.333
+[448] 722848,1135,1667,1589,33.333,33.333,33.333
+[449] 724956,1137,1662,1589,33.333,33.333,33.333
+[450] 726758,1137,1660,1637,33.333,33.333,33.333
+[451] 728561,1136,1660,1649,33.333,33.333,33.333
+[452] 730363,1139,1661,1680,33.333,33.333,33.333
+[453] 732163,1143,1666,1736,33.333,33.333,33.333
+[454] 733969,1144,1670,1738,33.333,33.333,33.333
+[455] 735771,1145,1672,1650,33.333,33.333,33.333
+[456] 737584,1145,1676,1584,33.333,33.333,33.333
+[457] 739376,1140,1674,1568,33.333,33.333,33.333
+[458] 741183,1136,1670,1545,33.333,33.333,33.333
+[ACTION] Slave removed on Solver0
+[459] 743280,1135,1676,1576,33.333,33.333,33.333
+[460] 745089,1135,1676,1646,33.333,33.333,33.333
+[461] 747198,1362,1677,1720,33.333,33.333,33.333
+[462] 748998,1470,1671,1762,33.333,33.333,33.333
+[463] 750792,1470,1671,1746,33.333,33.333,33.333
+[464] 752595,1579,1665,1746,33.333,33.333,33.333
+[465] 754397,1685,1653,1636,33.333,33.333,33.333
+[466] 756198,1671,1654,1579,33.333,33.333,33.333
+[467] 758013,1670,1662,1541,33.333,33.333,33.333
+[468] 759808,1670,1670,1535,33.333,33.333,33.333
+[469] 761618,1665,1678,1507,33.333,33.333,33.333
+[470] 763410,1665,1683,1500,33.333,33.333,33.333
+[471] 765213,1663,1676,1500,33.333,33.333,33.333
+[472] 767316,1663,1671,1544,33.333,33.333,33.333
+[473] 769122,1663,1671,1629,33.333,33.333,33.333
+[474] 770924,1663,1666,1681,33.333,33.333,33.333
+[475] 772731,1660,1660,1717,33.333,33.333,33.333
+[476] 774835,1656,1663,1770,33.333,33.333,33.333
+[477] 776636,1658,1666,1770,33.333,33.333,33.333
+[ACTION] Slave removed on Solver0
+[478] 780234,1985,1671,1712,33.333,33.333,33.333
+[479] 783538,1985,1677,1677,33.333,33.333,33.333
+[480] 786842,2295,1685,1670,33.333,33.333,33.333
+[481] 790145,2608,1702,1674,33.333,33.333,33.333
+[482] 793457,2924,1707,1614,33.333,33.333,33.333
+[483] 796757,3238,1711,1618,33.333,33.333,33.333
+[484] 800060,3223,1708,1632,33.333,33.333,33.333
+[485] 803660,3235,1699,1591,33.333,33.333,33.333
+[486] 806966,3235,1689,1604,33.333,33.333,33.333
+[487] 810271,3238,1678,1646,33.333,33.333,33.333
+[488] 813575,3242,1676,1714,33.333,33.333,33.333
+[489] 817175,3251,1685,1756,33.333,33.333,33.333
+[490] 820481,3251,1697,1778,33.333,33.333,33.333
+[491] 823784,3252,1704,1767,33.333,33.333,33.333
+[492] 827099,3251,1708,1726,33.333,33.333,33.333
+[493] 830394,3251,1699,1679,33.333,33.333,33.333
+[494] 833992,3249,1693,1624,33.333,33.333,33.333
+[495] 837296,3249,1682,1632,33.333,33.333,33.333
+[496] 840598,3248,1677,1605,33.333,33.333,33.333
+[497] 843908,3251,1672,1579,33.333,33.333,33.333
+[498] 847211,3251,1686,1579,33.333,33.333,33.333
+[499] 850520,3243,1684,1624,33.333,33.333,33.333
+[500] 854112,3236,1690,1667,33.333,33.333,33.333
+[501] 857416,3236,1688,1646,33.333,33.333,33.333
+[502] 860721,3232,1699,1645,33.333,33.333,33.333
+[503] 864027,3232,1689,1624,33.333,33.333,33.333
+[504] 867334,3234,1688,1649,33.333,33.333,33.333
+[505] 870637,3235,1690,1646,33.333,33.333,33.333
+[506] 874237,3230,1688,1708,33.333,33.333,33.333
+[507] 877540,3229,1675,1822,33.333,33.333,33.333
+[508] 880842,3229,1676,1900,33.333,33.333,33.333
+[509] 884151,3232,1683,1895,33.333,33.333,33.333
+[510] 887454,3237,1677,1837,33.333,33.333,33.333
+[511] 891058,3250,1684,1774,33.333,33.333,33.333
+[512] 894358,3250,1683,1722,33.333,33.333,33.333
+[513] 897661,3252,1682,1673,33.333,33.333,33.333
+[514] 900965,3251,1682,1649,33.333,33.333,33.333
+[515] 904270,3242,1682,1646,33.333,33.333,33.333
+[516] 907579,3234,1684,1689,33.333,33.333,33.333
+[517] 910879,3227,1689,1647,33.333,33.333,33.333
+[518] 914182,3222,1690,1663,33.333,33.333,33.333
+[519] 917783,3221,1677,1622,33.333,33.333,33.333
+[520] 921086,3221,1683,1611,33.333,33.333,33.333
+[521] 924391,3228,1670,1609,33.333,33.333,33.333
+[522] 927697,3235,1664,1593,33.333,33.333,33.333
+[523] 931003,3243,1659,1549,33.333,33.333,33.333

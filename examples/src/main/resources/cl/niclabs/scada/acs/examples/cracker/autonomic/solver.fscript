@@ -130,7 +130,7 @@ action recursively-remove-slaves(solver, number) {
 
 action remove-slaves(solver, number) {
 
-    if (slaves-number() - $number <= 0) {
+    if (slaves-number($solver) - $number <= 0) {
         fail();
     }
 
