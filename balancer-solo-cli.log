@@ -1,0 +1,617 @@
+Cracker Component URL: SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+15:14:50,509 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+15:14:50,509 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+15:14:50,509 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
+15:14:50,510 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs multiple times on the classpath.
+15:14:50,510 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs at [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
+15:14:50,510 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs at [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
+15:14:50,524 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@6df3d1f5 - URL [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml] is not of type file
+15:14:50,560 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+15:14:50,562 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+15:14:50,569 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+15:14:50,583 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+15:14:50,619 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.multiactivity.compatibility.ACSAnnotationProcessor] to ERROR
+15:14:50,619 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.factory.BuildHelper] to ERROR
+15:14:50,619 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListenerImpl] to ERROR
+15:14:50,619 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController] to TRACE
+15:14:50,619 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.factory.ACSFactory] to TRACE
+15:14:50,620 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.ACSManager] to TRACE
+15:14:50,620 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
+15:14:50,620 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+15:14:50,620 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+15:14:50,621 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@225d6438 - Registering current configuration as safe fallback point
+
+SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]
+[INFO][main][org.mortbay.log] Logging to Logger[org.mortbay.log] via org.mortbay.log.Slf4jLog
+[INFO][main][org.mortbay.log] jetty-6.1.26
+[INFO][main][org.mortbay.log] Started SelectChannelConnector@0.0.0.0:50546
+49586@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
+49586@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
+49586@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
+49586@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
+49586@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
+49586@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
+49586@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
+49586@tripio - [INFO    communication.rmi] Detected an existing RMI Registry on port 1099
+Passwords length [4]: Number of Test [1000000]: Delay in millis [100]: request,time,resp_time,avg_resp_time
+1,8213,8213,8213
+2,13021,4707,6460
+3,17903,4782,5900
+4,22470,4466,5542
+5,27009,4438,5321
+6,31637,4528,4584
+7,36404,4667,4576
+8,41028,4523,4524
+9,45680,4551,4541
+10,50282,4502,4554
+11,54920,4538,4556
+12,59429,4409,4504
+13,63935,4406,4481
+14,68532,4497,4470
+15,73133,4501,4470
+16,77699,4465,4455
+17,82381,4582,4490
+18,86881,4400,4489
+19,91401,4420,4473
+20,96026,4524,4478
+21,100568,4442,4473
+22,105173,4505,4458
+23,109728,4455,4469
+24,114267,4438,4472
+25,118847,4480,4464
+26,123426,4478,4471
+27,127957,4430,4456
+28,132495,4438,4452
+29,137014,4419,4449
+30,141528,4414,4435
+31,146028,4400,4420
+32,150615,4487,4431
+33,155155,4439,4431
+34,159701,4446,4437
+35,164274,4473,4449
+36,168794,4420,4453
+37,173317,4423,4440
+38,177938,4521,4456
+39,182515,4476,4462
+40,187037,4422,4452
+41,191637,4499,4468
+42,196166,4428,4469
+43,200704,4437,4452
+44,205289,4485,4454
+45,209824,4435,4456
+46,214386,4462,4449
+47,218969,4482,4460
+48,222630,3561,4285
+49,226294,3563,4100
+50,229948,3554,3924
+51,233622,3573,3746
+52,237294,3572,3564
+53,240982,3587,3569
+54,244636,3554,3568
+55,248373,3637,3584
+56,252036,3562,3582
+57,255746,3610,3590
+58,259406,3560,3584
+59,263063,3557,3585
+60,266726,3563,3570
+61,270396,3570,3572
+62,274057,3561,3562
+63,277726,3568,3563
+64,281409,3583,3569
+65,285073,3564,3569
+66,288745,3572,3569
+67,292469,3624,3582
+68,296151,3582,3585
+69,299832,3581,3584
+70,303519,3587,3589
+71,307160,3541,3583
+72,310812,3552,3568
+73,314469,3557,3563
+74,318137,3568,3561
+75,321799,3561,3555
+76,325484,3585,3564
+77,329145,3560,3566
+78,332804,3559,3566
+79,336475,3571,3567
+80,340128,3553,3565
+81,343785,3557,3560
+82,347439,3553,3558
+83,351107,3568,3560
+84,354781,3574,3561
+85,358451,3569,3564
+86,362103,3552,3563
+87,365785,3582,3569
+88,369475,3590,3573
+89,373141,3565,3571
+90,376801,3560,3569
+91,380465,3563,3572
+92,384137,3572,3570
+93,387804,3567,3565
+94,391457,3553,3563
+95,395112,3555,3562
+96,397744,2532,3355
+97,400395,2550,3151
+98,403041,2546,2947
+99,405679,2538,2744
+100,408313,2533,2539
+101,410954,2540,2541
+102,413488,2434,2518
+103,416608,3019,2612
+104,419165,2457,2596
+105,422197,2932,2676
+106,425058,2760,2720
+107,427595,2437,2721
+108,430169,2474,2612
+109,432754,2485,2617
+110,435357,2503,2531
+111,438040,2583,2496
+112,440665,2525,2514
+113,443327,2562,2531
+114,445868,2441,2522
+115,448584,2616,2545
+116,451372,2688,2566
+117,454083,2611,2583
+118,456786,2603,2591
+119,459403,2516,2606
+120,462282,2778,2639
+121,464887,2505,2602
+122,467486,2499,2580
+123,470131,2544,2568
+124,472799,2567,2578
+125,475527,2627,2548
+126,478061,2434,2534
+127,480615,2453,2525
+128,483200,2485,2513
+129,485836,2536,2507
+130,488378,2442,2470
+131,490919,2441,2471
+132,493515,2496,2480
+133,496358,2742,2531
+134,498892,2434,2511
+135,501584,2591,2540
+136,504391,2707,2594
+137,507224,2733,2641
+138,509952,2628,2618
+139,512495,2443,2620
+140,515027,2432,2588
+141,517579,2451,2537
+142,520387,2708,2532
+143,523384,2897,2586
+144,526088,2604,2618
+145,529003,2815,2695
+146,531661,2557,2716
+147,534391,2629,2700
+148,536948,2457,2612
+149,539495,2447,2581
+150,542107,2512,2520
+151,544726,2519,2512
+152,547344,2518,2490
+153,549970,2526,2504
+154,552569,2499,2514
+155,555167,2498,2512
+156,557775,2507,2509
+157,560306,2431,2492
+158,562857,2450,2477
+159,565420,2463,2469
+160,567955,2435,2457
+161,569392,1337,2223
+162,570827,1335,2004
+163,572284,1357,1785
+164,573732,1348,1562
+165,575242,1410,1357
+166,576684,1342,1358
+167,578114,1330,1357
+168,579542,1327,1351
+169,580958,1316,1345
+170,582371,1313,1325
+171,583764,1292,1315
+172,585165,1301,1309
+173,586593,1328,1310
+174,587942,1249,1296
+175,589284,1242,1282
+176,590636,1252,1274
+177,592174,1438,1301
+178,593677,1403,1316
+179,595106,1329,1332
+180,596470,1263,1337
+181,598032,1461,1378
+182,599549,1417,1374
+183,601037,1388,1371
+184,602400,1263,1358
+185,603847,1347,1375
+186,605245,1298,1342
+187,606645,1300,1319
+188,608070,1324,1306
+189,609472,1301,1314
+190,610867,1295,1303
+191,612280,1313,1306
+192,613756,1376,1321
+193,615277,1421,1341
+194,616706,1329,1346
+195,618144,1338,1355
+196,619492,1248,1342
+197,620989,1397,1346
+198,622359,1269,1316
+199,623764,1305,1311
+200,625162,1298,1303
+201,626546,1283,1310
+202,627906,1259,1282
+203,629277,1271,1283
+204,630607,1230,1268
+205,631954,1246,1257
+206,633283,1229,1247
+207,634616,1232,1241
+208,635953,1237,1234
+209,637436,1382,1265
+210,638924,1388,1293
+211,640417,1393,1326
+212,641774,1257,1331
+213,643099,1225,1329
+214,644411,1212,1295
+215,645739,1228,1263
+216,647092,1253,1235
+217,648452,1259,1235
+218,649900,1348,1260
+219,651296,1296,1276
+220,652736,1340,1299
+221,654171,1335,1315
+222,655774,1502,1364
+223,657119,1245,1343
+224,658548,1329,1350
+225,659910,1262,1334
+226,661261,1251,1317
+227,662623,1261,1269
+228,663993,1270,1274
+229,665368,1275,1263
+230,666759,1290,1269
+231,668260,1401,1299
+232,669637,1276,1302
+233,670996,1259,1300
+234,672370,1274,1300
+235,673745,1275,1297
+236,675104,1259,1268
+237,676479,1275,1268
+238,677826,1246,1265
+239,679181,1255,1262
+240,680508,1227,1252
+241,681972,1364,1273
+242,683314,1242,1266
+243,684717,1303,1278
+244,686103,1286,1284
+245,687463,1260,1291
+246,688815,1252,1268
+247,690140,1225,1265
+248,691494,1253,1255
+249,692824,1230,1244
+250,694292,1368,1265
+251,695768,1376,1290
+252,697320,1452,1335
+253,698807,1387,1362
+254,700184,1276,1371
+255,701535,1251,1348
+256,702888,1253,1323
+257,704241,1252,1283
+258,705595,1254,1257
+259,706975,1279,1257
+260,708350,1275,1262
+261,709804,1353,1282
+262,711207,1302,1292
+263,712564,1257,1293
+264,713914,1250,1287
+265,715376,1361,1304
+266,716744,1268,1287
+267,718119,1275,1282
+268,719478,1259,1282
+269,720837,1259,1284
+270,722209,1272,1266
+271,723579,1270,1267
+272,724932,1253,1262
+273,726427,1394,1289
+274,727801,1274,1292
+275,729287,1386,1315
+276,730640,1253,1312
+277,732074,1333,1328
+278,733568,1394,1328
+279,734951,1283,1329
+280,736442,1391,1330
+281,738002,1460,1372
+282,739463,1361,1377
+283,740732,1169,1332
+284,741931,1099,1296
+285,743152,1121,1242
+286,744274,1022,1154
+287,745478,1103,1102
+288,746743,1165,1102
+289,747694,851,1052
+290,748681,887,1005
+291,749633,852,971
+292,750587,854,921
+293,751600,913,871
+294,752536,836,868
+295,753509,873,865
+296,754449,840,863
+297,755384,835,859
+298,756329,844,845
+299,757403,974,873
+300,758380,877,874
+301,759310,830,872
+302,760257,847,874
+303,761174,817,869
+304,762090,816,837
+305,763005,815,825
+306,763987,882,835
+307,764937,850,836
+308,765895,858,844
+309,766831,836,848
+310,767836,905,866
+311,768800,864,862
+312,769755,855,863
+313,770717,862,864
+314,771654,836,864
+315,772566,812,845
+316,773475,809,834
+317,774398,823,828
+318,775323,825,821
+319,776227,804,814
+320,777136,809,814
+321,778050,814,815
+322,778976,826,815
+323,779991,915,833
+324,780885,794,831
+325,781794,809,831
+326,782700,806,830
+327,783602,802,825
+328,784511,809,804
+329,785410,799,805
+330,786314,803,803
+331,787213,799,802
+332,788148,835,809
+333,789241,993,845
+334,790204,863,858
+335,791267,963,890
+336,792256,889,908
+337,793247,890,919
+338,794153,806,882
+339,795078,825,874
+340,795996,817,845
+341,796909,813,830
+342,797830,820,816
+343,798738,808,816
+344,799663,825,816
+345,800565,802,813
+346,801464,799,810
+347,802523,959,838
+348,803453,830,843
+349,804350,797,837
+350,805398,948,866
+351,806300,802,867
+352,807216,815,838
+353,808145,829,838
+354,809056,811,841
+355,809967,811,813
+356,810874,807,814
+357,811790,815,814
+358,812709,819,812
+359,813624,815,813
+360,814641,917,834
+361,815697,956,864
+362,816731,934,888
+363,817671,840,892
+364,818744,973,924
+365,819714,869,914
+366,820610,796,882
+367,821548,837,863
+368,822468,820,859
+369,823399,831,830
+370,824320,821,821
+371,825233,813,824
+372,826152,818,820
+373,827139,887,834
+374,828110,871,842
+375,829204,994,876
+376,830107,802,874
+377,831042,835,877
+378,832080,938,888
+379,833049,869,887
+380,833976,827,854
+381,834973,896,873
+382,835929,856,877
+383,836874,845,858
+384,837858,883,861
+385,838811,852,866
+386,839835,924,872
+387,840752,817,864
+388,841677,825,860
+389,842616,839,851
+390,843536,819,844
+391,844440,803,820
+392,845341,801,817
+393,846260,819,816
+394,847168,808,810
+395,848080,811,808
+396,849161,981,844
+397,850238,977,879
+398,851141,802,875
+399,852028,787,871
+400,852929,801,869
+401,853825,795,832
+402,854740,815,800
+403,855670,830,805
+404,856590,820,812
+405,857489,799,811
+406,858411,822,817
+407,859476,965,847
+408,860395,819,845
+409,861434,939,868
+410,862333,799,868
+411,863252,819,868
+412,864190,838,842
+413,865190,900,859
+414,866185,894,850
+415,867183,897,869
+416,868095,812,868
+417,869116,920,884
+418,870040,824,869
+419,871128,987,888
+420,872052,824,873
+421,872982,829,876
+422,873901,818,856
+423,874847,846,860
+424,875789,841,831
+425,876731,842,835
+426,877749,917,852
+427,878747,897,868
+428,879789,942,887
+429,880725,836,886
+430,881646,821,882
+431,882547,800,859
+432,883464,817,843
+433,884384,819,818
+434,885291,807,812
+435,886195,804,809
+436,887109,814,812
+437,888025,815,811
+438,888945,820,812
+439,889954,908,832
+440,890856,802,831
+441,891778,822,833
+442,892771,892,848
+443,893797,926,870
+444,894728,831,854
+445,895798,970,888
+446,896716,817,887
+447,897653,837,876
+448,898670,917,874
+449,899583,812,870
+450,900560,877,852
+451,901488,828,854
+452,902411,823,851
+453,903346,835,835
+454,904275,828,838
+455,905223,847,832
+456,906143,820,830
+457,907046,803,826
+458,907946,800,819
+459,908933,886,831
+460,909992,959,853
+461,910939,847,859
+462,911832,793,857
+463,912720,787,854
+464,913620,800,837
+465,914544,824,810
+466,915461,817,804
+467,916368,807,807
+468,917279,811,811
+469,918204,825,816
+470,919285,981,848
+471,920260,875,859
+472,921236,876,873
+473,922137,801,871
+474,923063,826,871
+475,923989,826,840
+476,924908,819,829
+477,925839,831,820
+478,926770,830,826
+479,927697,827,826
+480,928605,808,823
+481,929739,1033,865
+482,930636,797,859
+483,931536,800,853
+484,932427,791,845
+485,933327,800,844
+486,934218,790,795
+487,935113,795,795
+488,936014,801,795
+489,936926,812,799
+490,937901,875,814
+491,938943,941,844
+492,940045,1001,886
+493,940979,834,892
+494,942063,984,927
+495,942980,817,915
+496,943892,812,889
+497,944801,808,851
+498,945717,815,847
+499,946649,831,816
+500,947572,823,817
+501,948510,837,822
+502,949434,824,826
+503,950388,854,833
+504,951339,851,837
+505,952463,1024,878
+506,953431,868,884
+507,954440,908,901
+508,955440,900,910
+509,956478,938,927
+510,957443,865,895
+511,958368,825,887
+512,959303,835,872
+513,960236,833,859
+514,961171,834,838
+515,962099,828,831
+49586@tripio - [WARN oactive.remoteobject] main : unable to contact remote object rmi://tripio:1099/ActiveObject_org.objectweb.proactive.core.component.type.Composite_32d8144c-14a115a6fed--7fa7--12fa963a5457a7ba-32d8144c-14a115a6fed--8000 when calling method receiveFTMessage
+java.rmi.ConnectException: Connection refused to host: 192.168.1.101; nested exception is: 
+	java.net.ConnectException: Connection refused
+	at sun.rmi.transport.tcp.TCPEndpoint.newSocket(TCPEndpoint.java:619)
+	at sun.rmi.transport.tcp.TCPChannel.createConnection(TCPChannel.java:216)
+	at sun.rmi.transport.tcp.TCPChannel.newConnection(TCPChannel.java:202)
+	at sun.rmi.server.UnicastRef.invoke(UnicastRef.java:129)
+	at org.objectweb.proactive.core.remoteobject.rmi.RmiRemoteObjectImpl_Stub.receiveMessage(Unknown Source)
+	at org.objectweb.proactive.core.remoteobject.RemoteObjectSet.receiveMessage(RemoteObjectSet.java:164)
+	at org.objectweb.proactive.core.remoteobject.RemoteObjectAdapter.receiveMessage(RemoteObjectAdapter.java:198)
+	at org.objectweb.proactive.core.remoteobject.SynchronousProxy.reify(SynchronousProxy.java:78)
+	at pa.stub.org.objectweb.proactive.core.body._StubUniversalBody.receiveFTMessage(_StubUniversalBody.java)
+	at org.objectweb.proactive.core.body.UniversalBodyRemoteObjectAdapter.receiveFTMessage(UniversalBodyRemoteObjectAdapter.java:157)
+	at org.objectweb.proactive.core.body.future.FutureMonitoring.pingBody(FutureMonitoring.java:141)
+	at org.objectweb.proactive.core.body.future.FutureMonitoring.run(FutureMonitoring.java:176)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.net.ConnectException: Connection refused
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at java.net.Socket.connect(Socket.java:528)
+	at java.net.Socket.<init>(Socket.java:425)
+	at java.net.Socket.<init>(Socket.java:208)
+	at sun.rmi.transport.proxy.RMIDirectSocketFactory.createSocket(RMIDirectSocketFactory.java:40)
+	at sun.rmi.transport.proxy.RMIMasterSocketFactory.createSocket(RMIMasterSocketFactory.java:147)
+	at sun.rmi.transport.tcp.TCPEndpoint.newSocket(TCPEndpoint.java:613)
+	... 12 more
+Exception in thread "Monitoring the Futures" org.objectweb.proactive.core.body.exceptions.FutureMonitoringPingFailureException: Failure to ping creator body ActiveObject_org.objectweb.proactive.core.component.type.Composite_32d8144c-14a115a6fed--7fa7--12fa963a5457a7ba-32d8144c-14a115a6fed--8000 on rmi://tripio:1099/Node2031938564
+	at org.objectweb.proactive.core.body.future.FutureMonitoring.pingBody(FutureMonitoring.java:151)
+	at org.objectweb.proactive.core.body.future.FutureMonitoring.run(FutureMonitoring.java:176)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.rmi.ConnectException: Connection refused to host: 192.168.1.101; nested exception is: 
+	java.net.ConnectException: Connection refused
+	at sun.rmi.transport.tcp.TCPEndpoint.newSocket(TCPEndpoint.java:619)
+	at sun.rmi.transport.tcp.TCPChannel.createConnection(TCPChannel.java:216)
+	at sun.rmi.transport.tcp.TCPChannel.newConnection(TCPChannel.java:202)
+	at sun.rmi.server.UnicastRef.invoke(UnicastRef.java:129)
+	at org.objectweb.proactive.core.remoteobject.rmi.RmiRemoteObjectImpl_Stub.receiveMessage(Unknown Source)
+	at org.objectweb.proactive.core.remoteobject.RemoteObjectSet.receiveMessage(RemoteObjectSet.java:164)
+	at org.objectweb.proactive.core.remoteobject.RemoteObjectAdapter.receiveMessage(RemoteObjectAdapter.java:198)
+	at org.objectweb.proactive.core.remoteobject.SynchronousProxy.reify(SynchronousProxy.java:78)
+	at pa.stub.org.objectweb.proactive.core.body._StubUniversalBody.receiveFTMessage(_StubUniversalBody.java)
+	at org.objectweb.proactive.core.body.UniversalBodyRemoteObjectAdapter.receiveFTMessage(UniversalBodyRemoteObjectAdapter.java:157)
+	at org.objectweb.proactive.core.body.future.FutureMonitoring.pingBody(FutureMonitoring.java:141)
+	... 2 more
+Caused by: java.net.ConnectException: Connection refused
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at java.net.Socket.connect(Socket.java:528)
+	at java.net.Socket.<init>(Socket.java:425)
+	at java.net.Socket.<init>(Socket.java:208)
+	at sun.rmi.transport.proxy.RMIDirectSocketFactory.createSocket(RMIDirectSocketFactory.java:40)
+	at sun.rmi.transport.proxy.RMIMasterSocketFactory.createSocket(RMIMasterSocketFactory.java:147)
+	at sun.rmi.transport.tcp.TCPEndpoint.newSocket(TCPEndpoint.java:613)
+	... 12 more

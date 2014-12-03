@@ -1,0 +1,667 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+15:12:28,310 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+15:12:28,310 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+15:12:28,310 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
+15:12:28,311 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs multiple times on the classpath.
+15:12:28,311 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs at [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
+15:12:28,311 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs at [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
+15:12:28,324 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@79a302e9 - URL [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml] is not of type file
+15:12:28,354 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+15:12:28,355 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+15:12:28,363 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+15:12:28,376 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+15:12:28,411 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.multiactivity.compatibility.ACSAnnotationProcessor] to ERROR
+15:12:28,411 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.factory.BuildHelper] to ERROR
+15:12:28,412 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListenerImpl] to ERROR
+15:12:28,412 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController] to TRACE
+15:12:28,412 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.factory.ACSFactory] to TRACE
+15:12:28,412 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.ACSManager] to TRACE
+15:12:28,412 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
+15:12:28,412 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+15:12:28,413 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+15:12:28,414 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@3d144d62 - Registering current configuration as safe fallback point
+
+SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]
+[INFO][main][org.mortbay.log] Logging to Logger[org.mortbay.log] via org.mortbay.log.Slf4jLog
+[INFO][main][org.mortbay.log] jetty-6.1.26
+[INFO][main][org.mortbay.log] Started SelectChannelConnector@0.0.0.0:39989
+6797@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
+6797@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
+6797@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
+6797@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
+6797@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
+6797@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
+6797@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
+6797@tripio - [INFO    communication.rmi] Created a new registry on port 1099
+Loaded on Balancer: enable-balanced-remover
+Loaded on Balancer: phase1
+Loaded on Balancer: enable-remover
+Loaded on Balancer: phase2
+Loaded on Balancer: enable-balancer
+Loaded on Balancer: phase3
+Loaded on Balancer: enable-adder
+Loaded on Balancer: enable-balanced-adder
+6797@tripio - [INFO      deployment.GCMD] Starting group id=solver1 #commands=1
+6797@tripio - [INFO                job.0] executing command=ssh titan 'java -cp "/user/mibanez/memoria/programming-multiactivities/dist/lib/ProActive.jar:/user/mibanez/memoria/autonomic-component-system/target/lib/*:/user/mibanez/memoria/autonomic-component-system/core/target/*:/user/mibanez/memoria/autonomic-component-system/core/target/lib/*:/user/mibanez/memoria/autonomic-component-system/examples/target/*:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/*" -Dlog4j.configuration="file:/user/mibanez/memoria/programming-multiactivities/dist/proactive-log4j" -Djava.security.policy="/user/mibanez/memoria/programming-multiactivities/dist/proactive.java.policy" org.objectweb.proactive.core.runtime.StartPARuntime -p rmi://tripio:1099/PA_JVM5331179 -c 4 -i 1 -d 1773282935347946153  '
+6797@tripio - [INFO      deployment.GCMD] Starting group id=solver2 #commands=1
+6797@tripio - [INFO                job.1] executing command=ssh caleuche 'java -cp "/user/mibanez/memoria/programming-multiactivities/dist/lib/ProActive.jar:/user/mibanez/memoria/autonomic-component-system/target/lib/*:/user/mibanez/memoria/autonomic-component-system/core/target/*:/user/mibanez/memoria/autonomic-component-system/core/target/lib/*:/user/mibanez/memoria/autonomic-component-system/examples/target/*:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/*" -Dlog4j.configuration="file:/user/mibanez/memoria/programming-multiactivities/dist/proactive-log4j" -Djava.security.policy="/user/mibanez/memoria/programming-multiactivities/dist/proactive.java.policy" org.objectweb.proactive.core.runtime.StartPARuntime -p rmi://tripio:1099/PA_JVM5331179 -c 4 -i 3 -d 1773282935347946153  '
+6797@tripio - [INFO      deployment.GCMD] Starting group id=solver3 #commands=1
+6797@tripio - [INFO                job.2] executing command=ssh pillan 'java -cp "/user/mibanez/memoria/programming-multiactivities/dist/lib/ProActive.jar:/user/mibanez/memoria/autonomic-component-system/target/lib/*:/user/mibanez/memoria/autonomic-component-system/core/target/*:/user/mibanez/memoria/autonomic-component-system/core/target/lib/*:/user/mibanez/memoria/autonomic-component-system/examples/target/*:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/*" -Dlog4j.configuration="file:/user/mibanez/memoria/programming-multiactivities/dist/proactive-log4j" -Djava.security.policy="/user/mibanez/memoria/programming-multiactivities/dist/proactive.java.policy" org.objectweb.proactive.core.runtime.StartPARuntime -p rmi://tripio:1099/PA_JVM5331179 -c 4 -i 5 -d 1773282935347946153  '
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:47,479 INFO    proactive.runtime] Starting a ProActiveRuntime on titan
+6797@tripio - [INFO                job.0] SLF4J: Class path contains multiple SLF4J bindings.
+6797@tripio - [INFO                job.0] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+6797@tripio - [INFO                job.0] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+6797@tripio - [INFO                job.0] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+6797@tripio - [INFO                job.0] SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+6797@tripio - [INFO                job.0] SLF4J: slf4j-api 1.6.x (or later) is incompatible with this binding.
+6797@tripio - [INFO                job.0] SLF4J: Your binding is version 1.5.5 or earlier.
+6797@tripio - [INFO                job.0] SLF4J: Upgrade your binding to version 1.6.x.
+6797@tripio - [INFO                job.0] 2014-12-03 15:12:47.762::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
+6797@tripio - [INFO                job.0] 2014-12-03 15:12:47.815::INFO:  jetty-6.1.x
+6797@tripio - [INFO                job.0] 2014-12-03 15:12:47.864::INFO:  Started SelectChannelConnector@0.0.0.0:47832
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:47,876 INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:47,877 INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:47,878 INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:47,879 INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:47,879 INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:47,880 INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:47,881 INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:47,906 INFO    communication.rmi] Created a new registry on port 1099
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:48,546 WARN    proactive.runtime] You don't seem to be running the latest released version of ProActive
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:48,546 WARN    proactive.runtime] Version you are using: 2014-11-30, latest version: 5.4.4
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:48,546 WARN    proactive.runtime] To download the latest release, please visit http://www.activeeon.com/community-downloads
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:12:48,546 WARN    proactive.runtime] To disable this check, set the proactive.runtime.ping property to false
+6797@tripio - [INFO                job.1] 40103@caleuche - [2014-12-03 15:13:00,908 INFO    proactive.runtime] Starting a ProActiveRuntime on caleuche
+6797@tripio - [INFO                job.1] SLF4J: Class path contains multiple SLF4J bindings.
+6797@tripio - [INFO                job.1] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+6797@tripio - [INFO                job.1] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+6797@tripio - [INFO                job.1] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+6797@tripio - [INFO                job.1] SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+6797@tripio - [INFO                job.1] SLF4J: slf4j-api 1.6.x (or later) is incompatible with this binding.
+6797@tripio - [INFO                job.1] SLF4J: Your binding is version 1.5.5 or earlier.
+6797@tripio - [INFO                job.1] SLF4J: Upgrade your binding to version 1.6.x.
+6797@tripio - [INFO                job.1] 2014-12-03 15:13:01.223::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
+6797@tripio - [INFO                job.1] 2014-12-03 15:13:01.284::INFO:  jetty-6.1.x
+6797@tripio - [INFO                job.1] 2014-12-03 15:13:01.331::INFO:  Started SelectChannelConnector@0.0.0.0:41802
+6797@tripio - [INFO                job.1] 40103@caleuche - [2014-12-03 15:13:01,340 INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
+6797@tripio - [INFO                job.1] 40103@caleuche - [2014-12-03 15:13:01,341 INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
+6797@tripio - [INFO                job.1] 40103@caleuche - [2014-12-03 15:13:01,342 INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
+6797@tripio - [INFO                job.1] 40103@caleuche - [2014-12-03 15:13:01,343 INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
+6797@tripio - [INFO                job.1] 40103@caleuche - [2014-12-03 15:13:01,343 INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
+6797@tripio - [INFO                job.1] 40103@caleuche - [2014-12-03 15:13:01,344 INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
+6797@tripio - [INFO                job.1] 40103@caleuche - [2014-12-03 15:13:01,345 INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
+6797@tripio - [INFO                job.1] 40103@caleuche - [2014-12-03 15:13:01,393 INFO    communication.rmi] Detected an existing RMI Registry on port 1099
+6797@tripio - [INFO                job.2] 43004@pillan - [2014-12-03 15:13:03,950 INFO    proactive.runtime] Starting a ProActiveRuntime on pillan
+6797@tripio - [INFO                job.2] SLF4J: Class path contains multiple SLF4J bindings.
+6797@tripio - [INFO                job.2] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+6797@tripio - [INFO                job.2] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+6797@tripio - [INFO                job.2] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+6797@tripio - [INFO                job.2] SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+6797@tripio - [INFO                job.2] SLF4J: slf4j-api 1.6.x (or later) is incompatible with this binding.
+6797@tripio - [INFO                job.2] SLF4J: Your binding is version 1.5.5 or earlier.
+6797@tripio - [INFO                job.2] SLF4J: Upgrade your binding to version 1.6.x.
+6797@tripio - [INFO                job.2] 2014-12-03 15:13:04.378::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
+6797@tripio - [INFO                job.2] 2014-12-03 15:13:04.467::INFO:  jetty-6.1.x
+6797@tripio - [INFO                job.2] 2014-12-03 15:13:04.537::INFO:  Started SelectChannelConnector@0.0.0.0:51742
+6797@tripio - [INFO                job.2] 43004@pillan - [2014-12-03 15:13:04,557 INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
+6797@tripio - [INFO                job.2] 43004@pillan - [2014-12-03 15:13:04,558 INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
+6797@tripio - [INFO                job.2] 43004@pillan - [2014-12-03 15:13:04,559 INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
+6797@tripio - [INFO                job.2] 43004@pillan - [2014-12-03 15:13:04,560 INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
+6797@tripio - [INFO                job.2] 43004@pillan - [2014-12-03 15:13:04,562 INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
+6797@tripio - [INFO                job.2] 43004@pillan - [2014-12-03 15:13:04,563 INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
+6797@tripio - [INFO                job.2] 43004@pillan - [2014-12-03 15:13:04,564 INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
+6797@tripio - [INFO                job.2] 43004@pillan - [2014-12-03 15:13:04,637 INFO    communication.rmi] Detected an existing RMI Registry on port 1099
+Loaded on Solver0: add-slave
+Loaded on Solver0: get-last-used-name
+Loaded on Solver0: remove-slaves
+Loaded on Solver0: add-slaves
+Loaded on Solver0: slaves-number
+Loaded on Solver0: remove-slave
+Loaded on Solver0: recursively-add-slaves
+Loaded on Solver0: get-next-available-name
+Loaded on Solver0: recursively-remove-slaves
+Loaded on Solver0: contains-name
+Loaded on Solver1: add-slave
+Loaded on Solver1: get-last-used-name
+Loaded on Solver1: remove-slaves
+Loaded on Solver1: add-slaves
+Loaded on Solver1: slaves-number
+Loaded on Solver1: remove-slave
+Loaded on Solver1: recursively-add-slaves
+Loaded on Solver1: get-next-available-name
+Loaded on Solver1: recursively-remove-slaves
+Loaded on Solver1: contains-name
+Loaded on Solver2: add-slave
+Loaded on Solver2: get-last-used-name
+Loaded on Solver2: remove-slaves
+Loaded on Solver2: add-slaves
+Loaded on Solver2: slaves-number
+Loaded on Solver2: remove-slave
+Loaded on Solver2: recursively-add-slaves
+Loaded on Solver2: get-next-available-name
+Loaded on Solver2: recursively-remove-slaves
+Loaded on Solver2: contains-name
+6797@tripio - [INFO            proactive] Success at binding url rmi://tripio:1099/PAJMXServer_PA_JVM5331179
+6797@tripio - [INFO                job.0] 26716@titan - [2014-12-03 15:14:05,549 INFO            proactive] Success at binding url rmi://titan:1099/PAJMXServer_PA_JVM851060640
+6797@tripio - [INFO                job.1] 40103@caleuche - [2014-12-03 15:14:13,410 INFO            proactive] Success at binding url rmi://caleuche:1099/PAJMXServer_PA_JVM186546136
+6797@tripio - [INFO                job.2] 43004@pillan - [2014-12-03 15:14:13,672 INFO            proactive] Success at binding url rmi://pillan:1099/PAJMXServer_PA_JVM2045590220
+CRACKER ON: ActiveObject_org.objectweb.proactive.core.component.type.Composite_32d8144c-14a115a6fed--7fa7--12fa963a5457a7ba-32d8144c-14a115a6fed--8000
+[0] time,s1_time,s2_time,s3_time,s1_assignment,s2_assignment,s3_assignment
+[1] 96,5288,5669,8088,33.333,33.333,33.333
+[2] 4853,4233,4520,8088,33.333,33.333,33.333
+[3] 9673,3882,4137,6376,33.333,33.333,33.333
+[4] 14176,3718,3934,5831,33.333,33.333,33.333
+[5] 18974,3606,3806,5263,33.333,33.333,33.333
+[6] 23486,3185,3334,5263,33.333,33.333,33.333
+[7] 28288,3183,3330,4536,33.333,33.333,33.333
+[8] 32812,3173,3320,4536,33.333,33.333,33.333
+[9] 37613,3159,3330,4503,33.333,33.333,33.333
+[10] 42119,3158,3334,4503,33.333,33.333,33.333
+[11] 46625,3155,3336,4517,33.333,33.333,33.333
+[12] 51131,3155,3331,4519,33.333,33.333,33.333
+[13] 55633,3162,3345,4468,33.333,33.333,33.333
+[14] 60443,3163,3331,4434,33.333,33.333,33.333
+[15] 64962,3161,3337,4434,33.333,33.333,33.333
+[16] 69456,3158,3333,4434,33.333,33.333,33.333
+[17] 74251,3154,3332,4419,33.333,33.333,33.333
+[18] 78761,3146,3321,4454,33.333,33.333,33.333
+[19] 83272,3142,3342,4453,33.333,33.333,33.333
+[20] 87774,3147,3329,4437,33.333,33.333,33.333
+[21] 92279,3144,3328,4442,33.333,33.333,33.333
+[22] 97084,3141,3327,4423,33.333,33.333,33.333
+[23] 101588,3141,3327,4423,33.333,33.333,33.333
+[24] 106089,3141,3320,4434,33.333,33.333,33.333
+[25] 110602,3134,3323,4438,33.333,33.333,33.333
+[26] 115414,3134,3343,4436,33.333,33.333,33.333
+[27] 119919,3133,3341,4421,33.333,33.333,33.333
+[28] 124426,3132,3335,4418,33.333,33.333,33.333
+[29] 128933,3132,3321,4418,33.333,33.333,33.333
+[30] 133437,3133,3326,4414,33.333,33.333,33.333
+[31] 137942,3131,3326,4401,33.333,33.333,33.333
+[32] 142447,3131,3343,4385,33.333,33.333,33.333
+[33] 146969,3134,3347,4397,33.333,33.333,33.333
+[34] 151461,3132,3346,4397,33.333,33.333,33.333
+[35] 156264,3131,3346,4414,33.333,33.333,33.333
+[36] 160771,3134,3329,4418,33.333,33.333,33.333
+[37] 165275,3138,3312,4405,33.333,33.333,33.333
+[38] 169782,3137,3306,4405,33.333,33.333,33.333
+[39] 174287,3137,3302,4421,33.333,33.333,33.333
+[40] 178908,3139,3297,4417,33.333,33.333,33.333
+41,183597,3131,3297,4420,33.333,33.333,33.333
+42,188104,3131,3296,4420,33.333,33.333,33.333
+43,192609,3129,3298,4422,33.333,33.333,33.333
+44,197116,3130,3303,4405,33.333,33.333,33.333
+45,201637,3130,3298,4408,33.333,33.333,33.333
+46,206129,3141,3292,4408,37.500,35.779,26.721
+47,210932,3140,3292,4424,37.500,35.779,26.721
+48,214533,3222,3338,4424,37.500,35.779,26.721
+49,218143,3222,3338,4243,37.500,35.779,26.721
+50,221750,3303,3382,4059,37.500,35.779,26.721
+51,225354,3377,3433,3882,37.500,35.779,26.721
+52,229254,3524,3534,3516,37.515,35.693,26.793
+53,232860,3524,3534,3516,37.515,35.693,26.793
+54,236475,3524,3538,3517,37.515,35.693,26.793
+55,240363,3526,3531,3532,37.515,35.693,26.793
+56,243971,3529,3526,3532,37.515,35.693,26.793
+57,247575,3529,3522,3530,37.515,35.693,26.793
+58,251182,3533,3522,3544,37.504,35.794,26.702
+59,254784,3533,3516,3548,37.504,35.794,26.702
+60,258688,3532,3522,3535,37.504,35.794,26.702
+61,262293,3530,3521,3535,37.504,35.794,26.702
+62,265889,3530,3521,3537,37.504,35.794,26.702
+63,269500,3524,3518,3528,37.504,35.794,26.702
+64,273403,3517,3522,3535,37.574,35.810,26.616
+65,277007,3514,3524,3535,37.574,35.810,26.616
+66,280612,3514,3524,3535,37.574,35.810,26.616
+67,284216,3513,3530,3535,37.574,35.810,26.616
+68,288115,3523,3531,3550,37.574,35.810,26.616
+69,291721,3522,3533,3537,37.574,35.810,26.616
+70,295327,3522,3533,3537,37.659,35.779,26.562
+71,298931,3522,3534,3541,37.659,35.779,26.562
+72,302535,3522,3527,3530,37.659,35.779,26.562
+73,306433,3523,3527,3503,37.659,35.779,26.562
+74,310041,3523,3527,3503,37.659,35.779,26.562
+75,313642,3531,3527,3508,37.659,35.779,26.562
+76,317251,3534,3523,3495,37.506,35.745,26.750
+77,320854,3540,3528,3509,37.506,35.745,26.750
+78,324754,3535,3532,3510,37.506,35.745,26.750
+79,328357,3535,3532,3510,37.506,35.745,26.750
+80,331970,3532,3531,3516,37.506,35.745,26.750
+81,335571,3526,3533,3520,37.506,35.745,26.750
+82,339190,3523,3528,3515,37.502,35.690,26.808
+83,343086,3524,3526,3525,37.502,35.690,26.808
+84,346686,3524,3526,3525,37.502,35.690,26.808
+85,350282,3525,3530,3523,37.502,35.690,26.808
+86,353890,3528,3524,3529,37.502,35.690,26.808
+87,357491,3527,3524,3528,37.502,35.690,26.808
+88,361393,3531,3518,3533,37.458,35.781,26.761
+89,365007,3531,3518,3538,37.458,35.781,26.761
+90,368607,3529,3513,3175,37.458,35.781,26.761
+91,372221,3530,3518,2734,37.458,35.781,26.761
+92,376109,3532,3526,2272,37.458,35.781,26.761
+93,379723,3532,3526,1818,37.458,35.781,26.761
+94,383319,3532,3532,1384,26.466,25.280,48.254
+95,386921,3534,3532,1299,26.466,25.280,48.254
+96,389626,3534,3525,1468,26.466,25.280,48.254
+97,392331,3126,3107,1650,26.466,25.280,48.254
+98,395032,2924,2898,1822,26.466,25.280,48.254
+99,397438,2924,2898,1979,26.466,25.280,48.254
+100,400139,2722,2692,2152,23.408,22.609,53.983
+101,402843,2517,2494,2153,23.408,22.609,53.983
+102,405251,2518,2445,2153,23.408,22.609,53.983
+103,408552,2406,2392,2373,23.408,22.609,53.983
+104,410970,2348,2342,2373,23.408,22.609,53.983
+105,413960,2293,2286,2429,23.408,22.609,53.983
+106,416963,2236,2232,2689,25.738,24.904,49.358
+107,419370,2232,2234,2689,25.738,24.904,49.358
+108,422069,2232,2234,2530,25.738,24.904,49.358
+109,424477,2269,2278,2488,25.738,24.904,49.358
+110,427189,2311,2322,2488,25.738,24.904,49.358
+111,429882,2353,2411,2402,25.738,24.904,49.358
+112,432586,2442,2460,2385,25.484,24.478,50.038
+113,435285,2446,2459,2453,25.484,24.478,50.038
+114,437691,2446,2459,2453,25.484,24.478,50.038
+115,440396,2438,2441,2490,25.484,24.478,50.038
+116,443101,2431,2430,2513,25.484,24.478,50.038
+117,445804,2431,2430,2534,25.484,24.478,50.038
+118,448508,2429,2422,2551,26.090,25.132,48.778
+119,451210,2419,2420,2559,26.090,25.132,48.778
+120,454209,2440,2447,2596,26.090,25.132,48.778
+121,456617,2440,2447,2497,26.090,25.132,48.778
+122,459318,2448,2461,2417,26.090,25.132,48.778
+123,462020,2460,2470,2336,26.090,25.132,48.778
+124,464734,2475,2483,2358,25.494,24.479,50.028
+125,467436,2470,2485,2328,25.494,24.479,50.028
+126,469844,2470,2485,2341,25.494,24.479,50.028
+127,472543,2460,2470,2357,25.494,24.479,50.028
+128,474952,2451,2457,2357,25.494,24.479,50.028
+129,477652,2436,2436,2414,25.494,24.479,50.028
+130,480354,2416,2413,2348,25.122,24.152,50.726
+131,482754,2416,2413,2351,25.122,24.152,50.726
+132,485461,2404,2411,2392,25.122,24.152,50.726
+133,488164,2402,2405,2392,25.122,24.152,50.726
+134,490869,2392,2404,2393,25.122,24.152,50.726
+135,493572,2390,2395,2445,25.122,24.152,50.726
+136,496277,2385,2388,2445,25.447,24.433,50.121
+137,498983,2392,2386,2532,25.447,24.433,50.121
+138,501688,2392,2386,2579,25.447,24.433,50.121
+139,504388,2401,2393,2558,25.447,24.433,50.121
+140,506795,2411,2395,2491,25.447,24.433,50.121
+141,509494,2414,2400,2434,25.447,24.433,50.121
+142,512196,2426,2415,2434,25.460,24.557,49.982
+143,515203,2419,2415,2428,25.460,24.557,49.982
+144,517908,2414,2415,2482,25.460,24.557,49.982
+145,520909,2412,2424,2657,25.460,24.557,49.982
+146,523614,2409,2425,2684,25.460,24.557,49.982
+147,526331,2406,2423,2669,25.460,24.557,49.982
+148,528727,2406,2423,2546,26.226,25.119,48.655
+149,531435,2411,2426,2484,26.226,25.119,48.655
+150,533843,2427,2421,2484,26.226,25.119,48.655
+151,536546,2427,2436,2375,26.226,25.119,48.655
+152,539247,2459,2451,2341,26.226,25.119,48.655
+153,541951,2473,2478,2353,26.226,25.119,48.655
+154,544358,2473,2478,2353,25.604,24.473,49.923
+155,547055,2487,2485,2304,25.604,24.473,49.923
+156,549769,2486,2210,2086,25.604,24.473,49.923
+157,552167,2486,1881,1864,25.604,24.473,49.923
+158,554570,2469,1543,1647,25.604,24.473,49.923
+159,557268,2458,1218,1426,25.604,24.473,49.923
+160,559678,2451,888,1283,13.581,35.831,50.588
+161,561183,2439,888,1270,13.581,35.831,50.588
+162,562685,2205,903,1248,13.581,35.831,50.588
+163,564181,1986,976,1268,13.581,35.831,50.588
+164,565683,1767,1052,1259,13.581,35.831,50.588
+165,567186,1324,1127,1266,13.581,35.831,50.588
+166,568393,1324,1127,1266,12.508,38.767,48.725
+167,569898,1325,1207,1271,12.508,38.767,48.725
+168,571396,1307,1224,1278,12.508,38.767,48.725
+169,572897,1265,1246,1254,12.508,38.767,48.725
+170,574106,1265,1266,1254,12.508,38.767,48.725
+171,575603,1246,1282,1203,12.508,38.767,48.725
+172,577116,1230,1292,1181,12.488,36.847,50.665
+173,578313,1230,1286,1156,12.488,36.847,50.665
+174,579812,1231,1286,1146,12.488,36.847,50.665
+175,581019,1231,1269,1146,12.488,36.847,50.665
+176,582518,1231,1254,1153,12.488,36.847,50.665
+177,584027,1229,1233,1153,12.488,36.847,50.665
+178,585521,1229,1216,1210,12.341,36.804,50.855
+179,587026,1228,1219,1289,12.341,36.804,50.855
+180,588234,1228,1219,1289,12.341,36.804,50.855
+181,589736,1226,1220,1303,12.341,36.804,50.855
+182,591534,1219,1220,1345,12.341,36.804,50.855
+183,592741,1219,1220,1345,12.341,36.804,50.855
+184,594250,1216,1218,1342,12.968,38.610,48.422
+185,595739,1218,1218,1345,12.968,38.610,48.422
+186,596948,1218,1218,1345,12.968,38.610,48.422
+187,598452,1228,1226,1226,12.968,38.610,48.422
+188,599953,1242,1258,1179,12.968,38.610,48.422
+189,601453,1263,1270,1154,12.968,38.610,48.422
+190,602662,1263,1270,1113,12.198,36.117,51.685
+191,604161,1274,1278,1132,12.198,36.117,51.685
+192,605663,1261,1262,1180,12.198,36.117,51.685
+193,607164,1244,1240,1233,12.198,36.117,51.685
+194,608676,1227,1223,1272,12.198,36.117,51.685
+195,609874,1227,1223,1272,12.198,36.117,51.685
+196,611374,1210,1208,1311,12.696,37.654,49.650
+197,612879,1191,1194,1315,12.696,37.654,49.650
+198,614084,1191,1194,1315,12.696,37.654,49.650
+199,615581,1200,1206,1241,12.696,37.654,49.650
+200,617084,1211,1223,1206,12.696,37.654,49.650
+201,618291,1220,1241,1191,12.696,37.654,49.650
+202,619793,1231,1253,1145,12.318,35.891,51.791
+203,620995,1241,1260,1145,12.318,35.891,51.791
+204,622495,1245,1259,1149,12.318,35.891,51.791
+205,623702,1239,1239,1149,12.318,35.891,51.791
+206,625198,1236,1219,1170,12.318,35.891,51.791
+207,626416,1229,1204,1170,12.318,35.891,51.791
+208,627911,1224,1193,1185,12.001,35.878,52.121
+209,629410,1214,1189,1218,12.001,35.878,52.121
+210,630909,1205,1189,1253,12.001,35.878,52.121
+211,632119,1205,1189,1253,12.001,35.878,52.121
+212,633619,1197,1191,1288,12.001,35.878,52.121
+213,634822,1192,1193,1297,12.001,35.878,52.121
+214,636321,1187,1189,1266,12.413,37.045,50.543
+215,637527,1180,1186,1266,12.413,37.045,50.543
+216,639025,1181,1190,1192,12.413,37.045,50.543
+217,640246,1189,1198,1192,12.413,37.045,50.543
+218,641735,1196,1206,1180,12.413,37.045,50.543
+219,643235,1210,1225,1219,12.413,37.045,50.543
+220,644441,1219,1225,1219,12.435,36.930,50.635
+221,645944,1223,1229,1241,12.435,36.930,50.635
+222,647741,1222,1222,1334,12.435,36.930,50.635
+223,648942,1224,1222,1334,12.435,36.930,50.635
+224,650447,1225,1216,1321,12.435,36.930,50.635
+225,651654,1222,1216,1321,12.435,36.930,50.635
+226,653152,1219,1221,1267,12.686,37.614,49.700
+227,654361,1219,1221,1267,12.686,37.614,49.700
+228,655867,1225,1231,1186,12.686,37.614,49.700
+229,657064,1233,1231,1186,12.686,37.614,49.700
+230,658564,1240,1238,1167,12.686,37.614,49.700
+231,660065,1243,1240,1183,12.686,37.614,49.700
+232,661569,1248,1241,1223,12.532,37.367,50.100
+233,662773,1246,1245,1223,12.532,37.367,50.100
+234,664274,1239,1243,1222,12.532,37.367,50.100
+235,665479,1234,1245,1222,12.532,37.367,50.100
+236,666979,1234,1245,1158,12.532,37.367,50.100
+237,668182,1232,1243,1158,12.532,37.367,50.100
+238,669684,1229,1243,1173,12.290,36.232,51.478
+239,670891,1229,1241,1173,12.290,36.232,51.478
+240,672398,1229,1237,1175,12.290,36.232,51.478
+241,673891,1222,1217,1212,12.290,36.232,51.478
+242,675099,1222,1217,1212,12.290,36.232,51.478
+243,676598,1218,1200,1229,12.290,36.232,51.478
+244,677803,1216,1200,1229,12.298,36.738,50.964
+245,679309,1211,1193,1248,12.298,36.738,50.964
+246,682003,1209,1211,1215,12.298,36.738,50.964
+247,683213,1210,1212,1215,12.298,36.738,50.964
+248,684719,1212,1220,1178,12.298,36.738,50.964
+249,686220,1211,1214,1213,12.298,36.738,50.964
+250,687727,1211,1213,1241,12.459,37.158,50.384
+251,689221,1213,1216,1291,12.459,37.158,50.384
+252,690727,1213,1214,1328,12.459,37.158,50.384
+253,691930,1213,1214,1328,12.459,37.158,50.384
+254,693426,1219,1216,1311,12.459,37.158,50.384
+255,694634,1224,1222,1311,12.459,37.158,50.384
+256,696131,1225,1223,1217,12.410,37.073,50.517
+257,697338,1226,1225,1217,12.410,37.073,50.517
+258,698845,1223,1235,1159,12.410,37.073,50.517
+259,700044,1223,1235,1159,12.410,37.073,50.517
+260,701547,1219,1236,1173,12.410,37.073,50.517
+261,703058,1219,1233,1207,12.410,37.073,50.517
+262,704545,1213,1231,1246,12.648,37.231,50.121
+263,705749,1213,1231,1246,12.648,37.231,50.121
+264,707253,1222,1221,1263,12.648,37.231,50.121
+265,708460,1222,1221,1263,12.648,37.231,50.121
+266,709956,1227,1224,1246,12.648,37.231,50.121
+267,711459,1236,1227,1225,12.648,37.231,50.121
+268,712662,1236,1227,1222,12.542,37.189,50.269
+269,714168,1236,1229,1185,12.542,37.189,50.269
+270,715375,1240,1232,1167,12.542,37.189,50.269
+271,716873,1237,1235,1147,12.542,37.189,50.269
+272,718373,1233,1234,1192,12.542,37.189,50.269
+273,719580,1233,1234,1192,12.542,37.189,50.269
+274,721084,1238,1235,1211,12.391,36.833,50.775
+275,722582,1229,1235,1265,12.391,36.833,50.775
+276,723798,1179,1230,1265,12.391,36.833,50.775
+277,725290,991,1232,1297,12.391,36.833,50.775
+278,726791,799,1230,1289,12.391,36.833,50.775
+279,728294,612,1231,1291,12.391,36.833,50.775
+280,729801,424,1235,1291,29.706,30.316,39.978
+281,731298,285,1235,1334,29.706,30.316,39.978
+282,732506,339,1191,1339,29.706,30.316,39.978
+283,733710,392,1154,1293,29.706,30.316,39.978
+284,734912,448,1111,1263,29.706,30.316,39.978
+285,736118,501,1063,1208,29.706,30.316,39.978
+286,737312,557,1018,1120,44.890,25.066,30.044
+287,738521,557,1015,1069,44.890,25.066,30.044
+288,739422,557,966,1068,44.890,25.066,30.044
+289,740620,650,966,963,44.890,25.066,30.044
+290,741523,650,904,906,44.890,25.066,30.044
+291,742424,696,871,849,44.890,25.066,30.044
+292,743333,741,849,768,46.880,22.847,30.273
+293,744233,789,849,768,46.880,22.847,30.273
+294,745439,799,816,753,46.880,22.847,30.273
+295,746333,799,807,758,46.880,22.847,30.273
+296,747236,808,796,741,46.880,22.847,30.273
+297,748141,814,796,738,46.880,22.847,30.273
+298,749340,820,779,788,45.767,23.478,30.754
+299,750241,820,785,775,45.767,23.478,30.754
+300,751145,828,785,782,45.767,23.478,30.754
+301,752052,826,786,782,45.767,23.478,30.754
+302,752956,826,784,805,45.767,23.478,30.754
+303,753857,820,785,759,45.767,23.478,30.754
+304,754760,817,786,759,44.316,23.630,32.054
+305,755962,800,786,769,44.316,23.630,32.054
+306,756859,791,786,770,44.316,23.630,32.054
+307,757762,791,792,776,44.316,23.630,32.054
+308,758665,787,804,795,44.316,23.630,32.054
+309,759572,782,804,795,44.316,23.630,32.054
+310,760773,778,808,818,45.426,23.323,31.251
+311,761672,782,808,819,45.426,23.323,31.251
+312,762580,782,810,836,45.426,23.323,31.251
+313,763475,783,800,826,45.426,23.323,31.251
+314,764383,787,803,798,45.426,23.323,31.251
+315,765285,789,796,777,45.426,23.323,31.251
+316,766196,791,797,756,44.856,22.857,32.287
+317,767089,794,792,734,44.856,22.857,32.287
+318,767992,796,795,734,44.856,22.857,32.287
+319,768893,793,788,731,44.856,22.857,32.287
+320,769796,790,789,735,44.856,22.857,32.287
+321,770697,791,787,740,44.856,22.857,32.287
+322,771901,783,776,788,44.855,23.063,32.082
+323,772798,783,776,789,44.855,23.063,32.082
+324,773700,782,774,789,44.855,23.063,32.082
+325,774602,781,774,787,44.855,23.063,32.082
+326,775505,777,775,781,44.855,23.063,32.082
+327,776407,779,778,753,44.855,23.063,32.082
+328,777309,779,782,754,44.422,22.752,32.826
+329,778211,780,783,753,44.422,22.752,32.826
+330,779116,783,780,756,44.422,22.752,32.826
+331,780016,783,777,764,44.422,22.752,32.826
+332,781218,785,765,807,44.422,22.752,32.826
+333,782121,785,764,822,44.422,22.752,32.826
+334,783029,785,764,822,44.804,23.579,31.617
+335,784227,782,769,880,44.804,23.579,31.617
+336,785135,782,780,891,44.804,23.579,31.617
+337,786038,784,785,852,44.804,23.579,31.617
+338,786932,783,792,832,44.804,23.579,31.617
+339,787835,781,794,795,44.804,23.579,31.617
+340,788740,779,794,773,44.894,23.180,31.927
+341,789641,781,794,750,44.894,23.180,31.927
+342,790542,778,794,746,44.894,23.180,31.927
+343,791450,779,793,747,44.894,23.180,31.927
+344,792349,782,789,747,44.894,23.180,31.927
+345,793259,780,785,750,44.894,23.180,31.927
+346,794452,784,781,787,44.908,23.276,31.815
+347,795354,782,787,787,44.908,23.276,31.815
+348,796257,783,787,785,44.908,23.276,31.815
+349,797163,785,783,785,44.908,23.276,31.815
+350,798066,786,783,814,44.908,23.276,31.815
+351,798964,782,786,778,44.908,23.276,31.815
+352,799869,782,786,778,44.888,23.147,31.965
+353,800772,784,784,790,44.888,23.147,31.965
+354,801673,781,784,792,44.888,23.147,31.965
+355,802576,782,785,757,44.888,23.147,31.965
+356,803773,784,787,756,44.888,23.147,31.965
+357,804675,788,787,743,44.888,23.147,31.965
+358,805581,786,787,747,44.164,22.745,33.091
+359,806482,791,787,776,44.164,22.745,33.091
+360,807389,788,786,776,44.164,22.745,33.091
+361,808594,786,783,845,44.164,22.745,33.091
+362,809487,779,783,860,44.164,22.745,33.091
+363,810691,777,772,897,44.164,22.745,33.091
+364,811597,771,765,887,46.076,23.916,30.008
+365,812495,767,765,855,46.076,23.916,30.008
+366,813398,773,758,813,46.076,23.916,30.008
+367,814300,779,767,790,46.076,23.916,30.008
+368,815203,784,773,741,46.076,23.916,30.008
+369,816109,789,783,714,46.076,23.916,30.008
+370,817012,797,791,703,44.221,23.127,32.652
+371,817913,798,797,701,44.221,23.127,32.652
+372,819110,794,787,734,44.221,23.127,32.652
+373,820015,789,781,762,44.221,23.127,32.652
+374,820923,784,781,762,44.221,23.127,32.652
+375,821823,781,781,814,44.221,23.127,32.652
+376,823032,776,776,851,45.531,23.812,30.656
+377,823928,777,779,860,45.531,23.812,30.656
+378,824833,777,779,860,45.531,23.812,30.656
+379,825732,783,786,822,45.531,23.812,30.656
+380,826930,789,798,841,45.531,23.812,30.656
+381,827836,789,798,845,45.531,23.812,30.656
+382,828735,791,806,826,46.339,23.784,29.878
+383,829643,793,808,829,46.339,23.784,29.878
+384,830543,793,806,828,46.339,23.784,29.878
+385,831741,797,808,833,46.339,23.784,29.878
+386,832645,797,808,812,46.339,23.784,29.878
+387,833547,799,806,788,46.339,23.784,29.878
+388,834449,807,806,758,45.448,23.355,31.197
+389,835354,807,804,744,45.448,23.355,31.197
+390,836254,806,794,709,45.448,23.355,31.197
+391,837156,799,788,710,45.448,23.355,31.197
+392,838060,799,783,716,45.448,23.355,31.197
+393,838963,793,778,721,45.448,23.355,31.197
+394,839864,792,778,734,44.173,23.109,32.718
+395,841073,791,778,779,44.173,23.109,32.718
+396,841970,792,778,779,44.173,23.109,32.718
+397,842872,786,780,823,44.173,23.109,32.718
+398,843783,783,774,837,44.173,23.109,32.718
+399,844675,779,774,836,44.173,23.109,32.718
+400,845581,776,774,800,44.584,23.384,32.032
+401,846483,773,774,761,44.584,23.384,32.032
+402,847384,775,777,757,44.584,23.384,32.032
+403,848287,775,783,755,44.584,23.384,32.032
+404,849186,775,790,755,44.584,23.384,32.032
+405,850389,779,794,758,44.584,23.384,32.032
+406,851288,780,794,794,45.024,23.198,31.778
+407,852196,780,799,798,45.024,23.198,31.778
+408,853393,782,796,831,45.024,23.198,31.778
+409,854304,782,796,835,45.024,23.198,31.778
+410,855198,782,796,823,45.024,23.198,31.778
+411,856107,784,797,797,45.024,23.198,31.778
+412,857002,786,787,817,45.587,23.459,30.954
+413,857909,791,785,817,45.587,23.459,30.954
+414,859107,791,782,830,45.587,23.459,30.954
+415,860010,791,782,840,45.587,23.459,30.954
+416,860916,792,778,857,45.587,23.459,30.954
+417,861818,795,787,837,45.587,23.459,30.954
+418,863017,802,790,856,46.327,24.201,29.472
+419,863923,802,790,828,46.327,24.201,29.472
+420,864821,804,795,810,46.327,24.201,29.472
+421,865722,804,800,771,46.327,24.201,29.472
+422,866634,800,806,770,46.327,24.201,29.472
+423,867533,800,806,732,46.327,24.201,29.472
+424,868434,798,810,726,45.168,23.247,31.585
+425,869639,795,810,766,45.168,23.247,31.585
+426,870540,794,806,800,45.168,23.247,31.585
+427,871737,790,806,828,45.168,23.247,31.585
+428,872650,785,806,824,45.168,23.247,31.585
+429,873541,784,804,829,45.168,23.247,31.585
+430,874444,785,801,800,45.651,23.026,31.324
+431,875348,787,792,774,45.651,23.026,31.324
+432,876249,790,791,737,45.651,23.026,31.324
+433,877151,792,791,735,45.651,23.026,31.324
+434,878054,792,783,735,45.651,23.026,31.324
+435,878955,795,779,733,45.651,23.026,31.324
+436,879864,794,775,735,44.287,22.885,32.828
+437,880762,795,775,747,44.287,22.885,32.828
+438,881667,792,773,777,44.287,22.885,32.828
+439,882566,790,774,783,44.287,22.885,32.828
+440,883472,785,770,795,44.287,22.885,32.828
+441,884675,783,771,818,44.287,22.885,32.828
+442,885575,783,771,839,45.115,23.676,31.209
+443,886479,781,772,824,45.115,23.676,31.209
+444,887681,782,773,860,45.115,23.676,31.209
+445,888577,782,773,848,45.115,23.676,31.209
+446,889481,785,778,835,45.115,23.676,31.209
+447,890385,783,787,834,45.115,23.676,31.209
+448,891287,783,790,826,45.958,23.905,30.137
+449,892486,787,793,807,45.958,23.905,30.137
+450,893388,789,800,806,45.958,23.905,30.137
+451,894293,789,802,788,45.958,23.905,30.137
+452,895193,794,802,754,45.958,23.905,30.137
+453,896096,800,806,741,45.958,23.905,30.137
+454,897005,803,809,712,44.329,22.886,32.784
+455,897904,803,811,709,44.329,22.886,32.784
+456,898807,803,809,721,44.329,22.886,32.784
+457,899707,792,805,729,44.329,22.886,32.784
+458,900906,786,791,760,44.329,22.886,32.784
+459,901810,780,779,760,44.329,22.886,32.784
+460,902715,778,779,805,44.835,23.118,32.047
+461,903622,777,772,828,44.835,23.118,32.047
+462,904517,777,772,826,44.835,23.118,32.047
+463,905419,779,768,824,44.835,23.118,32.047
+464,906325,780,768,801,44.835,23.118,32.047
+465,907229,782,778,763,44.835,23.118,32.047
+466,908127,785,778,748,44.045,22.915,33.039
+467,909032,786,781,744,44.045,22.915,33.039
+468,909932,784,787,746,44.045,22.915,33.039
+469,911136,782,778,757,44.045,22.915,33.039
+470,912044,779,778,820,44.045,22.915,33.039
+471,912942,775,772,820,44.045,22.915,33.039
+472,913843,773,770,840,45.196,23.605,31.198
+473,915040,776,778,829,45.196,23.605,31.198
+474,915944,778,778,782,45.196,23.605,31.198
+475,916847,780,786,759,45.196,23.605,31.198
+476,917754,782,798,735,45.196,23.605,31.198
+477,918659,787,798,727,45.196,23.605,31.198
+478,919558,787,804,727,44.277,22.636,33.086
+479,920456,787,804,727,44.277,22.636,33.086
+480,921657,787,792,733,44.277,22.636,33.086
+481,922559,784,792,788,44.277,22.636,33.086
+482,923468,782,777,797,44.277,22.636,33.086
+483,924364,780,777,806,44.277,22.636,33.086
+484,925266,778,768,817,44.853,23.230,31.917
+485,926169,776,763,768,44.853,23.230,31.917
+486,927070,778,763,763,44.853,23.230,31.917
+487,927971,779,763,757,44.853,23.230,31.917
+488,928881,783,766,751,44.853,23.230,31.917
+489,929779,783,767,751,44.853,23.230,31.917
+490,930686,784,772,767,44.379,23.341,32.280
+491,931885,782,777,797,44.379,23.341,32.280
+492,932785,779,779,843,44.379,23.341,32.280
+493,933987,774,781,856,44.379,23.341,32.280
+494,934889,772,781,880,44.379,23.341,32.280
+495,935792,769,789,880,44.379,23.341,32.280
+496,936695,774,786,847,45.817,23.730,30.453
+497,937596,773,788,802,45.817,23.730,30.453
+498,938500,780,788,792,45.817,23.730,30.453
+499,939401,786,794,745,45.817,23.730,30.453
+500,940308,790,800,739,45.817,23.730,30.453
+501,941211,790,805,731,45.817,23.730,30.453
+502,942113,800,809,723,44.492,22.787,32.722
+503,943311,793,802,757,44.492,22.787,32.722
+504,944218,789,796,757,44.492,22.787,32.722
+505,945422,786,785,840,44.492,22.787,32.722
+506,946318,783,780,840,44.492,22.787,32.722
+507,947233,774,780,874,44.492,22.787,32.722
+508,948434,775,779,900,46.667,23.778,29.555
+509,949325,774,779,900,46.667,23.778,29.555
+510,950226,781,784,840,46.667,23.778,29.555
+511,951137,789,795,801,46.667,23.778,29.555
+512,952036,798,795,801,46.667,23.778,29.555
+513,952939,806,795,765,46.667,23.778,29.555
+514,953842,812,801,721,44.848,23.165,31.987
