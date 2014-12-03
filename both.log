@@ -1,1051 +1,894 @@
-SLF4J: Class path contains multiple SLF4J bindings.
-SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
-16:35:34,467 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
-16:35:34,467 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
-16:35:34,468 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
-16:35:34,468 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs multiple times on the classpath.
-16:35:34,468 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs at [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
-16:35:34,468 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.xml] occurs at [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml]
-16:35:34,482 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@70938cc - URL [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/autonomic-component-system-core-1.0-SNAPSHOT.jar!/logback.xml] is not of type file
-16:35:34,511 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
-16:35:34,512 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
-16:35:34,520 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
-16:35:34,533 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
-16:35:34,567 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.multiactivity.compatibility.ACSAnnotationProcessor] to ERROR
-16:35:34,568 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.factory.BuildHelper] to ERROR
-16:35:34,568 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.controllers.monitoring.events.GCMPAEventListenerImpl] to ERROR
-16:35:34,568 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController] to TRACE
-16:35:34,568 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.factory.ACSFactory] to TRACE
-16:35:34,568 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [cl.niclabs.scada.acs.component.ACSManager] to TRACE
-16:35:34,568 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
-16:35:34,568 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
-16:35:34,569 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
-16:35:34,570 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@6e6fdcaf - Registering current configuration as safe fallback point
-
-SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]
-[INFO][main][org.mortbay.log] Logging to Logger[org.mortbay.log] via org.mortbay.log.Slf4jLog
-[INFO][main][org.mortbay.log] jetty-6.1.26
-[INFO][main][org.mortbay.log] Started SelectChannelConnector@0.0.0.0:43259
-92967@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
-92967@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
-92967@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
-92967@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
-92967@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
-92967@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
-92967@tripio - [INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
-92967@tripio - [INFO    communication.rmi] Created a new registry on port 1099
-Loaded on Balancer: enable-balanced-remover
-Loaded on Balancer: phase1
-Loaded on Balancer: enable-remover
-Loaded on Balancer: phase2
-Loaded on Balancer: enable-balancer
-Loaded on Balancer: phase3
-Loaded on Balancer: enable-adder
-Loaded on Balancer: enable-balanced-adder
-92967@tripio - [INFO      deployment.GCMD] Starting group id=solver1 #commands=1
-92967@tripio - [INFO                job.0] executing command=ssh titan 'java -cp "/user/mibanez/memoria/programming-multiactivities/dist/lib/ProActive.jar:/user/mibanez/memoria/autonomic-component-system/target/lib/*:/user/mibanez/memoria/autonomic-component-system/core/target/*:/user/mibanez/memoria/autonomic-component-system/core/target/lib/*:/user/mibanez/memoria/autonomic-component-system/examples/target/*:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/*" -Dlog4j.configuration="file:/user/mibanez/memoria/programming-multiactivities/dist/proactive-log4j" -Djava.security.policy="/user/mibanez/memoria/programming-multiactivities/dist/proactive.java.policy" org.objectweb.proactive.core.runtime.StartPARuntime -p rmi://tripio:1099/PA_JVM457149777 -c 4 -i 1 -d 1692896845429228628  '
-92967@tripio - [INFO      deployment.GCMD] Starting group id=solver2 #commands=1
-92967@tripio - [INFO                job.1] executing command=ssh caleuche 'java -cp "/user/mibanez/memoria/programming-multiactivities/dist/lib/ProActive.jar:/user/mibanez/memoria/autonomic-component-system/target/lib/*:/user/mibanez/memoria/autonomic-component-system/core/target/*:/user/mibanez/memoria/autonomic-component-system/core/target/lib/*:/user/mibanez/memoria/autonomic-component-system/examples/target/*:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/*" -Dlog4j.configuration="file:/user/mibanez/memoria/programming-multiactivities/dist/proactive-log4j" -Djava.security.policy="/user/mibanez/memoria/programming-multiactivities/dist/proactive.java.policy" org.objectweb.proactive.core.runtime.StartPARuntime -p rmi://tripio:1099/PA_JVM457149777 -c 4 -i 3 -d 1692896845429228628  '
-92967@tripio - [INFO      deployment.GCMD] Starting group id=solver3 #commands=1
-92967@tripio - [INFO                job.2] executing command=ssh pillan 'java -cp "/user/mibanez/memoria/programming-multiactivities/dist/lib/ProActive.jar:/user/mibanez/memoria/autonomic-component-system/target/lib/*:/user/mibanez/memoria/autonomic-component-system/core/target/*:/user/mibanez/memoria/autonomic-component-system/core/target/lib/*:/user/mibanez/memoria/autonomic-component-system/examples/target/*:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/*" -Dlog4j.configuration="file:/user/mibanez/memoria/programming-multiactivities/dist/proactive-log4j" -Djava.security.policy="/user/mibanez/memoria/programming-multiactivities/dist/proactive.java.policy" org.objectweb.proactive.core.runtime.StartPARuntime -p rmi://tripio:1099/PA_JVM457149777 -c 4 -i 5 -d 1692896845429228628  '
-92967@tripio - [INFO                job.1] 2894@caleuche - [2014-12-03 16:35:43,709 INFO    proactive.runtime] Starting a ProActiveRuntime on caleuche
-92967@tripio - [INFO                job.1] SLF4J: Class path contains multiple SLF4J bindings.
-92967@tripio - [INFO                job.1] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-92967@tripio - [INFO                job.1] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-92967@tripio - [INFO                job.1] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-92967@tripio - [INFO                job.1] SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
-92967@tripio - [INFO                job.1] SLF4J: slf4j-api 1.6.x (or later) is incompatible with this binding.
-92967@tripio - [INFO                job.1] SLF4J: Your binding is version 1.5.5 or earlier.
-92967@tripio - [INFO                job.1] SLF4J: Upgrade your binding to version 1.6.x.
-92967@tripio - [INFO                job.1] 2014-12-03 16:35:44.021::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
-92967@tripio - [INFO                job.1] 2014-12-03 16:35:44.082::INFO:  jetty-6.1.x
-92967@tripio - [INFO                job.1] 2014-12-03 16:35:44.146::INFO:  Started SelectChannelConnector@0.0.0.0:45821
-92967@tripio - [INFO                job.1] 2894@caleuche - [2014-12-03 16:35:44,156 INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
-92967@tripio - [INFO                job.1] 2894@caleuche - [2014-12-03 16:35:44,157 INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
-92967@tripio - [INFO                job.1] 2894@caleuche - [2014-12-03 16:35:44,158 INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
-92967@tripio - [INFO                job.1] 2894@caleuche - [2014-12-03 16:35:44,159 INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
-92967@tripio - [INFO                job.1] 2894@caleuche - [2014-12-03 16:35:44,160 INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
-92967@tripio - [INFO                job.1] 2894@caleuche - [2014-12-03 16:35:44,161 INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
-92967@tripio - [INFO                job.1] 2894@caleuche - [2014-12-03 16:35:44,161 INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
-92967@tripio - [INFO                job.1] 2894@caleuche - [2014-12-03 16:35:44,214 INFO    communication.rmi] Detected an existing RMI Registry on port 1099
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:47,551 INFO    proactive.runtime] Starting a ProActiveRuntime on titan
-92967@tripio - [INFO                job.0] SLF4J: Class path contains multiple SLF4J bindings.
-92967@tripio - [INFO                job.0] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-92967@tripio - [INFO                job.0] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-92967@tripio - [INFO                job.0] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-92967@tripio - [INFO                job.0] SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
-92967@tripio - [INFO                job.0] SLF4J: slf4j-api 1.6.x (or later) is incompatible with this binding.
-92967@tripio - [INFO                job.0] SLF4J: Your binding is version 1.5.5 or earlier.
-92967@tripio - [INFO                job.0] SLF4J: Upgrade your binding to version 1.6.x.
-92967@tripio - [INFO                job.0] 2014-12-03 16:35:47.822::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
-92967@tripio - [INFO                job.0] 2014-12-03 16:35:47.875::INFO:  jetty-6.1.x
-92967@tripio - [INFO                job.0] 2014-12-03 16:35:47.924::INFO:  Started SelectChannelConnector@0.0.0.0:33595
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:47,933 INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:47,934 INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:47,935 INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:47,935 INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:47,936 INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:47,937 INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:47,937 INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:47,962 INFO    communication.rmi] Created a new registry on port 1099
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:48,987 WARN    proactive.runtime] You don't seem to be running the latest released version of ProActive
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:48,987 WARN    proactive.runtime] Version you are using: 2014-11-30, latest version: 5.4.4
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:48,988 WARN    proactive.runtime] To download the latest release, please visit http://www.activeeon.com/community-downloads
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:35:48,988 WARN    proactive.runtime] To disable this check, set the proactive.runtime.ping property to false
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:52,840 INFO    proactive.runtime] Starting a ProActiveRuntime on pillan
-92967@tripio - [INFO                job.2] SLF4J: Class path contains multiple SLF4J bindings.
-92967@tripio - [INFO                job.2] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/programming-multiactivities/dist/lib/slf4j-log4j12-1.5.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-92967@tripio - [INFO                job.2] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/core/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-92967@tripio - [INFO                job.2] SLF4J: Found binding in [jar:file:/user/mibanez/memoria/autonomic-component-system/examples/target/lib/logback-classic-1.1.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-92967@tripio - [INFO                job.2] SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
-92967@tripio - [INFO                job.2] SLF4J: slf4j-api 1.6.x (or later) is incompatible with this binding.
-92967@tripio - [INFO                job.2] SLF4J: Your binding is version 1.5.5 or earlier.
-92967@tripio - [INFO                job.2] SLF4J: Upgrade your binding to version 1.6.x.
-92967@tripio - [INFO                job.2] 2014-12-03 16:36:53.745::INFO:  Logging to STDERR via org.mortbay.log.StdErrLog
-92967@tripio - [INFO                job.2] 2014-12-03 16:36:53.832::INFO:  jetty-6.1.x
-92967@tripio - [INFO                job.2] 2014-12-03 16:36:53.950::INFO:  Started SelectChannelConnector@0.0.0.0:56860
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:53,970 INFO oactive.remoteobject] Remote Object Factory provider <pamr, class org.objectweb.proactive.extensions.pamr.remoteobject.PAMRRemoteObjectFactory> found
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:53,974 INFO oactive.remoteobject] Remote Object Factory provider <pnp, class org.objectweb.proactive.extensions.pnp.PNPRemoteObjectFactory> found
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:53,978 INFO oactive.remoteobject] Remote Object Factory provider <pnps, class org.objectweb.proactive.extensions.pnpssl.PNPSslRemoteObjectFactory> found
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:53,981 INFO oactive.remoteobject] Remote Object Factory provider <pamrd, class org.objectweb.proactive.extensions.pamrd.PAMRDRemoteObjectFactorySPI$PAMRDRemoteObjectFactory> found
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:53,982 INFO oactive.remoteobject] Remote Object Factory provider <amqp, class org.objectweb.proactive.extensions.amqp.remoteobject.AMQPRemoteObjectFactory> found
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:53,983 INFO oactive.remoteobject] Remote Object Factory provider <amqp-federation, class org.objectweb.proactive.extensions.amqp.federation.AMQPFederationRemoteObjectFactory> found
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:54,046 INFO oactive.remoteobject] Remote Object Factory provider <rmissl, class org.objectweb.proactive.extra.rmissl.RmiSslRemoteObjectFactory> found
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:54,123 INFO    communication.rmi] Detected an existing RMI Registry on port 1099
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:54,985 WARN    proactive.runtime] You don't seem to be running the latest released version of ProActive
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:54,985 WARN    proactive.runtime] Version you are using: 2014-11-30, latest version: 5.4.4
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:54,985 WARN    proactive.runtime] To download the latest release, please visit http://www.activeeon.com/community-downloads
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:36:54,986 WARN    proactive.runtime] To disable this check, set the proactive.runtime.ping property to false
-Loaded on Solver0: add-slave
-Loaded on Solver0: get-last-used-name
-Loaded on Solver0: remove-slaves
-Loaded on Solver0: add-slaves
-Loaded on Solver0: slaves-number
-Loaded on Solver0: remove-slave
-Loaded on Solver0: recursively-add-slaves
-Loaded on Solver0: get-next-available-name
-Loaded on Solver0: recursively-remove-slaves
-Loaded on Solver0: contains-name
-Loaded on Solver1: add-slave
-Loaded on Solver1: get-last-used-name
-Loaded on Solver1: remove-slaves
-Loaded on Solver1: add-slaves
-Loaded on Solver1: slaves-number
-Loaded on Solver1: remove-slave
-Loaded on Solver1: recursively-add-slaves
-Loaded on Solver1: get-next-available-name
-Loaded on Solver1: recursively-remove-slaves
-Loaded on Solver1: contains-name
-Loaded on Solver2: add-slave
-Loaded on Solver2: get-last-used-name
-Loaded on Solver2: remove-slaves
-Loaded on Solver2: add-slaves
-Loaded on Solver2: slaves-number
-Loaded on Solver2: remove-slave
-Loaded on Solver2: recursively-add-slaves
-Loaded on Solver2: get-next-available-name
-Loaded on Solver2: recursively-remove-slaves
-Loaded on Solver2: contains-name
-92967@tripio - [INFO            proactive] Success at binding url rmi://tripio:1099/PAJMXServer_PA_JVM457149777
-92967@tripio - [INFO                job.0] 6794@titan - [2014-12-03 16:37:56,393 INFO            proactive] Success at binding url rmi://titan:1099/PAJMXServer_PA_JVM1433373723
-92967@tripio - [INFO                job.1] 2894@caleuche - [2014-12-03 16:38:04,271 INFO            proactive] Success at binding url rmi://caleuche:1099/PAJMXServer_PA_JVM195572090
-92967@tripio - [INFO                job.2] 71000@pillan - [2014-12-03 16:38:04,433 INFO            proactive] Success at binding url rmi://pillan:1099/PAJMXServer_PA_JVM854095965
-CRACKER ON: ActiveObject_org.objectweb.proactive.core.component.type.Composite_-574e961f-14a11a68527--7fa7--fdc971fb2c66018b--574e961f-14a11a68527--8000
-[0] time,s1_time,s2_time,s3_time,s1_assignment,s2_assignment,s3_assignment
-[1] 86,5306,5658,7992,33.333,33.333,33.333
-[2] 5761,4226,4471,6746,33.333,33.333,33.333
-[3] 10271,3874,4096,6011,33.333,33.333,33.333
-[4] 15068,3698,3895,5656,33.333,33.333,33.333
-[5] 19873,3593,3773,5454,33.333,33.333,33.333
-[6] 24378,3177,3302,4740,33.333,33.333,33.333
-[7] 28892,3190,3299,4522,33.333,33.333,33.333
-[8] 33693,3199,3285,4517,33.333,33.333,33.333
-[9] 38199,3214,3290,4489,33.333,33.333,33.333
-[10] 42702,3221,3284,4440,33.333,33.333,33.333
-[11] 47321,3222,3278,4440,33.333,33.333,33.333
-12,52013,3224,3281,4455,33.333,33.333,33.333
-13,56525,3225,3283,4437,33.333,33.333,33.333
-14,61043,3223,3272,4437,33.333,33.333,33.333
-15,65829,3227,3282,4459,33.333,33.333,33.333
-16,70338,3228,3288,4446,33.333,33.333,33.333
-17,74838,3231,3289,4436,36.891,36.240,26.870
-18,79347,3234,3290,4435,36.891,36.240,26.870
-19,83247,3303,3366,4262,36.891,36.240,26.870
-20,86859,3303,3366,4262,36.891,36.240,26.870
-21,90760,3369,3412,3939,36.891,36.240,26.870
-22,94380,3433,3465,3776,36.891,36.240,26.870
-23,98271,3560,3577,3601,37.068,36.241,26.691
-24,101875,3560,3577,3589,37.068,36.241,26.691
-25,105484,3557,3561,3552,37.068,36.241,26.691
-26,109382,3562,3567,3545,37.068,36.241,26.691
-27,112987,3562,3567,3531,37.068,36.241,26.691
-28,116596,3562,3576,3529,37.068,36.241,26.691
-29,120489,3572,3569,3533,36.948,36.154,26.898
-30,124102,3572,3569,3548,36.948,36.154,26.898
-31,127719,3575,3567,3548,36.948,36.154,26.898
-32,131604,3577,3578,3559,36.948,36.154,26.898
-33,135208,3582,3581,3562,36.948,36.154,26.898
-34,138823,3578,3571,3562,36.948,36.154,26.898
-[ACTION] Slave added on Solver2
-35,142719,3573,3570,3277,36.061,35.316,28.624
-36,146337,3568,3561,2933,36.061,35.316,28.624
-37,149932,3566,3561,2639,36.061,35.316,28.624
-38,153539,3547,3530,2431,36.061,35.316,28.624
-39,157144,3534,3518,2100,36.061,35.316,28.624
-40,160747,3520,3498,2051,36.061,35.316,28.624
-41,164350,3506,3472,2138,30.390,30.053,39.557
-42,167954,3490,3454,2146,30.390,30.053,39.557
-43,171255,3380,3357,2230,30.390,30.053,39.557
-44,174262,3380,3357,2230,30.390,30.053,39.557
-[ACTION] Slave added on Solver1
-45,177560,3270,2910,2624,30.390,30.053,39.557
-46,180565,3161,2515,2696,30.390,30.053,39.557
-47,183570,3053,2117,2833,26.117,37.247,36.636
-48,187478,2948,1827,2987,26.117,37.247,36.636
-49,190478,2867,1608,2917,26.117,37.247,36.636
-50,193183,2786,1638,2905,26.117,37.247,36.636
-51,195909,2786,1710,2905,26.117,37.247,36.636
-52,198601,2627,1776,2853,26.117,37.247,36.636
-53,201602,2546,1848,2853,23.715,46.597,29.687
-54,204599,2550,1844,2697,23.715,46.597,29.687
-55,207013,2508,1844,2596,23.715,46.597,29.687
-[ACTION] Slave added on Solver0
-56,209425,2274,2034,2498,23.715,46.597,29.687
-57,211817,2010,2034,2405,23.715,46.597,29.687
-58,214222,1748,2128,2214,23.715,46.597,29.687
-59,216919,1480,2305,2050,31.592,39.857,28.551
-60,219329,1255,2297,2032,31.592,39.857,28.551
-61,221435,1299,2225,1961,31.592,39.857,28.551
-62,223540,1371,2164,1949,31.592,39.857,28.551
-63,225651,1442,2164,1941,31.592,39.857,28.551
-64,228349,1514,2056,2085,31.592,39.857,28.551
-65,230752,1589,1993,2141,37.361,37.580,25.059
-66,233154,1586,1990,2218,37.361,37.580,25.059
-67,235252,1642,1990,2197,37.361,37.580,25.059
-68,237357,1691,1929,2198,37.361,37.580,25.059
-69,239165,1748,1929,2198,37.361,37.580,25.059
-[ACTION] Slave added on Solver2
-70,241265,1802,1900,1859,37.361,37.580,25.059
-71,243364,1856,1885,1663,36.510,36.159,27.331
-72,245174,1850,1873,1571,36.510,36.159,27.331
-73,247273,1848,1876,1431,36.510,36.159,27.331
-74,249081,1842,1854,1305,36.510,36.159,27.331
-75,251179,1834,1835,1290,36.510,36.159,27.331
-76,252988,1831,1803,1316,36.510,36.159,27.331
-77,255087,1825,1803,1320,32.923,33.004,34.074
-78,256900,1819,1798,1328,32.923,33.004,34.074
-79,258991,1812,1806,1329,32.923,33.004,34.074
-80,260794,1810,1806,1314,32.923,33.004,34.074
-81,262603,1805,1787,1280,32.923,33.004,34.074
-82,264702,1803,1785,1253,32.923,33.004,34.074
-83,266517,1807,1782,1258,28.546,29.017,42.437
-84,268609,1809,1778,1255,28.546,29.017,42.437
-85,270710,1737,1712,1396,28.546,29.017,42.437
-86,272520,1663,1646,1396,28.546,29.017,42.437
-[ACTION] Slave added on Solver0
-87,274624,1525,1577,1661,28.546,29.017,42.437
-88,277023,1364,1502,1824,28.546,29.017,42.437
-89,279124,1198,1431,1965,36.266,30.863,32.870
-90,280935,1105,1433,1965,36.266,30.863,32.870
-91,282733,1069,1455,1869,36.266,30.863,32.870
-92,284539,1090,1483,1790,36.266,30.863,32.870
-93,286048,1134,1507,1669,36.266,30.863,32.870
-94,287843,1185,1530,1583,36.266,30.863,32.870
-95,289353,1240,1545,1496,41.080,28.058,30.862
-96,291150,1233,1542,1496,41.080,28.058,30.862
-97,292952,1269,1507,1541,41.080,28.058,30.862
-98,294457,1298,1507,1520,41.080,28.058,30.862
-99,295965,1329,1480,1503,41.080,28.058,30.862
-100,297763,1360,1442,1508,41.080,28.058,30.862
-101,299270,1391,1442,1508,42.520,28.015,29.465
-102,301067,1398,1422,1448,42.520,28.015,29.465
-103,302571,1409,1422,1430,42.520,28.015,29.465
-104,304073,1419,1419,1418,42.520,28.015,29.465
-105,305583,1423,1413,1392,42.520,28.015,29.465
-[ACTION] Slave added on Solver1
-106,307383,1430,1352,1381,42.520,28.015,29.465
-107,308884,1430,1248,1401,40.613,30.661,28.726
-108,310686,1429,1154,1455,40.613,30.661,28.726
-109,312195,1416,1079,1455,40.613,30.661,28.726
-110,313700,1403,993,1490,40.613,30.661,28.726
-111,315502,1395,987,1490,40.613,30.661,28.726
-112,317306,1381,1008,1553,40.613,30.661,28.726
-113,318812,1369,1028,1507,37.766,37.968,24.266
-114,320313,1366,1026,1448,37.766,37.968,24.266
-115,321809,1349,1026,1444,37.766,37.968,24.266
-116,323313,1329,1131,1332,37.766,37.968,24.266
-117,324522,1310,1131,1252,37.766,37.968,24.266
-118,326017,1295,1182,1221,37.766,37.968,24.266
-119,327519,1280,1281,1205,37.215,37.385,25.400
-120,328729,1280,1281,1167,37.215,37.385,25.400
-121,330233,1279,1275,1180,37.215,37.385,25.400
-122,331727,1278,1262,1164,37.215,37.385,25.400
-123,332937,1276,1262,1164,37.215,37.385,25.400
-124,334433,1272,1260,1192,37.215,37.385,25.400
-125,335935,1266,1261,1203,36.672,36.986,26.341
-126,337141,1265,1258,1200,36.672,36.986,26.341
-[ACTION] Slave added on Solver2
-127,338641,1256,1254,1190,36.672,36.986,26.341
-128,339851,1256,1258,1107,36.672,36.986,26.341
-129,341349,1242,1254,1041,36.672,36.986,26.341
-130,342556,1242,1242,996,36.672,36.986,26.341
-131,344059,1235,1234,948,33.955,34.273,31.772
-132,345261,1235,1230,914,33.955,34.273,31.772
-133,346758,1237,1222,916,33.955,34.273,31.772
-134,347965,1237,1220,920,33.955,34.273,31.772
-135,349472,1240,1218,923,33.955,34.273,31.772
-136,350967,1241,1223,963,33.955,34.273,31.772
-137,352178,1241,1223,974,31.090,31.843,37.067
-138,353672,1245,1233,975,31.090,31.843,37.067
-139,354883,1210,1236,975,31.090,31.843,37.067
-140,356384,1174,1171,1130,31.090,31.843,37.067
-141,357876,1145,1136,1161,31.090,31.843,37.067
-142,359385,1110,1095,1235,31.090,31.843,37.067
-143,360895,1075,1061,1344,33.429,34.692,31.879
-144,362390,1074,1059,1338,33.429,34.692,31.879
-145,363894,1080,1063,1338,33.429,34.692,31.879
-146,365101,1075,1060,1320,33.429,34.692,31.879
-147,366600,1072,1067,1318,33.429,34.692,31.879
-148,368106,1070,1067,1311,33.429,34.692,31.879
-149,369606,1075,1070,1305,35.359,36.865,27.776
-[ACTION] Slave added on Solver2
-150,370813,1068,1070,1301,35.359,36.865,27.776
-151,372310,1095,1071,1208,35.359,36.865,27.776
-152,373520,1121,1106,1115,35.359,36.865,27.776
-153,375018,1150,1137,1013,35.359,36.865,27.776
-154,376225,1172,1165,883,35.359,36.865,27.776
-155,377723,1200,1192,804,31.036,32.575,36.389
-156,378932,1205,1222,812,31.036,32.575,36.389
-157,380133,1187,1186,855,31.036,32.575,36.389
-158,381335,1156,1164,897,31.036,32.575,36.389
-159,382539,1156,1137,939,31.036,32.575,36.389
-160,383740,1107,1110,939,31.036,32.575,36.389
-161,384940,1107,1086,1002,29.716,31.793,38.491
-162,386441,1063,1087,1033,29.716,31.793,38.491
-163,387657,1055,1087,1052,29.716,31.793,38.491
-164,388846,1042,1080,1052,29.716,31.793,38.491
-165,390053,1032,1075,1071,29.716,31.793,38.491
-166,391259,1023,1063,1083,29.716,31.793,38.491
-167,392455,1022,1062,1092,30.846,31.759,37.395
-168,393666,1024,1066,1066,30.846,31.759,37.395
-169,395163,1031,1069,1106,30.846,31.759,37.395
-170,396370,1038,1063,1106,30.846,31.759,37.395
-171,397574,1045,1063,1146,30.846,31.759,37.395
-172,399070,1050,1060,1159,30.846,31.759,37.395
-173,400277,1057,1058,1199,32.286,33.210,34.504
-174,401482,1057,1057,1224,32.286,33.210,34.504
-[ACTION] Slave added on Solver0
-175,402979,1022,1056,1186,32.286,33.210,34.504
-176,404181,977,1060,1175,32.286,33.210,34.504
-177,405386,928,1067,1161,32.286,33.210,34.504
-178,406596,881,1068,1117,32.286,33.210,34.504
-179,407792,834,1067,1083,38.066,30.605,31.328
-180,408995,822,1071,1069,38.066,30.605,31.328
-181,410195,854,1059,1002,38.066,30.605,31.328
-182,411111,891,1048,1000,38.066,30.605,31.328
-183,412311,923,1037,1000,38.066,30.605,31.328
-184,413503,954,1028,975,38.066,30.605,31.328
-185,414713,997,1015,975,38.004,30.013,31.983
-186,415908,997,1015,972,38.004,30.013,31.983
-187,417111,993,1004,972,38.004,30.013,31.983
-188,418316,990,1004,992,38.004,30.013,31.983
-189,419222,991,999,992,38.004,30.013,31.983
-190,420428,981,1000,961,38.004,30.013,31.983
-191,421623,981,993,961,37.889,29.561,32.550
-192,422826,983,996,956,37.889,29.561,32.550
-193,423732,986,986,993,37.889,29.561,32.550
-194,425229,984,991,964,37.889,29.561,32.550
-195,426137,984,986,1012,37.889,29.561,32.550
-196,427346,981,983,1026,37.889,29.561,32.550
-197,428540,979,980,974,37.837,29.491,32.672
-198,429450,979,990,974,37.837,29.491,32.672
-199,430646,982,985,964,37.837,29.491,32.672
-200,431846,983,985,909,37.837,29.491,32.672
-[ACTION] Slave added on Solver1
-201,433046,983,988,903,37.837,29.491,32.672
-202,433957,983,970,903,37.837,29.491,32.672
-203,435150,982,913,905,36.032,30.206,33.761
-204,436352,980,863,905,36.032,30.206,33.761
-205,437266,974,819,905,36.032,30.206,33.761
-206,438458,964,777,917,36.032,30.206,33.761
-207,439364,958,754,917,36.032,30.206,33.761
-208,440570,951,758,927,36.032,30.206,33.761
-209,441765,941,759,927,33.440,34.755,31.805
-210,442970,941,759,979,33.440,34.755,31.805
-211,444177,944,756,1007,33.440,34.755,31.805
-212,445382,946,749,1057,33.440,34.755,31.805
-213,446290,945,749,1056,33.440,34.755,31.805
-214,447478,948,753,1058,33.440,34.755,31.805
-215,448681,945,754,985,31.103,40.515,28.381
-216,449585,944,754,985,31.103,40.515,28.381
-217,450791,918,805,903,31.103,40.515,28.381
-218,451990,897,854,874,31.103,40.515,28.381
-219,452898,874,905,844,31.103,40.515,28.381
-220,454095,852,956,816,31.103,40.515,28.381
-221,455297,829,1010,787,32.999,35.282,31.719
-222,456501,827,1014,787,32.999,35.282,31.719
-223,457702,823,1025,834,32.999,35.282,31.719
-224,458905,822,1031,842,32.999,35.282,31.719
-225,459814,822,1029,840,32.999,35.282,31.719
-226,461016,825,1024,841,32.999,35.282,31.719
-227,462212,824,1022,797,35.017,30.185,34.798
-228,463419,825,1013,796,35.017,30.185,34.798
-229,464324,826,1003,796,35.017,30.185,34.798
-[ACTION] Slave added on Solver1
-230,465522,827,995,795,35.017,30.185,34.798
-231,466431,823,958,831,35.017,30.185,34.798
-232,467331,828,919,838,35.017,30.185,34.798
-233,468233,828,878,841,35.825,29.124,35.051
-234,469430,849,796,851,35.825,29.124,35.051
-235,470637,873,719,879,35.825,29.124,35.051
-236,471541,897,676,879,35.825,29.124,35.051
-237,472738,915,631,908,35.825,29.124,35.051
-238,473941,942,588,941,35.825,29.124,35.051
-239,475142,941,587,982,30.857,40.213,28.930
-240,476349,936,592,1002,30.857,40.213,28.930
-241,477249,909,638,1002,30.857,40.213,28.930
-242,478151,893,684,971,30.857,40.213,28.930
-243,479053,863,730,943,30.857,40.213,28.930
-244,479957,839,773,894,30.857,40.213,28.930
-245,480864,817,813,843,31.073,40.693,28.234
-246,481765,816,808,811,31.073,40.693,28.234
-247,482962,810,808,806,31.073,40.693,28.234
-248,483865,813,807,802,31.073,40.693,28.234
-249,484767,814,808,802,31.073,40.693,28.234
-250,485676,815,813,799,31.073,40.693,28.234
-251,486579,815,815,794,30.843,40.392,28.766
-252,487490,814,818,783,30.843,40.392,28.766
-253,488387,813,818,783,30.843,40.392,28.766
-254,489290,813,818,788,30.843,40.392,28.766
-255,490490,812,817,792,30.843,40.392,28.766
-256,491390,813,816,792,30.843,40.392,28.766
-257,492291,812,812,798,30.688,40.189,29.123
-258,493194,812,810,801,30.688,40.189,29.123
-259,494092,812,810,800,30.688,40.189,29.123
-260,495000,811,808,803,30.688,40.189,29.123
-261,495904,813,805,805,30.688,40.189,29.123
-262,496818,814,807,808,30.688,40.189,29.123
-263,498017,814,805,843,30.858,40.864,28.278
-264,498910,813,806,843,30.858,40.864,28.278
-265,500110,816,807,862,30.858,40.864,28.278
-266,501015,815,809,862,30.858,40.864,28.278
-267,501918,815,810,861,30.858,40.864,28.278
-268,502819,817,817,856,30.858,40.864,28.278
-269,503722,818,822,816,30.898,40.718,28.384
-270,504625,819,825,794,30.898,40.718,28.384
-271,505526,819,826,789,30.898,40.718,28.384
-272,506727,820,827,787,30.898,40.718,28.384
-273,507638,824,825,802,30.898,40.718,28.384
-274,508831,825,820,827,30.898,40.718,28.384
-275,510032,827,818,902,31.501,41.968,26.531
-276,510936,824,816,900,31.501,41.968,26.531
-277,511837,830,821,876,31.501,41.968,26.531
-278,512741,828,825,876,31.501,41.968,26.531
-279,513648,831,831,844,31.501,41.968,26.531
-280,514550,831,831,797,31.501,41.968,26.531
-281,515746,836,843,738,30.531,40.339,29.129
-282,516655,830,844,739,30.531,40.339,29.129
-283,517555,834,838,739,30.531,40.339,29.129
-284,518459,825,830,751,30.531,40.339,29.129
-285,519361,825,824,771,30.531,40.339,29.129
-286,520558,811,818,799,30.531,40.339,29.129
-287,521460,807,812,799,30.518,40.074,29.408
-288,522367,799,811,813,30.518,40.074,29.408
-289,523271,799,814,813,30.518,40.074,29.408
-290,524170,802,814,810,30.518,40.074,29.408
-291,525075,802,812,812,30.518,40.074,29.408
-292,525978,802,811,817,30.518,40.074,29.408
-293,527175,800,812,823,30.956,40.048,28.996
-294,528076,802,808,823,30.956,40.048,28.996
-295,528978,803,806,821,30.956,40.048,28.996
-296,529881,806,806,818,30.956,40.048,28.996
-297,530785,809,803,814,30.956,40.048,28.996
-298,531691,812,802,808,30.956,40.048,28.996
-299,532593,815,803,808,30.695,40.304,29.001
-300,533791,813,805,813,30.695,40.304,29.001
-301,534699,811,807,813,30.695,40.304,29.001
-302,535599,810,808,816,30.695,40.304,29.001
-303,536502,811,809,814,30.695,40.304,29.001
-304,537401,811,812,813,30.695,40.304,29.001
-305,538306,811,812,813,30.732,40.303,28.965
-306,539209,811,815,806,30.732,40.303,28.965
-307,540118,811,815,803,30.732,40.303,28.965
-308,541310,814,815,806,30.732,40.303,28.965
-309,542217,813,813,827,30.732,40.303,28.965
-310,543127,813,809,842,30.732,40.303,28.965
-311,544315,818,806,842,30.802,40.995,28.203
-312,545219,818,803,842,30.802,40.995,28.203
-313,546126,817,807,843,30.802,40.995,28.203
-314,547023,817,814,814,30.802,40.995,28.203
-315,547927,817,817,798,30.802,40.995,28.203
-316,548833,810,820,789,30.802,40.995,28.203
-317,549734,810,820,787,30.702,40.365,28.933
-318,550934,810,822,791,30.702,40.365,28.933
-319,551839,810,819,796,30.702,40.365,28.933
-320,552735,810,817,796,30.702,40.365,28.933
-321,553638,811,812,800,30.702,40.365,28.933
-322,554539,810,811,805,30.702,40.365,28.933
-323,555454,809,813,802,30.686,40.144,29.170
-324,556350,810,812,802,30.686,40.144,29.170
-325,557258,810,812,802,30.686,40.144,29.170
-326,558449,816,811,808,30.686,40.144,29.170
-327,559355,817,808,808,30.686,40.144,29.170
-328,560253,819,806,810,30.686,40.144,29.170
-329,561155,818,806,813,30.449,40.428,29.123
-330,562059,819,806,816,30.449,40.428,29.123
-331,562970,816,809,810,30.449,40.428,29.123
-332,563866,816,809,810,30.449,40.428,29.123
-333,565073,817,808,810,30.449,40.428,29.123
-334,565974,817,808,851,30.449,40.428,29.123
-335,566876,815,808,851,30.720,41.141,28.139
-336,568094,811,816,847,30.720,41.141,28.139
-337,568982,807,831,847,30.720,41.141,28.139
-338,569887,809,835,841,30.720,41.141,28.139
-339,570790,810,837,836,30.720,41.141,28.139
-340,571692,810,837,791,30.720,41.141,28.139
-341,572890,814,834,781,30.658,40.073,29.269
-342,573807,817,824,781,30.658,40.073,29.269
-343,574998,817,821,839,30.658,40.073,29.269
-344,575902,818,817,839,30.658,40.073,29.269
-345,577101,817,811,897,30.658,40.073,29.269
-[ACTION] Slave removed on Solver1
-346,578308,816,887,905,30.658,40.073,29.269
-347,579506,817,919,881,32.815,38.132,29.053
-348,580413,817,919,881,32.815,38.132,29.053
-349,581615,828,991,868,32.815,38.132,29.053
-350,582813,839,1021,820,32.815,38.132,29.053
-351,583721,856,979,820,32.815,38.132,29.053
-352,584918,865,973,816,32.815,38.132,29.053
-353,585823,877,973,816,33.345,34.925,31.729
-354,587022,877,958,810,33.345,34.925,31.729
-355,588238,879,957,828,33.345,34.925,31.729
-356,589127,872,951,828,33.345,34.925,31.729
-357,590331,874,947,851,33.345,34.925,31.729
-358,591237,870,949,851,33.345,34.925,31.729
-359,592435,868,952,852,34.196,32.655,33.149
-360,593339,861,952,852,34.196,32.655,33.149
-361,594539,858,951,816,34.196,32.655,33.149
-362,595447,858,951,816,34.196,32.655,33.149
-363,596644,862,949,813,34.196,32.655,33.149
-364,597852,859,949,848,34.196,32.655,33.149
-365,598755,862,949,848,35.053,30.406,34.541
-366,599950,863,957,864,35.053,30.406,34.541
-367,601153,863,962,863,35.053,30.406,34.541
-368,602061,856,968,850,35.053,30.406,34.541
-369,603257,855,966,823,35.053,30.406,34.541
-370,604173,854,964,823,35.053,30.406,34.541
-371,605362,853,958,809,35.570,27.472,36.957
-372,606268,852,958,809,35.570,27.472,36.957
-373,607471,866,893,806,35.570,27.472,36.957
-374,608686,880,841,855,35.570,27.472,36.957
-[ACTION] Slave removed on Solver2
-375,610185,891,791,898,35.570,27.472,36.957
-376,611685,905,742,1023,35.570,27.472,36.957
-377,613179,918,691,1204,35.483,36.408,28.109
-378,614388,919,695,1204,35.483,36.408,28.109
-379,615585,918,744,1248,35.483,36.408,28.109
-380,616788,920,791,1147,35.483,36.408,28.109
-381,617695,922,834,1147,35.483,36.408,28.109
-382,618892,922,881,1089,35.483,36.408,28.109
-383,619801,922,924,1028,36.572,37.444,25.984
-384,621004,932,927,971,36.572,37.444,25.984
-385,622207,938,932,941,36.572,37.444,25.984
-386,623109,938,936,941,36.572,37.444,25.984
-387,624305,949,938,917,36.572,37.444,25.984
-388,625514,952,944,917,36.572,37.444,25.984
-389,626710,951,943,963,36.574,37.764,25.662
-390,627618,951,937,963,36.574,37.764,25.662
-391,628814,956,939,964,36.574,37.764,25.662
-392,629720,956,939,961,36.574,37.764,25.662
-393,630921,954,946,957,36.574,37.764,25.662
-394,632121,956,951,889,36.574,37.764,25.662
-395,633029,956,951,889,35.810,37.170,27.020
-396,634232,946,959,888,35.810,37.170,27.020
-397,635433,941,955,918,35.810,37.170,27.020
-398,636629,938,946,952,35.810,37.170,27.020
-399,637537,938,946,962,35.810,37.170,27.020
-400,638740,930,938,972,35.810,37.170,27.020
-401,639643,930,938,980,36.428,37.488,26.084
-402,640840,932,935,957,36.428,37.488,26.084
-[ACTION] Slave removed on Solver1
-403,642342,934,1017,922,36.428,37.488,26.084
-404,643550,938,1070,931,36.428,37.488,26.084
-405,645048,940,1140,961,36.428,37.488,26.084
-406,646550,944,1205,959,36.428,37.488,26.084
-407,647759,945,1272,978,40.710,31.125,28.166
-408,649257,947,1252,1018,40.710,31.125,28.166
-409,650471,969,1211,1018,40.710,31.125,28.166
-410,651666,991,1162,1054,40.710,31.125,28.166
-411,653166,1014,1117,1068,40.710,31.125,28.166
-412,654367,1032,1072,1127,40.710,31.125,28.166
-413,655570,1053,1032,1100,40.943,31.940,27.117
-414,656774,1052,1042,1081,40.943,31.940,27.117
-415,657975,1052,1047,1065,40.943,31.940,27.117
-416,659177,1050,1056,1036,40.943,31.940,27.117
-417,660384,1053,1062,1039,40.943,31.940,27.117
-418,661582,1053,1066,1045,40.943,31.940,27.117
-419,662492,1053,1066,1045,41.018,31.608,27.374
-420,663692,1052,1058,1021,41.018,31.608,27.374
-421,664897,1054,1051,996,41.018,31.608,27.374
-422,666097,1055,1051,965,41.018,31.608,27.374
-423,667306,1055,1055,955,41.018,31.608,27.374
-424,668798,1059,1057,1012,41.018,31.608,27.374
-425,670002,1058,1060,1012,40.537,31.179,28.284
-426,671206,1058,1065,1070,40.537,31.179,28.284
-[ACTION] Slave removed on Solver0
-427,672413,1057,1059,1070,40.537,31.179,28.284
-428,673910,1057,1054,1083,40.537,31.179,28.284
-429,675410,1203,1049,1041,40.537,31.179,28.284
-430,676916,1264,1045,999,40.537,31.179,28.284
-431,678415,1324,1042,991,34.371,33.590,32.039
-432,679920,1386,1043,1009,34.371,33.590,32.039
-433,681419,1362,1045,1011,34.371,33.590,32.039
-434,682923,1364,1053,1026,34.371,33.590,32.039
-435,684428,1368,1056,1033,34.371,33.590,32.039
-436,685935,1367,1055,1034,34.371,33.590,32.039
-437,687138,1367,1058,1001,28.283,35.713,36.004
-438,688936,1288,1090,1001,28.283,35.713,36.004
-439,690438,1207,1114,1110,28.283,35.713,36.004
-440,691644,1125,1143,1165,28.283,35.713,36.004
-441,693150,1050,1177,1211,28.283,35.713,36.004
-442,694359,974,1200,1261,28.283,35.713,36.004
-443,695856,970,1198,1311,33.735,34.491,31.774
-444,697065,973,1194,1252,33.735,34.491,31.774
-445,698861,976,1190,1232,33.735,34.491,31.774
-446,700369,976,1184,1289,33.735,34.491,31.774
-447,701876,975,1189,1331,33.735,34.491,31.774
-448,703369,977,1194,1359,33.735,34.491,31.774
-[ACTION] Slave removed on Solver1
-449,704873,973,1199,1382,40.115,33.283,26.602
-450,706682,975,1332,1326,40.115,33.283,26.602
-451,708479,1051,1429,1222,40.115,33.283,26.602
-452,710292,1127,1527,1134,40.115,33.283,26.602
-453,712088,1202,1612,1072,40.115,33.283,26.602
-454,713890,1279,1697,1042,40.115,33.283,26.602
-455,715693,1352,1664,979,38.611,26.029,35.360
-456,717500,1354,1666,979,38.611,26.029,35.360
-457,719004,1346,1587,1044,38.611,26.029,35.360
-458,720502,1337,1526,1099,38.611,26.029,35.360
-459,722005,1331,1456,1099,38.611,26.029,35.360
-460,723507,1322,1384,1238,38.611,26.029,35.360
-461,724716,1322,1384,1238,38.141,24.560,37.299
-462,726213,1314,1303,1297,38.141,24.560,37.299
-463,727715,1307,1277,1303,38.141,24.560,37.299
-464,728925,1307,1277,1291,38.141,24.560,37.299
-465,730721,1293,1256,1291,38.141,24.560,37.299
-466,732228,1284,1242,1291,38.141,24.560,37.299
-467,733731,1284,1234,1360,38.561,25.836,35.603
-468,735228,1285,1252,1369,38.561,25.836,35.603
-[ACTION] Slave removed on Solver0
-469,736749,1295,1256,1359,38.561,25.836,35.603
-470,738834,1436,1272,1318,38.561,25.836,35.603
-471,740937,1563,1289,1252,38.561,25.836,35.603
-472,742747,1563,1304,1225,38.561,25.836,35.603
-473,744849,1690,1310,1228,31.898,27.572,40.531
-474,746966,1924,1319,1231,31.898,27.572,40.531
-475,748759,1847,1340,1263,31.898,27.572,40.531
-476,750559,1783,1347,1359,31.898,27.572,40.531
-477,752361,1716,1364,1359,31.898,27.572,40.531
-478,754167,1651,1375,1494,31.898,27.572,40.531
-479,755677,1651,1390,1522,29.368,30.152,40.480
-480,757472,1586,1380,1521,29.368,30.152,40.480
-481,758981,1586,1405,1521,29.368,30.152,40.480
-482,760790,1538,1438,1456,29.368,30.152,40.480
-483,762289,1538,1438,1425,29.368,30.152,40.480
-484,764084,1500,1469,1442,29.368,30.152,40.480
-485,765594,1500,1469,1442,28.718,30.106,41.175
-486,767395,1474,1520,1448,28.718,30.106,41.175
-487,768897,1474,1518,1448,28.718,30.106,41.175
-[ACTION] Slave removed on Solver2
-488,771001,1458,1508,1415,28.718,30.106,41.175
-489,773098,1447,1497,1539,28.718,30.106,41.175
-490,774907,1438,1490,1618,28.718,30.106,41.175
-491,777009,1438,1495,1706,31.086,31.346,37.568
-492,778813,1438,1518,1819,31.086,31.346,37.568
-493,780911,1487,1534,1810,31.086,31.346,37.568
-494,782719,1510,1546,1810,31.086,31.346,37.568
-495,784524,1535,1555,1801,31.086,31.346,37.568
-496,786329,1556,1564,1777,31.086,31.346,37.568
-497,788136,1557,1560,1720,32.253,32.461,35.286
-498,789941,1559,1564,1721,32.253,32.461,35.286
-499,791739,1562,1569,1711,32.253,32.461,35.286
-500,794136,1561,1567,1759,32.253,32.461,35.286
-501,795939,1563,1573,1766,32.253,32.461,35.286
-502,797742,1559,1573,1763,32.253,32.461,35.286
-503,799545,1557,1576,1765,33.791,33.598,32.611
-[ACTION] Slave removed on Solver0
-504,801348,1556,1572,1765,33.791,33.598,32.611
-505,804359,1556,1572,1749,33.791,33.598,32.611
-506,807655,2145,1568,1765,33.791,33.598,32.611
-507,810659,2145,1565,1764,33.791,33.598,32.611
-508,813669,2435,1555,1790,33.791,33.598,32.611
-509,816967,3008,1556,1852,22.274,42.813,34.913
-510,819979,3008,1559,1840,22.274,42.813,34.913
-511,822379,2831,1673,1839,22.274,42.813,34.913
-512,824483,2831,1673,1841,22.274,42.813,34.913
-513,826884,2672,1909,1792,22.274,42.813,34.913
-514,829283,2346,2032,1704,22.274,42.813,34.913
-515,831392,2346,2032,1649,18.351,40.725,40.924
-[ACTION] Slave removed on Solver2
-516,833790,2114,2123,1691,18.351,40.725,40.924
-517,836793,2043,2097,1919,18.351,40.725,40.924
-518,839497,1972,2071,1919,18.351,40.725,40.924
-519,842814,1904,2043,2152,18.351,40.725,40.924
-520,845806,1831,2025,2487,18.351,40.725,40.924
-521,848810,1834,2026,2709,22.131,44.458,33.412
-522,851821,1829,2032,2880,22.131,44.458,33.412
-523,854523,1899,2074,2913,22.131,44.458,33.412
-524,857226,1965,2108,2892,22.131,44.458,33.412
-525,860824,2035,2145,2858,22.131,44.458,33.412
-526,863827,2104,2177,2858,22.131,44.458,33.412
-527,866244,2180,2216,2879,24.275,47.974,27.751
-[ACTION] Slave removed on Solver1
-528,871044,2179,2216,2679,24.275,47.974,27.751
-529,876150,2220,2712,2598,24.275,47.974,27.751
-530,880952,2261,3267,2341,24.275,47.974,27.751
-531,886058,2302,4291,2121,24.275,47.974,27.751
-532,890860,2343,4789,2022,24.275,47.974,27.751
-533,895661,2386,4789,1967,29.662,29.206,41.132
-534,900470,2392,4795,2036,29.662,29.206,41.132
-535,903474,2392,4743,2036,29.662,29.206,41.132
-536,906476,2494,4375,2230,29.662,29.206,41.132
-537,909480,2595,3995,2418,29.662,29.206,41.132
-538,912784,2793,3253,2589,29.662,29.206,41.132
-539,916685,2893,2879,2835,29.373,29.062,41.565
-540,919688,2893,2882,3025,29.373,29.062,41.565
-541,922691,2894,2880,3021,29.373,29.062,41.565
-542,925998,2889,2878,3021,29.373,29.062,41.565
-543,929905,2884,2872,3204,29.373,29.062,41.565
-544,933202,2876,2874,3204,29.373,29.062,41.565
-545,937107,2868,2868,3314,31.114,30.784,38.103
-546,940414,2869,2866,3314,31.114,30.784,38.103
-547,943714,2869,2903,3390,31.114,30.784,38.103
-548,946720,2899,2903,3390,31.114,30.784,38.103
-549,950021,2934,2977,3201,31.114,30.784,38.103
-550,953324,3007,3011,3020,31.114,30.784,38.103
-551,956340,3007,3011,2880,30.612,30.247,39.141
-552,959637,3038,3047,2850,30.612,30.247,39.141
-553,963232,3019,3034,2850,30.612,30.247,39.141
-554,966241,3019,3034,2942,30.612,30.247,39.141
-555,969541,2982,3000,2900,30.612,30.247,39.141
-556,972547,2982,2992,2918,30.612,30.247,39.141
-557,975553,2965,2992,2892,30.395,29.761,39.844
-558,978861,2953,2981,2729,30.395,29.761,39.844
-559,981861,2953,2974,2729,30.395,29.761,39.844
-[ACTION] Slave removed on Solver2
-560,988465,2949,2967,3503,30.395,29.761,39.844
-561,994176,2952,2959,4062,30.395,29.761,39.844
-562,999873,2953,2954,4654,30.395,29.761,39.844
-563,1005275,2957,2946,5166,36.588,35.959,27.454
-564,1010691,2961,2945,5166,36.588,35.959,27.454
-565,1014289,2961,2945,5604,36.588,35.959,27.454
-566,1018489,3202,3189,4736,36.588,35.959,27.454
-567,1022095,3202,3316,4736,36.588,35.959,27.454
-568,1026294,3437,3434,4063,36.588,35.959,27.454
-569,1029900,3437,3549,4063,38.662,36.798,24.540
-570,1033806,3558,3542,3726,38.662,36.798,24.540
-571,1037708,3558,3556,3682,38.662,36.798,24.540
-572,1041912,3620,3565,3724,38.662,36.798,24.540
-573,1045816,3662,3584,3676,38.662,36.798,24.540
-574,1049422,3662,3604,3646,38.662,36.798,24.540
-575,1053326,3705,3622,3569,37.986,36.984,25.030
-576,1057227,3742,3626,3547,37.986,36.984,25.030
-577,1061136,3726,3629,3426,37.986,36.984,25.030
-578,1064737,3726,3629,3383,37.986,36.984,25.030
-579,1068640,3711,3638,3407,37.986,36.984,25.030
-580,1072545,3685,3642,3380,37.986,36.984,25.030
-581,1076150,3685,3642,3381,36.992,36.441,26.567
-582,1080052,3682,3637,3404,36.992,36.441,26.567
-583,1083658,3678,3637,3404,36.992,36.441,26.567
-584,1087558,3631,3617,3439,36.992,36.441,26.567
-585,1091167,3631,3608,3476,36.992,36.441,26.567
-586,1094769,3609,3608,3476,36.992,36.441,26.567
-587,1098672,3586,3592,3552,36.921,36.310,26.769
-588,1102276,3575,3592,3552,36.921,36.310,26.769
-589,1106177,3581,3591,3562,36.921,36.310,26.769
-590,1109781,3588,3591,3562,36.921,36.310,26.769
-591,1113385,3588,3586,3562,36.921,36.310,26.769
-592,1117289,3586,3576,3559,36.921,36.310,26.769
-593,1121191,3585,3572,3579,36.855,36.378,26.767
-594,1124800,3586,3572,3579,36.855,36.378,26.767
-595,1128697,3575,3580,3561,36.855,36.378,26.767
-596,1132301,3575,3584,3560,36.855,36.378,26.767
-597,1135907,3577,3584,3560,36.855,36.378,26.767
-598,1139814,3577,3600,3552,36.855,36.378,26.767
-599,1143414,3577,3600,3557,36.886,36.175,26.939
-600,1147318,3573,3602,3575,36.886,36.175,26.939
-601,1150921,3573,3590,3575,36.886,36.175,26.939
-602,1154526,3569,3590,3588,36.886,36.175,26.939
-603,1158425,3565,3575,3577,36.886,36.175,26.939
-604,1162029,3565,3564,3577,36.886,36.175,26.939
-605,1165636,3572,3564,3569,36.847,36.219,26.934
-606,1169539,3569,3562,3578,36.847,36.219,26.934
-607,1173144,3569,3562,3578,36.847,36.219,26.934
-608,1177045,3558,3563,3589,36.847,36.219,26.934
-609,1180648,3558,3563,3589,36.847,36.219,26.934
-610,1184254,3554,3570,3595,36.847,36.219,26.934
-611,1188154,3555,3575,3582,36.997,36.163,26.840
-612,1191761,3565,3576,3582,36.997,36.163,26.840
-613,1195365,3566,3576,3577,36.997,36.163,26.840
-614,1199270,3576,3572,3562,36.997,36.163,26.840
-615,1202872,3581,3572,3562,36.997,36.163,26.840
-616,1206771,3585,3571,3579,36.997,36.163,26.840
-617,1210379,3583,3571,3592,36.977,36.264,26.758
-618,1214283,3589,3577,3589,36.977,36.264,26.758
-619,1217885,3584,3577,3589,36.977,36.264,26.758
-620,1221489,3583,3578,3595,36.977,36.264,26.758
-621,1225390,3587,3581,3558,36.977,36.264,26.758
-622,1228998,3592,3581,3558,36.977,36.264,26.758
-623,1232912,3596,3584,3541,36.780,36.192,27.029
-624,1236502,3596,3585,3535,36.780,36.192,27.029
-625,1240108,3597,3585,3535,36.780,36.192,27.029
-626,1244008,3580,3592,3553,36.780,36.192,27.029
-627,1247613,3580,3592,3553,36.780,36.192,27.029
-628,1251218,3575,3588,3560,36.780,36.192,27.029
-629,1255121,3571,3585,3586,36.874,36.142,26.984
-630,1258726,3566,3585,3586,36.874,36.142,26.984
-631,1262626,3573,3575,3585,36.874,36.142,26.984
-632,1266232,3573,3568,3585,36.874,36.142,26.984
-633,1269836,3572,3568,3590,36.874,36.142,26.984
-634,1273737,3572,3563,3585,36.874,36.142,26.984
-635,1277343,3575,3563,3585,36.856,36.247,26.897
-636,1281253,3574,3563,3589,36.856,36.247,26.897
-637,1284849,3574,3568,3589,36.856,36.247,26.897
-638,1288457,3573,3568,3586,36.856,36.247,26.897
-639,1292058,3568,3567,3574,36.856,36.247,26.897
-640,1295963,3560,3566,3563,36.856,36.247,26.897
-641,1299565,3558,3566,3563,36.900,36.209,26.891
-642,1303466,3563,3574,3554,36.900,36.209,26.891
-643,1307070,3563,3574,3554,36.900,36.209,26.891
-644,1310689,3568,3574,3554,36.900,36.209,26.891
-645,1314575,3578,3577,3569,36.900,36.209,26.891
-646,1318183,3578,3577,3569,36.900,36.209,26.891
-647,1321786,3577,3577,3562,36.859,36.168,26.973
-648,1325687,3575,3574,3571,36.859,36.168,26.973
-649,1329293,3572,3574,3571,36.859,36.168,26.973
-650,1332897,3570,3570,3577,36.859,36.168,26.973
-651,1336800,3572,3565,3567,36.859,36.168,26.973
-652,1340404,3571,3565,3585,36.859,36.168,26.973
-653,1344008,3576,3559,3570,36.778,36.262,26.960
-654,1347909,3579,3565,3575,36.778,36.262,26.960
-655,1351811,3572,3577,3597,36.778,36.262,26.960
-656,1355416,3572,3573,3578,36.778,36.262,26.960
-657,1359023,3569,3573,3578,36.778,36.262,26.960
-658,1362931,3569,3574,3578,36.778,36.262,26.960
-659,1366534,3573,3563,3576,36.749,36.335,26.916
-660,1370130,3574,3563,3576,36.749,36.335,26.916
-661,1374034,3571,3571,3584,36.749,36.335,26.916
-662,1377641,3575,3571,3584,36.749,36.335,26.916
-663,1381540,3576,3580,3592,36.749,36.335,26.916
-664,1385145,3577,3580,3587,36.749,36.335,26.916
-665,1388757,3572,3583,3587,36.832,36.304,26.864
-666,1392656,3572,3582,3569,36.832,36.304,26.864
-667,1396258,3573,3582,3569,36.832,36.304,26.864
-668,1400161,3572,3572,3581,36.832,36.304,26.864
-669,1403771,3573,3572,3581,36.832,36.304,26.864
-670,1407369,3581,3574,3581,36.832,36.304,26.864
-671,1411269,3577,3578,3576,36.833,36.295,26.872
-672,1414877,3572,3578,3555,36.833,36.295,26.872
-673,1418480,3567,3579,3555,36.833,36.295,26.872
-674,1422381,3565,3580,3557,36.833,36.295,26.872
-675,1425983,3562,3580,3557,36.833,36.295,26.872
-676,1429592,3566,3574,3561,36.833,36.295,26.872
-677,1433490,3569,3578,3579,36.894,36.264,26.842
-678,1437098,3570,3578,3579,36.894,36.264,26.842
-679,1440997,3573,3573,3580,36.894,36.264,26.842
-680,1444603,3577,3573,3580,36.894,36.264,26.842
-681,1448208,3580,3575,3587,36.894,36.264,26.842
-682,1452108,3580,3571,3564,36.894,36.264,26.842
-683,1455711,3583,3571,3564,36.797,36.290,26.913
-684,1459319,3579,3576,3553,36.797,36.290,26.913
-685,1463220,3575,3583,3559,36.797,36.290,26.913
-686,1466822,3574,3583,3559,36.797,36.290,26.913
-687,1470430,3574,3585,3562,36.797,36.290,26.913
-688,1474330,3573,3582,3578,36.797,36.290,26.913
-689,1477935,3573,3582,3578,36.844,36.245,26.910
-690,1481844,3574,3584,3571,36.844,36.245,26.910
-691,1485439,3576,3584,3571,36.844,36.245,26.910
-692,1489047,3575,3582,3568,36.844,36.245,26.910
-693,1492951,3569,3581,3559,36.844,36.245,26.910
-694,1496559,3562,3581,3559,36.844,36.245,26.910
-695,1500157,3559,3577,3558,36.909,36.126,26.965
-696,1504061,3557,3564,3563,36.909,36.126,26.965
-697,1507667,3559,3564,3563,36.909,36.126,26.965
-698,1511269,3559,3563,3579,36.909,36.126,26.965
-699,1515175,3570,3559,3575,36.909,36.126,26.965
-700,1519074,3576,3567,3600,36.909,36.126,26.965
-701,1522680,3579,3567,3600,36.922,36.261,26.817
-702,1526283,3580,3571,3606,36.922,36.261,26.817
-703,1530186,3580,3584,3596,36.922,36.261,26.817
-704,1533785,3584,3584,3596,36.922,36.261,26.817
-705,1537395,3586,3578,3565,36.922,36.261,26.817
-706,1541295,3585,3576,3564,36.922,36.261,26.817
-707,1545198,3584,3586,3586,36.935,36.253,26.812
-708,1548801,3585,3586,3581,36.935,36.253,26.812
-709,1552410,3584,3583,3581,36.935,36.253,26.812
-710,1556309,3581,3590,3576,36.935,36.253,26.812
-711,1559924,3585,3590,3546,36.935,36.253,26.812
-712,1563517,3588,3593,3546,36.935,36.253,26.812
-713,1567420,3592,3584,3540,36.760,36.162,27.077
-714,1571027,3590,3591,3540,36.760,36.162,27.077
-715,1574933,3583,3576,3568,36.760,36.162,27.077
-716,1578531,3572,3576,3568,36.760,36.162,27.077
-717,1582139,3565,3574,3586,36.760,36.162,27.077
-718,1586040,3560,3567,3593,36.760,36.162,27.077
-719,1589651,3560,3561,3602,36.881,36.271,26.849
-720,1593546,3565,3573,3594,36.881,36.271,26.849
-721,1597151,3573,3573,3594,36.881,36.271,26.849
-722,1600755,3576,3575,3579,36.881,36.271,26.849
-723,1604658,3580,3572,3582,36.881,36.271,26.849
-724,1608261,3576,3572,3582,36.881,36.271,26.849
-725,1611865,3576,3572,3574,36.860,36.291,26.849
-726,1615769,3572,3576,3570,36.860,36.291,26.849
-727,1619372,3571,3578,3570,36.860,36.291,26.849
-728,1622975,3571,3583,3566,36.860,36.291,26.849
-729,1626877,3576,3581,3553,36.860,36.291,26.849
-730,1630497,3576,3579,3553,36.860,36.291,26.849
-731,1634383,3581,3583,3546,36.770,36.182,27.048
-732,1637988,3581,3583,3542,36.770,36.182,27.048
-733,1641594,3570,3584,3542,36.770,36.182,27.048
-734,1645501,3571,3586,3553,36.770,36.182,27.048
-735,1649100,3570,3586,3580,36.770,36.182,27.048
-736,1653003,3562,3577,3586,36.770,36.182,27.048
-737,1656608,3561,3577,3606,36.955,36.201,26.844
-738,1660510,3564,3569,3621,36.955,36.201,26.844
-739,1664112,3561,3569,3621,36.955,36.201,26.844
-740,1667725,3562,3570,3592,36.955,36.201,26.844
-741,1671621,3567,3573,3576,36.955,36.201,26.844
-742,1675224,3571,3573,3576,36.955,36.201,26.844
-743,1678830,3575,3575,3563,36.921,36.168,26.910
-744,1682737,3578,3576,3555,36.921,36.168,26.910
-745,1686330,3581,3576,3555,36.921,36.168,26.910
-746,1689940,3584,3579,3549,36.921,36.168,26.910
-747,1693841,3584,3572,3554,36.921,36.168,26.910
-748,1697447,3588,3572,3554,36.921,36.168,26.910
-749,1701352,3590,3566,3573,36.785,36.277,26.938
-750,1704952,3590,3566,3573,36.785,36.277,26.938
-751,1708558,3590,3560,3589,36.785,36.277,26.938
-752,1712459,3581,3561,3587,36.785,36.277,26.938
-753,1716065,3574,3566,3594,36.785,36.277,26.938
-754,1719967,3573,3572,3589,36.785,36.277,26.938
-755,1723573,3574,3575,3603,36.868,36.349,26.782
-756,1727482,3573,3577,3588,36.868,36.349,26.782
-757,1731076,3579,3577,3574,36.868,36.349,26.782
-758,1734684,3582,3583,3574,36.868,36.349,26.782
-759,1738583,3579,3578,3558,36.868,36.349,26.782
-760,1742189,3576,3578,3558,36.868,36.349,26.782
-761,1746092,3578,3586,3546,36.809,36.210,26.981
-762,1749698,3577,3586,3546,36.809,36.210,26.981
-763,1753305,3572,3583,3546,36.809,36.210,26.981
-764,1757207,3574,3589,3548,36.809,36.210,26.981
-765,1760812,3572,3589,3548,36.809,36.210,26.981
-766,1764415,3572,3589,3554,36.809,36.210,26.981
-767,1768316,3568,3584,3572,36.880,36.118,27.002
-768,1771928,3573,3584,3582,36.880,36.118,27.002
-769,1775533,3573,3579,3578,36.880,36.118,27.002
-770,1779444,3576,3559,3573,36.880,36.118,27.002
-771,1783032,3575,3559,3577,36.880,36.118,27.002
-772,1786935,3577,3549,3575,36.880,36.118,27.002
-773,1790548,3576,3549,3589,36.815,36.328,26.857
-774,1794440,3579,3553,3600,36.815,36.328,26.857
-775,1798047,3577,3553,3600,36.815,36.328,26.857
-776,1801651,3581,3564,3592,36.815,36.328,26.857
-777,1805559,3581,3574,3560,36.815,36.328,26.857
-778,1809157,3579,3574,3560,36.815,36.328,26.857
-779,1812761,3577,3578,3542,36.721,36.226,27.053
-780,1816662,3575,3583,3550,36.721,36.226,27.053
-781,1820268,3569,3583,3550,36.721,36.226,27.053
-782,1824169,3566,3583,3581,36.721,36.226,27.053
-783,1827773,3563,3583,3581,36.721,36.226,27.053
-784,1831381,3563,3574,3585,36.721,36.226,27.053
-785,1835280,3560,3570,3593,36.850,36.251,26.899
-786,1838891,3562,3572,3593,36.850,36.251,26.899
-787,1842497,3562,3570,3593,36.850,36.251,26.899
-788,1846398,3570,3573,3577,36.850,36.251,26.899
-789,1850002,3571,3577,3583,36.850,36.251,26.899
-790,1853607,3569,3573,3569,36.850,36.251,26.899
-791,1857509,3566,3569,3581,36.903,36.272,26.825
-792,1861122,3563,3572,3577,36.903,36.272,26.825
-793,1864716,3563,3568,3571,36.903,36.272,26.825
-794,1868618,3565,3571,3563,36.903,36.272,26.825
-795,1872221,3571,3577,3559,36.903,36.272,26.825
-796,1875828,3571,3580,3549,36.903,36.272,26.825
-797,1879729,3579,3579,3546,36.811,36.182,27.007
-798,1883343,3579,3583,3546,36.811,36.182,27.007
-799,1887237,3579,3585,3549,36.811,36.182,27.007
-800,1890843,3580,3585,3549,36.811,36.182,27.007
-801,1894446,3580,3582,3575,36.811,36.182,27.007
-802,1898351,3572,3572,3574,36.811,36.182,27.007
-803,1901953,3572,3564,3592,36.836,36.288,26.875
-804,1905854,3571,3562,3599,36.836,36.288,26.875
-805,1909459,3562,3561,3599,36.836,36.288,26.875
-806,1913064,3559,3567,3574,36.836,36.288,26.875
-807,1916964,3551,3575,3567,36.836,36.288,26.875
-808,1920570,3542,3582,3567,36.836,36.288,26.875
-809,1924176,3542,3584,3562,37.050,36.071,26.879
-810,1928077,3544,3583,3564,37.050,36.071,26.879
-811,1931682,3554,3580,3562,37.050,36.071,26.879
-812,1935285,3554,3579,3550,37.050,36.071,26.879
-813,1939185,3582,3577,3555,37.050,36.071,26.879
-814,1942790,3582,3570,3573,37.050,36.071,26.879
-815,1946695,3596,3562,3572,36.856,36.225,26.918
-816,1950300,3597,3557,3582,36.856,36.225,26.918
-817,1954201,3589,3558,3585,36.856,36.225,26.918
-818,1957804,3577,3558,3585,36.856,36.225,26.918
-819,1961415,3577,3563,3578,36.856,36.225,26.918
-820,1965311,3561,3577,3577,36.856,36.225,26.918
-821,1968918,3555,3578,3567,36.976,36.109,26.915
-822,1972521,3555,3577,3565,36.976,36.109,26.915
-823,1976425,3566,3569,3557,36.976,36.109,26.915
-824,1980026,3570,3567,3557,36.976,36.109,26.915
-825,1983633,3570,3566,3553,36.976,36.109,26.915
-826,1987532,3576,3568,3557,36.976,36.109,26.915
-827,1991143,3578,3570,3544,36.851,36.068,27.081
-828,1995045,3583,3575,3544,36.851,36.068,27.081
-829,1998644,3587,3575,3571,36.851,36.068,27.081
-830,2002546,3590,3560,3596,36.851,36.068,27.081
-831,2006155,3587,3560,3596,36.851,36.068,27.081
-832,2009758,3585,3558,3598,36.851,36.068,27.081
-833,2013671,3582,3554,3595,36.783,36.284,26.933
-834,2017262,3583,3554,3595,36.783,36.284,26.933
-835,2021168,3580,3556,3591,36.783,36.284,26.933
-836,2024772,3576,3574,3591,36.783,36.284,26.933
-837,2028373,3576,3580,3592,36.783,36.284,26.933
-838,2032274,3569,3585,3587,36.783,36.284,26.933
-839,2035881,3562,3586,3581,36.925,36.181,26.894
-840,2039486,3558,3593,3564,36.925,36.181,26.894
-841,2043388,3563,3579,3568,36.925,36.181,26.894
-842,2047004,3564,3575,3564,36.925,36.181,26.894
-843,2050597,3562,3574,3564,36.925,36.181,26.894
-844,2054500,3564,3567,3568,36.925,36.181,26.894
-845,2058105,3571,3567,3583,36.943,36.240,26.817
-846,2062006,3573,3572,3582,36.943,36.240,26.817
-847,2065611,3581,3572,3582,36.943,36.240,26.817
-848,2069220,3581,3572,3579,36.943,36.240,26.817
-849,2073115,3589,3573,3579,36.943,36.240,26.817
-850,2076720,3589,3573,3575,36.943,36.240,26.817
-851,2080324,3589,3570,3573,36.828,36.319,26.853
-852,2084229,3577,3574,3569,36.828,36.319,26.853
-853,2087827,3574,3573,3569,36.828,36.319,26.853
-854,2091436,3574,3576,3552,36.828,36.319,26.853
-855,2095335,3569,3585,3552,36.828,36.319,26.853
-856,2098944,3571,3596,3553,36.828,36.319,26.853
-857,2102845,3575,3597,3547,36.832,36.100,27.068
-858,2106453,3579,3601,3547,36.832,36.100,27.068
-859,2110351,3578,3596,3547,36.832,36.100,27.068
-860,2113955,3575,3582,3572,36.832,36.100,27.068
-861,2117859,3577,3560,3601,36.832,36.100,27.068
-862,2121462,3574,3552,3601,36.832,36.100,27.068
-863,2125069,3574,3544,3618,36.840,36.414,26.745
-864,2128971,3575,3555,3591,36.840,36.414,26.745
-865,2132873,3577,3566,3591,36.840,36.414,26.745
-866,2136478,3574,3577,3598,36.840,36.414,26.745
-867,2140083,3574,3587,3588,36.840,36.414,26.745
-868,2143983,3576,3597,3567,36.840,36.414,26.745
-869,2147589,3577,3589,3569,36.863,36.315,26.822
-870,2151194,3577,3588,3528,36.863,36.315,26.822
-871,2155091,3570,3584,3521,36.863,36.315,26.822
-872,2158701,3569,3585,3525,36.863,36.315,26.822
+1	86	5306	5658	7992	33.333	33.333	33.333
+2	5761	4226	4471	6746	33.333	33.333	33.333
+3	10271	3874	4096	6011	33.333	33.333	33.333
+4	15068	3698	3895	5656	33.333	33.333	33.333
+5	19873	3593	3773	5454	33.333	33.333	33.333
+6	24378	3177	3302	4740	33.333	33.333	33.333
+7	28892	3190	3299	4522	33.333	33.333	33.333
+8	33693	3199	3285	4517	33.333	33.333	33.333
+9	38199	3214	3290	4489	33.333	33.333	33.333
+10	42702	3221	3284	4440	33.333	33.333	33.333
+11	47321	3222	3278	4440	33.333	33.333	33.333
+12	52013	3224	3281	4455	33.333	33.333	33.333
+13	56525	3225	3283	4437	33.333	33.333	33.333
+14	61043	3223	3272	4437	33.333	33.333	33.333
+15	65829	3227	3282	4459	33.333	33.333	33.333
+16	70338	3228	3288	4446	33.333	33.333	33.333
+17	74838	3231	3289	4436	36.891	36.240	26.870
+18	79347	3234	3290	4435	36.891	36.240	26.870
+19	83247	3303	3366	4262	36.891	36.240	26.870
+20	86859	3303	3366	4262	36.891	36.240	26.870
+21	90760	3369	3412	3939	36.891	36.240	26.870
+22	94380	3433	3465	3776	36.891	36.240	26.870
+23	98271	3560	3577	3601	37.068	36.241	26.691
+24	101875	3560	3577	3589	37.068	36.241	26.691
+25	105484	3557	3561	3552	37.068	36.241	26.691
+26	109382	3562	3567	3545	37.068	36.241	26.691
+27	112987	3562	3567	3531	37.068	36.241	26.691
+28	116596	3562	3576	3529	37.068	36.241	26.691
+29	120489	3572	3569	3533	36.948	36.154	26.898
+30	124102	3572	3569	3548	36.948	36.154	26.898
+31	127719	3575	3567	3548	36.948	36.154	26.898
+32	131604	3577	3578	3559	36.948	36.154	26.898
+33	135208	3582	3581	3562	36.948	36.154	26.898
+34	138823	3578	3571	3562	36.948	36.154	26.898
+ACTION	Slave added on Solver2
+35	142719	3573	3570	3277	36.061	35.316	28.624
+36	146337	3568	3561	2933	36.061	35.316	28.624
+37	149932	3566	3561	2639	36.061	35.316	28.624
+38	153539	3547	3530	2431	36.061	35.316	28.624
+39	157144	3534	3518	2100	36.061	35.316	28.624
+40	160747	3520	3498	2051	36.061	35.316	28.624
+41	164350	3506	3472	2138	30.390	30.053	39.557
+42	167954	3490	3454	2146	30.390	30.053	39.557
+43	171255	3380	3357	2230	30.390	30.053	39.557
+44	174262	3380	3357	2230	30.390	30.053	39.557
+ACTION	Slave added on Solver1
+45	177560	3270	2910	2624	30.390	30.053	39.557
+46	180565	3161	2515	2696	30.390	30.053	39.557
+47	183570	3053	2117	2833	26.117	37.247	36.636
+48	187478	2948	1827	2987	26.117	37.247	36.636
+49	190478	2867	1608	2917	26.117	37.247	36.636
+50	193183	2786	1638	2905	26.117	37.247	36.636
+51	195909	2786	1710	2905	26.117	37.247	36.636
+52	198601	2627	1776	2853	26.117	37.247	36.636
+53	201602	2546	1848	2853	23.715	46.597	29.687
+54	204599	2550	1844	2697	23.715	46.597	29.687
+55	207013	2508	1844	2596	23.715	46.597	29.687
+ACTION	Slave added on Solver0
+56	209425	2274	2034	2498	23.715	46.597	29.687
+57	211817	2010	2034	2405	23.715	46.597	29.687
+58	214222	1748	2128	2214	23.715	46.597	29.687
+59	216919	1480	2305	2050	31.592	39.857	28.551
+60	219329	1255	2297	2032	31.592	39.857	28.551
+61	221435	1299	2225	1961	31.592	39.857	28.551
+62	223540	1371	2164	1949	31.592	39.857	28.551
+63	225651	1442	2164	1941	31.592	39.857	28.551
+64	228349	1514	2056	2085	31.592	39.857	28.551
+65	230752	1589	1993	2141	37.361	37.580	25.059
+66	233154	1586	1990	2218	37.361	37.580	25.059
+67	235252	1642	1990	2197	37.361	37.580	25.059
+68	237357	1691	1929	2198	37.361	37.580	25.059
+69	239165	1748	1929	2198	37.361	37.580	25.059
+ACTION	Slave added on Solver2
+70	241265	1802	1900	1859	37.361	37.580	25.059
+71	243364	1856	1885	1663	36.510	36.159	27.331
+72	245174	1850	1873	1571	36.510	36.159	27.331
+73	247273	1848	1876	1431	36.510	36.159	27.331
+74	249081	1842	1854	1305	36.510	36.159	27.331
+75	251179	1834	1835	1290	36.510	36.159	27.331
+76	252988	1831	1803	1316	36.510	36.159	27.331
+77	255087	1825	1803	1320	32.923	33.004	34.074
+78	256900	1819	1798	1328	32.923	33.004	34.074
+79	258991	1812	1806	1329	32.923	33.004	34.074
+80	260794	1810	1806	1314	32.923	33.004	34.074
+81	262603	1805	1787	1280	32.923	33.004	34.074
+82	264702	1803	1785	1253	32.923	33.004	34.074
+83	266517	1807	1782	1258	28.546	29.017	42.437
+84	268609	1809	1778	1255	28.546	29.017	42.437
+85	270710	1737	1712	1396	28.546	29.017	42.437
+86	272520	1663	1646	1396	28.546	29.017	42.437
+ACTION	Slave added on Solver0
+87	274624	1525	1577	1661	28.546	29.017	42.437
+88	277023	1364	1502	1824	28.546	29.017	42.437
+89	279124	1198	1431	1965	36.266	30.863	32.870
+90	280935	1105	1433	1965	36.266	30.863	32.870
+91	282733	1069	1455	1869	36.266	30.863	32.870
+92	284539	1090	1483	1790	36.266	30.863	32.870
+93	286048	1134	1507	1669	36.266	30.863	32.870
+94	287843	1185	1530	1583	36.266	30.863	32.870
+95	289353	1240	1545	1496	41.080	28.058	30.862
+96	291150	1233	1542	1496	41.080	28.058	30.862
+97	292952	1269	1507	1541	41.080	28.058	30.862
+98	294457	1298	1507	1520	41.080	28.058	30.862
+99	295965	1329	1480	1503	41.080	28.058	30.862
+100	297763	1360	1442	1508	41.080	28.058	30.862
+101	299270	1391	1442	1508	42.520	28.015	29.465
+102	301067	1398	1422	1448	42.520	28.015	29.465
+103	302571	1409	1422	1430	42.520	28.015	29.465
+104	304073	1419	1419	1418	42.520	28.015	29.465
+105	305583	1423	1413	1392	42.520	28.015	29.465
+ACTION	Slave added on Solver1
+106	307383	1430	1352	1381	42.520	28.015	29.465
+107	308884	1430	1248	1401	40.613	30.661	28.726
+108	310686	1429	1154	1455	40.613	30.661	28.726
+109	312195	1416	1079	1455	40.613	30.661	28.726
+110	313700	1403	993	1490	40.613	30.661	28.726
+111	315502	1395	987	1490	40.613	30.661	28.726
+112	317306	1381	1008	1553	40.613	30.661	28.726
+113	318812	1369	1028	1507	37.766	37.968	24.266
+114	320313	1366	1026	1448	37.766	37.968	24.266
+115	321809	1349	1026	1444	37.766	37.968	24.266
+116	323313	1329	1131	1332	37.766	37.968	24.266
+117	324522	1310	1131	1252	37.766	37.968	24.266
+118	326017	1295	1182	1221	37.766	37.968	24.266
+119	327519	1280	1281	1205	37.215	37.385	25.400
+120	328729	1280	1281	1167	37.215	37.385	25.400
+121	330233	1279	1275	1180	37.215	37.385	25.400
+122	331727	1278	1262	1164	37.215	37.385	25.400
+123	332937	1276	1262	1164	37.215	37.385	25.400
+124	334433	1272	1260	1192	37.215	37.385	25.400
+125	335935	1266	1261	1203	36.672	36.986	26.341
+126	337141	1265	1258	1200	36.672	36.986	26.341
+ACTION	Slave added on Solver2
+127	338641	1256	1254	1190	36.672	36.986	26.341
+128	339851	1256	1258	1107	36.672	36.986	26.341
+129	341349	1242	1254	1041	36.672	36.986	26.341
+130	342556	1242	1242	996	36.672	36.986	26.341
+131	344059	1235	1234	948	33.955	34.273	31.772
+132	345261	1235	1230	914	33.955	34.273	31.772
+133	346758	1237	1222	916	33.955	34.273	31.772
+134	347965	1237	1220	920	33.955	34.273	31.772
+135	349472	1240	1218	923	33.955	34.273	31.772
+136	350967	1241	1223	963	33.955	34.273	31.772
+137	352178	1241	1223	974	31.090	31.843	37.067
+138	353672	1245	1233	975	31.090	31.843	37.067
+139	354883	1210	1236	975	31.090	31.843	37.067
+140	356384	1174	1171	1130	31.090	31.843	37.067
+141	357876	1145	1136	1161	31.090	31.843	37.067
+142	359385	1110	1095	1235	31.090	31.843	37.067
+143	360895	1075	1061	1344	33.429	34.692	31.879
+144	362390	1074	1059	1338	33.429	34.692	31.879
+145	363894	1080	1063	1338	33.429	34.692	31.879
+146	365101	1075	1060	1320	33.429	34.692	31.879
+147	366600	1072	1067	1318	33.429	34.692	31.879
+148	368106	1070	1067	1311	33.429	34.692	31.879
+149	369606	1075	1070	1305	35.359	36.865	27.776
+ACTION	Slave added on Solver2
+150	370813	1068	1070	1301	35.359	36.865	27.776
+151	372310	1095	1071	1208	35.359	36.865	27.776
+152	373520	1121	1106	1115	35.359	36.865	27.776
+153	375018	1150	1137	1013	35.359	36.865	27.776
+154	376225	1172	1165	883	35.359	36.865	27.776
+155	377723	1200	1192	804	31.036	32.575	36.389
+156	378932	1205	1222	812	31.036	32.575	36.389
+157	380133	1187	1186	855	31.036	32.575	36.389
+158	381335	1156	1164	897	31.036	32.575	36.389
+159	382539	1156	1137	939	31.036	32.575	36.389
+160	383740	1107	1110	939	31.036	32.575	36.389
+161	384940	1107	1086	1002	29.716	31.793	38.491
+162	386441	1063	1087	1033	29.716	31.793	38.491
+163	387657	1055	1087	1052	29.716	31.793	38.491
+164	388846	1042	1080	1052	29.716	31.793	38.491
+165	390053	1032	1075	1071	29.716	31.793	38.491
+166	391259	1023	1063	1083	29.716	31.793	38.491
+167	392455	1022	1062	1092	30.846	31.759	37.395
+168	393666	1024	1066	1066	30.846	31.759	37.395
+169	395163	1031	1069	1106	30.846	31.759	37.395
+170	396370	1038	1063	1106	30.846	31.759	37.395
+171	397574	1045	1063	1146	30.846	31.759	37.395
+172	399070	1050	1060	1159	30.846	31.759	37.395
+173	400277	1057	1058	1199	32.286	33.210	34.504
+174	401482	1057	1057	1224	32.286	33.210	34.504
+ACTION	Slave added on Solver0
+175	402979	1022	1056	1186	32.286	33.210	34.504
+176	404181	977	1060	1175	32.286	33.210	34.504
+177	405386	928	1067	1161	32.286	33.210	34.504
+178	406596	881	1068	1117	32.286	33.210	34.504
+179	407792	834	1067	1083	38.066	30.605	31.328
+180	408995	822	1071	1069	38.066	30.605	31.328
+181	410195	854	1059	1002	38.066	30.605	31.328
+182	411111	891	1048	1000	38.066	30.605	31.328
+183	412311	923	1037	1000	38.066	30.605	31.328
+184	413503	954	1028	975	38.066	30.605	31.328
+185	414713	997	1015	975	38.004	30.013	31.983
+186	415908	997	1015	972	38.004	30.013	31.983
+187	417111	993	1004	972	38.004	30.013	31.983
+188	418316	990	1004	992	38.004	30.013	31.983
+189	419222	991	999	992	38.004	30.013	31.983
+190	420428	981	1000	961	38.004	30.013	31.983
+191	421623	981	993	961	37.889	29.561	32.550
+192	422826	983	996	956	37.889	29.561	32.550
+193	423732	986	986	993	37.889	29.561	32.550
+194	425229	984	991	964	37.889	29.561	32.550
+195	426137	984	986	1012	37.889	29.561	32.550
+196	427346	981	983	1026	37.889	29.561	32.550
+197	428540	979	980	974	37.837	29.491	32.672
+198	429450	979	990	974	37.837	29.491	32.672
+199	430646	982	985	964	37.837	29.491	32.672
+200	431846	983	985	909	37.837	29.491	32.672
+ACTION	Slave added on Solver1
+201	433046	983	988	903	37.837	29.491	32.672
+202	433957	983	970	903	37.837	29.491	32.672
+203	435150	982	913	905	36.032	30.206	33.761
+204	436352	980	863	905	36.032	30.206	33.761
+205	437266	974	819	905	36.032	30.206	33.761
+206	438458	964	777	917	36.032	30.206	33.761
+207	439364	958	754	917	36.032	30.206	33.761
+208	440570	951	758	927	36.032	30.206	33.761
+209	441765	941	759	927	33.440	34.755	31.805
+210	442970	941	759	979	33.440	34.755	31.805
+211	444177	944	756	1007	33.440	34.755	31.805
+212	445382	946	749	1057	33.440	34.755	31.805
+213	446290	945	749	1056	33.440	34.755	31.805
+214	447478	948	753	1058	33.440	34.755	31.805
+215	448681	945	754	985	31.103	40.515	28.381
+216	449585	944	754	985	31.103	40.515	28.381
+217	450791	918	805	903	31.103	40.515	28.381
+218	451990	897	854	874	31.103	40.515	28.381
+219	452898	874	905	844	31.103	40.515	28.381
+220	454095	852	956	816	31.103	40.515	28.381
+221	455297	829	1010	787	32.999	35.282	31.719
+222	456501	827	1014	787	32.999	35.282	31.719
+223	457702	823	1025	834	32.999	35.282	31.719
+224	458905	822	1031	842	32.999	35.282	31.719
+225	459814	822	1029	840	32.999	35.282	31.719
+226	461016	825	1024	841	32.999	35.282	31.719
+227	462212	824	1022	797	35.017	30.185	34.798
+228	463419	825	1013	796	35.017	30.185	34.798
+229	464324	826	1003	796	35.017	30.185	34.798
+ACTION	Slave added on Solver1
+230	465522	827	995	795	35.017	30.185	34.798
+231	466431	823	958	831	35.017	30.185	34.798
+232	467331	828	919	838	35.017	30.185	34.798
+233	468233	828	878	841	35.825	29.124	35.051
+234	469430	849	796	851	35.825	29.124	35.051
+235	470637	873	719	879	35.825	29.124	35.051
+236	471541	897	676	879	35.825	29.124	35.051
+237	472738	915	631	908	35.825	29.124	35.051
+238	473941	942	588	941	35.825	29.124	35.051
+239	475142	941	587	982	30.857	40.213	28.930
+240	476349	936	592	1002	30.857	40.213	28.930
+241	477249	909	638	1002	30.857	40.213	28.930
+242	478151	893	684	971	30.857	40.213	28.930
+243	479053	863	730	943	30.857	40.213	28.930
+244	479957	839	773	894	30.857	40.213	28.930
+245	480864	817	813	843	31.073	40.693	28.234
+246	481765	816	808	811	31.073	40.693	28.234
+247	482962	810	808	806	31.073	40.693	28.234
+248	483865	813	807	802	31.073	40.693	28.234
+249	484767	814	808	802	31.073	40.693	28.234
+250	485676	815	813	799	31.073	40.693	28.234
+251	486579	815	815	794	30.843	40.392	28.766
+252	487490	814	818	783	30.843	40.392	28.766
+253	488387	813	818	783	30.843	40.392	28.766
+254	489290	813	818	788	30.843	40.392	28.766
+255	490490	812	817	792	30.843	40.392	28.766
+256	491390	813	816	792	30.843	40.392	28.766
+257	492291	812	812	798	30.688	40.189	29.123
+258	493194	812	810	801	30.688	40.189	29.123
+259	494092	812	810	800	30.688	40.189	29.123
+260	495000	811	808	803	30.688	40.189	29.123
+261	495904	813	805	805	30.688	40.189	29.123
+262	496818	814	807	808	30.688	40.189	29.123
+263	498017	814	805	843	30.858	40.864	28.278
+264	498910	813	806	843	30.858	40.864	28.278
+265	500110	816	807	862	30.858	40.864	28.278
+266	501015	815	809	862	30.858	40.864	28.278
+267	501918	815	810	861	30.858	40.864	28.278
+268	502819	817	817	856	30.858	40.864	28.278
+269	503722	818	822	816	30.898	40.718	28.384
+270	504625	819	825	794	30.898	40.718	28.384
+271	505526	819	826	789	30.898	40.718	28.384
+272	506727	820	827	787	30.898	40.718	28.384
+273	507638	824	825	802	30.898	40.718	28.384
+274	508831	825	820	827	30.898	40.718	28.384
+275	510032	827	818	902	31.501	41.968	26.531
+276	510936	824	816	900	31.501	41.968	26.531
+277	511837	830	821	876	31.501	41.968	26.531
+278	512741	828	825	876	31.501	41.968	26.531
+279	513648	831	831	844	31.501	41.968	26.531
+280	514550	831	831	797	31.501	41.968	26.531
+281	515746	836	843	738	30.531	40.339	29.129
+282	516655	830	844	739	30.531	40.339	29.129
+283	517555	834	838	739	30.531	40.339	29.129
+284	518459	825	830	751	30.531	40.339	29.129
+285	519361	825	824	771	30.531	40.339	29.129
+286	520558	811	818	799	30.531	40.339	29.129
+287	521460	807	812	799	30.518	40.074	29.408
+288	522367	799	811	813	30.518	40.074	29.408
+289	523271	799	814	813	30.518	40.074	29.408
+290	524170	802	814	810	30.518	40.074	29.408
+291	525075	802	812	812	30.518	40.074	29.408
+292	525978	802	811	817	30.518	40.074	29.408
+293	527175	800	812	823	30.956	40.048	28.996
+294	528076	802	808	823	30.956	40.048	28.996
+295	528978	803	806	821	30.956	40.048	28.996
+296	529881	806	806	818	30.956	40.048	28.996
+297	530785	809	803	814	30.956	40.048	28.996
+298	531691	812	802	808	30.956	40.048	28.996
+299	532593	815	803	808	30.695	40.304	29.001
+300	533791	813	805	813	30.695	40.304	29.001
+301	534699	811	807	813	30.695	40.304	29.001
+302	535599	810	808	816	30.695	40.304	29.001
+303	536502	811	809	814	30.695	40.304	29.001
+304	537401	811	812	813	30.695	40.304	29.001
+305	538306	811	812	813	30.732	40.303	28.965
+306	539209	811	815	806	30.732	40.303	28.965
+307	540118	811	815	803	30.732	40.303	28.965
+308	541310	814	815	806	30.732	40.303	28.965
+309	542217	813	813	827	30.732	40.303	28.965
+310	543127	813	809	842	30.732	40.303	28.965
+311	544315	818	806	842	30.802	40.995	28.203
+312	545219	818	803	842	30.802	40.995	28.203
+313	546126	817	807	843	30.802	40.995	28.203
+314	547023	817	814	814	30.802	40.995	28.203
+315	547927	817	817	798	30.802	40.995	28.203
+316	548833	810	820	789	30.802	40.995	28.203
+317	549734	810	820	787	30.702	40.365	28.933
+318	550934	810	822	791	30.702	40.365	28.933
+319	551839	810	819	796	30.702	40.365	28.933
+320	552735	810	817	796	30.702	40.365	28.933
+321	553638	811	812	800	30.702	40.365	28.933
+322	554539	810	811	805	30.702	40.365	28.933
+323	555454	809	813	802	30.686	40.144	29.170
+324	556350	810	812	802	30.686	40.144	29.170
+325	557258	810	812	802	30.686	40.144	29.170
+326	558449	816	811	808	30.686	40.144	29.170
+327	559355	817	808	808	30.686	40.144	29.170
+328	560253	819	806	810	30.686	40.144	29.170
+329	561155	818	806	813	30.449	40.428	29.123
+330	562059	819	806	816	30.449	40.428	29.123
+331	562970	816	809	810	30.449	40.428	29.123
+332	563866	816	809	810	30.449	40.428	29.123
+333	565073	817	808	810	30.449	40.428	29.123
+334	565974	817	808	851	30.449	40.428	29.123
+335	566876	815	808	851	30.720	41.141	28.139
+336	568094	811	816	847	30.720	41.141	28.139
+337	568982	807	831	847	30.720	41.141	28.139
+338	569887	809	835	841	30.720	41.141	28.139
+339	570790	810	837	836	30.720	41.141	28.139
+340	571692	810	837	791	30.720	41.141	28.139
+341	572890	814	834	781	30.658	40.073	29.269
+342	573807	817	824	781	30.658	40.073	29.269
+343	574998	817	821	839	30.658	40.073	29.269
+344	575902	818	817	839	30.658	40.073	29.269
+345	577101	817	811	897	30.658	40.073	29.269
+ACTION	Slave removed on Solver1
+346	578308	816	887	905	30.658	40.073	29.269
+347	579506	817	919	881	32.815	38.132	29.053
+348	580413	817	919	881	32.815	38.132	29.053
+349	581615	828	991	868	32.815	38.132	29.053
+350	582813	839	1021	820	32.815	38.132	29.053
+351	583721	856	979	820	32.815	38.132	29.053
+352	584918	865	973	816	32.815	38.132	29.053
+353	585823	877	973	816	33.345	34.925	31.729
+354	587022	877	958	810	33.345	34.925	31.729
+355	588238	879	957	828	33.345	34.925	31.729
+356	589127	872	951	828	33.345	34.925	31.729
+357	590331	874	947	851	33.345	34.925	31.729
+358	591237	870	949	851	33.345	34.925	31.729
+359	592435	868	952	852	34.196	32.655	33.149
+360	593339	861	952	852	34.196	32.655	33.149
+361	594539	858	951	816	34.196	32.655	33.149
+362	595447	858	951	816	34.196	32.655	33.149
+363	596644	862	949	813	34.196	32.655	33.149
+364	597852	859	949	848	34.196	32.655	33.149
+365	598755	862	949	848	35.053	30.406	34.541
+366	599950	863	957	864	35.053	30.406	34.541
+367	601153	863	962	863	35.053	30.406	34.541
+368	602061	856	968	850	35.053	30.406	34.541
+369	603257	855	966	823	35.053	30.406	34.541
+370	604173	854	964	823	35.053	30.406	34.541
+371	605362	853	958	809	35.570	27.472	36.957
+372	606268	852	958	809	35.570	27.472	36.957
+373	607471	866	893	806	35.570	27.472	36.957
+374	608686	880	841	855	35.570	27.472	36.957
+ACTION	Slave removed on Solver2
+375	610185	891	791	898	35.570	27.472	36.957
+376	611685	905	742	1023	35.570	27.472	36.957
+377	613179	918	691	1204	35.483	36.408	28.109
+378	614388	919	695	1204	35.483	36.408	28.109
+379	615585	918	744	1248	35.483	36.408	28.109
+380	616788	920	791	1147	35.483	36.408	28.109
+381	617695	922	834	1147	35.483	36.408	28.109
+382	618892	922	881	1089	35.483	36.408	28.109
+383	619801	922	924	1028	36.572	37.444	25.984
+384	621004	932	927	971	36.572	37.444	25.984
+385	622207	938	932	941	36.572	37.444	25.984
+386	623109	938	936	941	36.572	37.444	25.984
+387	624305	949	938	917	36.572	37.444	25.984
+388	625514	952	944	917	36.572	37.444	25.984
+389	626710	951	943	963	36.574	37.764	25.662
+390	627618	951	937	963	36.574	37.764	25.662
+391	628814	956	939	964	36.574	37.764	25.662
+392	629720	956	939	961	36.574	37.764	25.662
+393	630921	954	946	957	36.574	37.764	25.662
+394	632121	956	951	889	36.574	37.764	25.662
+395	633029	956	951	889	35.810	37.170	27.020
+396	634232	946	959	888	35.810	37.170	27.020
+397	635433	941	955	918	35.810	37.170	27.020
+398	636629	938	946	952	35.810	37.170	27.020
+399	637537	938	946	962	35.810	37.170	27.020
+400	638740	930	938	972	35.810	37.170	27.020
+401	639643	930	938	980	36.428	37.488	26.084
+402	640840	932	935	957	36.428	37.488	26.084
+ACTION	Slave removed on Solver1
+403	642342	934	1017	922	36.428	37.488	26.084
+404	643550	938	1070	931	36.428	37.488	26.084
+405	645048	940	1140	961	36.428	37.488	26.084
+406	646550	944	1205	959	36.428	37.488	26.084
+407	647759	945	1272	978	40.710	31.125	28.166
+408	649257	947	1252	1018	40.710	31.125	28.166
+409	650471	969	1211	1018	40.710	31.125	28.166
+410	651666	991	1162	1054	40.710	31.125	28.166
+411	653166	1014	1117	1068	40.710	31.125	28.166
+412	654367	1032	1072	1127	40.710	31.125	28.166
+413	655570	1053	1032	1100	40.943	31.940	27.117
+414	656774	1052	1042	1081	40.943	31.940	27.117
+415	657975	1052	1047	1065	40.943	31.940	27.117
+416	659177	1050	1056	1036	40.943	31.940	27.117
+417	660384	1053	1062	1039	40.943	31.940	27.117
+418	661582	1053	1066	1045	40.943	31.940	27.117
+419	662492	1053	1066	1045	41.018	31.608	27.374
+420	663692	1052	1058	1021	41.018	31.608	27.374
+421	664897	1054	1051	996	41.018	31.608	27.374
+422	666097	1055	1051	965	41.018	31.608	27.374
+423	667306	1055	1055	955	41.018	31.608	27.374
+424	668798	1059	1057	1012	41.018	31.608	27.374
+425	670002	1058	1060	1012	40.537	31.179	28.284
+426	671206	1058	1065	1070	40.537	31.179	28.284
+ACTION	Slave removed on Solver0
+427	672413	1057	1059	1070	40.537	31.179	28.284
+428	673910	1057	1054	1083	40.537	31.179	28.284
+429	675410	1203	1049	1041	40.537	31.179	28.284
+430	676916	1264	1045	999	40.537	31.179	28.284
+431	678415	1324	1042	991	34.371	33.590	32.039
+432	679920	1386	1043	1009	34.371	33.590	32.039
+433	681419	1362	1045	1011	34.371	33.590	32.039
+434	682923	1364	1053	1026	34.371	33.590	32.039
+435	684428	1368	1056	1033	34.371	33.590	32.039
+436	685935	1367	1055	1034	34.371	33.590	32.039
+437	687138	1367	1058	1001	28.283	35.713	36.004
+438	688936	1288	1090	1001	28.283	35.713	36.004
+439	690438	1207	1114	1110	28.283	35.713	36.004
+440	691644	1125	1143	1165	28.283	35.713	36.004
+441	693150	1050	1177	1211	28.283	35.713	36.004
+442	694359	974	1200	1261	28.283	35.713	36.004
+443	695856	970	1198	1311	33.735	34.491	31.774
+444	697065	973	1194	1252	33.735	34.491	31.774
+445	698861	976	1190	1232	33.735	34.491	31.774
+446	700369	976	1184	1289	33.735	34.491	31.774
+447	701876	975	1189	1331	33.735	34.491	31.774
+448	703369	977	1194	1359	33.735	34.491	31.774
+ACTION	Slave removed on Solver1
+449	704873	973	1199	1382	40.115	33.283	26.602
+450	706682	975	1332	1326	40.115	33.283	26.602
+451	708479	1051	1429	1222	40.115	33.283	26.602
+452	710292	1127	1527	1134	40.115	33.283	26.602
+453	712088	1202	1612	1072	40.115	33.283	26.602
+454	713890	1279	1697	1042	40.115	33.283	26.602
+455	715693	1352	1664	979	38.611	26.029	35.360
+456	717500	1354	1666	979	38.611	26.029	35.360
+457	719004	1346	1587	1044	38.611	26.029	35.360
+458	720502	1337	1526	1099	38.611	26.029	35.360
+459	722005	1331	1456	1099	38.611	26.029	35.360
+460	723507	1322	1384	1238	38.611	26.029	35.360
+461	724716	1322	1384	1238	38.141	24.560	37.299
+462	726213	1314	1303	1297	38.141	24.560	37.299
+463	727715	1307	1277	1303	38.141	24.560	37.299
+464	728925	1307	1277	1291	38.141	24.560	37.299
+465	730721	1293	1256	1291	38.141	24.560	37.299
+466	732228	1284	1242	1291	38.141	24.560	37.299
+467	733731	1284	1234	1360	38.561	25.836	35.603
+468	735228	1285	1252	1369	38.561	25.836	35.603
+ACTION	Slave removed on Solver0
+469	736749	1295	1256	1359	38.561	25.836	35.603
+470	738834	1436	1272	1318	38.561	25.836	35.603
+471	740937	1563	1289	1252	38.561	25.836	35.603
+472	742747	1563	1304	1225	38.561	25.836	35.603
+473	744849	1690	1310	1228	31.898	27.572	40.531
+474	746966	1924	1319	1231	31.898	27.572	40.531
+475	748759	1847	1340	1263	31.898	27.572	40.531
+476	750559	1783	1347	1359	31.898	27.572	40.531
+477	752361	1716	1364	1359	31.898	27.572	40.531
+478	754167	1651	1375	1494	31.898	27.572	40.531
+479	755677	1651	1390	1522	29.368	30.152	40.480
+480	757472	1586	1380	1521	29.368	30.152	40.480
+481	758981	1586	1405	1521	29.368	30.152	40.480
+482	760790	1538	1438	1456	29.368	30.152	40.480
+483	762289	1538	1438	1425	29.368	30.152	40.480
+484	764084	1500	1469	1442	29.368	30.152	40.480
+485	765594	1500	1469	1442	28.718	30.106	41.175
+486	767395	1474	1520	1448	28.718	30.106	41.175
+487	768897	1474	1518	1448	28.718	30.106	41.175
+ACTION	Slave removed on Solver2
+488	771001	1458	1508	1415	28.718	30.106	41.175
+489	773098	1447	1497	1539	28.718	30.106	41.175
+490	774907	1438	1490	1618	28.718	30.106	41.175
+491	777009	1438	1495	1706	31.086	31.346	37.568
+492	778813	1438	1518	1819	31.086	31.346	37.568
+493	780911	1487	1534	1810	31.086	31.346	37.568
+494	782719	1510	1546	1810	31.086	31.346	37.568
+495	784524	1535	1555	1801	31.086	31.346	37.568
+496	786329	1556	1564	1777	31.086	31.346	37.568
+497	788136	1557	1560	1720	32.253	32.461	35.286
+498	789941	1559	1564	1721	32.253	32.461	35.286
+499	791739	1562	1569	1711	32.253	32.461	35.286
+500	794136	1561	1567	1759	32.253	32.461	35.286
+501	795939	1563	1573	1766	32.253	32.461	35.286
+502	797742	1559	1573	1763	32.253	32.461	35.286
+503	799545	1557	1576	1765	33.791	33.598	32.611
+ACTION	Slave removed on Solver0
+504	801348	1556	1572	1765	33.791	33.598	32.611
+505	804359	1556	1572	1749	33.791	33.598	32.611
+506	807655	2145	1568	1765	33.791	33.598	32.611
+507	810659	2145	1565	1764	33.791	33.598	32.611
+508	813669	2435	1555	1790	33.791	33.598	32.611
+509	816967	3008	1556	1852	22.274	42.813	34.913
+510	819979	3008	1559	1840	22.274	42.813	34.913
+511	822379	2831	1673	1839	22.274	42.813	34.913
+512	824483	2831	1673	1841	22.274	42.813	34.913
+513	826884	2672	1909	1792	22.274	42.813	34.913
+514	829283	2346	2032	1704	22.274	42.813	34.913
+515	831392	2346	2032	1649	18.351	40.725	40.924
+ACTION	Slave removed on Solver2
+516	833790	2114	2123	1691	18.351	40.725	40.924
+517	836793	2043	2097	1919	18.351	40.725	40.924
+518	839497	1972	2071	1919	18.351	40.725	40.924
+519	842814	1904	2043	2152	18.351	40.725	40.924
+520	845806	1831	2025	2487	18.351	40.725	40.924
+521	848810	1834	2026	2709	22.131	44.458	33.412
+522	851821	1829	2032	2880	22.131	44.458	33.412
+523	854523	1899	2074	2913	22.131	44.458	33.412
+524	857226	1965	2108	2892	22.131	44.458	33.412
+525	860824	2035	2145	2858	22.131	44.458	33.412
+526	863827	2104	2177	2858	22.131	44.458	33.412
+527	866244	2180	2216	2879	24.275	47.974	27.751
+ACTION	Slave removed on Solver1
+528	871044	2179	2216	2679	24.275	47.974	27.751
+529	876150	2220	2712	2598	24.275	47.974	27.751
+530	880952	2261	3267	2341	24.275	47.974	27.751
+531	886058	2302	4291	2121	24.275	47.974	27.751
+532	890860	2343	4789	2022	24.275	47.974	27.751
+533	895661	2386	4789	1967	29.662	29.206	41.132
+534	900470	2392	4795	2036	29.662	29.206	41.132
+535	903474	2392	4743	2036	29.662	29.206	41.132
+536	906476	2494	4375	2230	29.662	29.206	41.132
+537	909480	2595	3995	2418	29.662	29.206	41.132
+538	912784	2793	3253	2589	29.662	29.206	41.132
+539	916685	2893	2879	2835	29.373	29.062	41.565
+540	919688	2893	2882	3025	29.373	29.062	41.565
+541	922691	2894	2880	3021	29.373	29.062	41.565
+542	925998	2889	2878	3021	29.373	29.062	41.565
+543	929905	2884	2872	3204	29.373	29.062	41.565
+544	933202	2876	2874	3204	29.373	29.062	41.565
+545	937107	2868	2868	3314	31.114	30.784	38.103
+546	940414	2869	2866	3314	31.114	30.784	38.103
+547	943714	2869	2903	3390	31.114	30.784	38.103
+548	946720	2899	2903	3390	31.114	30.784	38.103
+549	950021	2934	2977	3201	31.114	30.784	38.103
+550	953324	3007	3011	3020	31.114	30.784	38.103
+551	956340	3007	3011	2880	30.612	30.247	39.141
+552	959637	3038	3047	2850	30.612	30.247	39.141
+553	963232	3019	3034	2850	30.612	30.247	39.141
+554	966241	3019	3034	2942	30.612	30.247	39.141
+555	969541	2982	3000	2900	30.612	30.247	39.141
+556	972547	2982	2992	2918	30.612	30.247	39.141
+557	975553	2965	2992	2892	30.395	29.761	39.844
+558	978861	2953	2981	2729	30.395	29.761	39.844
+559	981861	2953	2974	2729	30.395	29.761	39.844
+ACTION	Slave removed on Solver2
+560	988465	2949	2967	3503	30.395	29.761	39.844
+561	994176	2952	2959	4062	30.395	29.761	39.844
+562	999873	2953	2954	4654	30.395	29.761	39.844
+563	1005275	2957	2946	5166	36.588	35.959	27.454
+564	1010691	2961	2945	5166	36.588	35.959	27.454
+565	1014289	2961	2945	5604	36.588	35.959	27.454
+566	1018489	3202	3189	4736	36.588	35.959	27.454
+567	1022095	3202	3316	4736	36.588	35.959	27.454
+568	1026294	3437	3434	4063	36.588	35.959	27.454
+569	1029900	3437	3549	4063	38.662	36.798	24.540
+570	1033806	3558	3542	3726	38.662	36.798	24.540
+571	1037708	3558	3556	3682	38.662	36.798	24.540
+572	1041912	3620	3565	3724	38.662	36.798	24.540
+573	1045816	3662	3584	3676	38.662	36.798	24.540
+574	1049422	3662	3604	3646	38.662	36.798	24.540
+575	1053326	3705	3622	3569	37.986	36.984	25.030
+576	1057227	3742	3626	3547	37.986	36.984	25.030
+577	1061136	3726	3629	3426	37.986	36.984	25.030
+578	1064737	3726	3629	3383	37.986	36.984	25.030
+579	1068640	3711	3638	3407	37.986	36.984	25.030
+580	1072545	3685	3642	3380	37.986	36.984	25.030
+581	1076150	3685	3642	3381	36.992	36.441	26.567
+582	1080052	3682	3637	3404	36.992	36.441	26.567
+583	1083658	3678	3637	3404	36.992	36.441	26.567
+584	1087558	3631	3617	3439	36.992	36.441	26.567
+585	1091167	3631	3608	3476	36.992	36.441	26.567
+586	1094769	3609	3608	3476	36.992	36.441	26.567
+587	1098672	3586	3592	3552	36.921	36.310	26.769
+588	1102276	3575	3592	3552	36.921	36.310	26.769
+589	1106177	3581	3591	3562	36.921	36.310	26.769
+590	1109781	3588	3591	3562	36.921	36.310	26.769
+591	1113385	3588	3586	3562	36.921	36.310	26.769
+592	1117289	3586	3576	3559	36.921	36.310	26.769
+593	1121191	3585	3572	3579	36.855	36.378	26.767
+594	1124800	3586	3572	3579	36.855	36.378	26.767
+595	1128697	3575	3580	3561	36.855	36.378	26.767
+596	1132301	3575	3584	3560	36.855	36.378	26.767
+597	1135907	3577	3584	3560	36.855	36.378	26.767
+598	1139814	3577	3600	3552	36.855	36.378	26.767
+599	1143414	3577	3600	3557	36.886	36.175	26.939
+600	1147318	3573	3602	3575	36.886	36.175	26.939
+601	1150921	3573	3590	3575	36.886	36.175	26.939
+602	1154526	3569	3590	3588	36.886	36.175	26.939
+603	1158425	3565	3575	3577	36.886	36.175	26.939
+604	1162029	3565	3564	3577	36.886	36.175	26.939
+605	1165636	3572	3564	3569	36.847	36.219	26.934
+606	1169539	3569	3562	3578	36.847	36.219	26.934
+607	1173144	3569	3562	3578	36.847	36.219	26.934
+608	1177045	3558	3563	3589	36.847	36.219	26.934
+609	1180648	3558	3563	3589	36.847	36.219	26.934
+610	1184254	3554	3570	3595	36.847	36.219	26.934
+611	1188154	3555	3575	3582	36.997	36.163	26.840
+612	1191761	3565	3576	3582	36.997	36.163	26.840
+613	1195365	3566	3576	3577	36.997	36.163	26.840
+614	1199270	3576	3572	3562	36.997	36.163	26.840
+615	1202872	3581	3572	3562	36.997	36.163	26.840
+616	1206771	3585	3571	3579	36.997	36.163	26.840
+617	1210379	3583	3571	3592	36.977	36.264	26.758
+618	1214283	3589	3577	3589	36.977	36.264	26.758
+619	1217885	3584	3577	3589	36.977	36.264	26.758
+620	1221489	3583	3578	3595	36.977	36.264	26.758
+621	1225390	3587	3581	3558	36.977	36.264	26.758
+622	1228998	3592	3581	3558	36.977	36.264	26.758
+623	1232912	3596	3584	3541	36.780	36.192	27.029
+624	1236502	3596	3585	3535	36.780	36.192	27.029
+625	1240108	3597	3585	3535	36.780	36.192	27.029
+626	1244008	3580	3592	3553	36.780	36.192	27.029
+627	1247613	3580	3592	3553	36.780	36.192	27.029
+628	1251218	3575	3588	3560	36.780	36.192	27.029
+629	1255121	3571	3585	3586	36.874	36.142	26.984
+630	1258726	3566	3585	3586	36.874	36.142	26.984
+631	1262626	3573	3575	3585	36.874	36.142	26.984
+632	1266232	3573	3568	3585	36.874	36.142	26.984
+633	1269836	3572	3568	3590	36.874	36.142	26.984
+634	1273737	3572	3563	3585	36.874	36.142	26.984
+635	1277343	3575	3563	3585	36.856	36.247	26.897
+636	1281253	3574	3563	3589	36.856	36.247	26.897
+637	1284849	3574	3568	3589	36.856	36.247	26.897
+638	1288457	3573	3568	3586	36.856	36.247	26.897
+639	1292058	3568	3567	3574	36.856	36.247	26.897
+640	1295963	3560	3566	3563	36.856	36.247	26.897
+641	1299565	3558	3566	3563	36.900	36.209	26.891
+642	1303466	3563	3574	3554	36.900	36.209	26.891
+643	1307070	3563	3574	3554	36.900	36.209	26.891
+644	1310689	3568	3574	3554	36.900	36.209	26.891
+645	1314575	3578	3577	3569	36.900	36.209	26.891
+646	1318183	3578	3577	3569	36.900	36.209	26.891
+647	1321786	3577	3577	3562	36.859	36.168	26.973
+648	1325687	3575	3574	3571	36.859	36.168	26.973
+649	1329293	3572	3574	3571	36.859	36.168	26.973
+650	1332897	3570	3570	3577	36.859	36.168	26.973
+651	1336800	3572	3565	3567	36.859	36.168	26.973
+652	1340404	3571	3565	3585	36.859	36.168	26.973
+653	1344008	3576	3559	3570	36.778	36.262	26.960
+654	1347909	3579	3565	3575	36.778	36.262	26.960
+655	1351811	3572	3577	3597	36.778	36.262	26.960
+656	1355416	3572	3573	3578	36.778	36.262	26.960
+657	1359023	3569	3573	3578	36.778	36.262	26.960
+658	1362931	3569	3574	3578	36.778	36.262	26.960
+659	1366534	3573	3563	3576	36.749	36.335	26.916
+660	1370130	3574	3563	3576	36.749	36.335	26.916
+661	1374034	3571	3571	3584	36.749	36.335	26.916
+662	1377641	3575	3571	3584	36.749	36.335	26.916
+663	1381540	3576	3580	3592	36.749	36.335	26.916
+664	1385145	3577	3580	3587	36.749	36.335	26.916
+665	1388757	3572	3583	3587	36.832	36.304	26.864
+666	1392656	3572	3582	3569	36.832	36.304	26.864
+667	1396258	3573	3582	3569	36.832	36.304	26.864
+668	1400161	3572	3572	3581	36.832	36.304	26.864
+669	1403771	3573	3572	3581	36.832	36.304	26.864
+670	1407369	3581	3574	3581	36.832	36.304	26.864
+671	1411269	3577	3578	3576	36.833	36.295	26.872
+672	1414877	3572	3578	3555	36.833	36.295	26.872
+673	1418480	3567	3579	3555	36.833	36.295	26.872
+674	1422381	3565	3580	3557	36.833	36.295	26.872
+675	1425983	3562	3580	3557	36.833	36.295	26.872
+676	1429592	3566	3574	3561	36.833	36.295	26.872
+677	1433490	3569	3578	3579	36.894	36.264	26.842
+678	1437098	3570	3578	3579	36.894	36.264	26.842
+679	1440997	3573	3573	3580	36.894	36.264	26.842
+680	1444603	3577	3573	3580	36.894	36.264	26.842
+681	1448208	3580	3575	3587	36.894	36.264	26.842
+682	1452108	3580	3571	3564	36.894	36.264	26.842
+683	1455711	3583	3571	3564	36.797	36.290	26.913
+684	1459319	3579	3576	3553	36.797	36.290	26.913
+685	1463220	3575	3583	3559	36.797	36.290	26.913
+686	1466822	3574	3583	3559	36.797	36.290	26.913
+687	1470430	3574	3585	3562	36.797	36.290	26.913
+688	1474330	3573	3582	3578	36.797	36.290	26.913
+689	1477935	3573	3582	3578	36.844	36.245	26.910
+690	1481844	3574	3584	3571	36.844	36.245	26.910
+691	1485439	3576	3584	3571	36.844	36.245	26.910
+692	1489047	3575	3582	3568	36.844	36.245	26.910
+693	1492951	3569	3581	3559	36.844	36.245	26.910
+694	1496559	3562	3581	3559	36.844	36.245	26.910
+695	1500157	3559	3577	3558	36.909	36.126	26.965
+696	1504061	3557	3564	3563	36.909	36.126	26.965
+697	1507667	3559	3564	3563	36.909	36.126	26.965
+698	1511269	3559	3563	3579	36.909	36.126	26.965
+699	1515175	3570	3559	3575	36.909	36.126	26.965
+700	1519074	3576	3567	3600	36.909	36.126	26.965
+701	1522680	3579	3567	3600	36.922	36.261	26.817
+702	1526283	3580	3571	3606	36.922	36.261	26.817
+703	1530186	3580	3584	3596	36.922	36.261	26.817
+704	1533785	3584	3584	3596	36.922	36.261	26.817
+705	1537395	3586	3578	3565	36.922	36.261	26.817
+706	1541295	3585	3576	3564	36.922	36.261	26.817
+707	1545198	3584	3586	3586	36.935	36.253	26.812
+708	1548801	3585	3586	3581	36.935	36.253	26.812
+709	1552410	3584	3583	3581	36.935	36.253	26.812
+710	1556309	3581	3590	3576	36.935	36.253	26.812
+711	1559924	3585	3590	3546	36.935	36.253	26.812
+712	1563517	3588	3593	3546	36.935	36.253	26.812
+713	1567420	3592	3584	3540	36.760	36.162	27.077
+714	1571027	3590	3591	3540	36.760	36.162	27.077
+715	1574933	3583	3576	3568	36.760	36.162	27.077
+716	1578531	3572	3576	3568	36.760	36.162	27.077
+717	1582139	3565	3574	3586	36.760	36.162	27.077
+718	1586040	3560	3567	3593	36.760	36.162	27.077
+719	1589651	3560	3561	3602	36.881	36.271	26.849
+720	1593546	3565	3573	3594	36.881	36.271	26.849
+721	1597151	3573	3573	3594	36.881	36.271	26.849
+722	1600755	3576	3575	3579	36.881	36.271	26.849
+723	1604658	3580	3572	3582	36.881	36.271	26.849
+724	1608261	3576	3572	3582	36.881	36.271	26.849
+725	1611865	3576	3572	3574	36.860	36.291	26.849
+726	1615769	3572	3576	3570	36.860	36.291	26.849
+727	1619372	3571	3578	3570	36.860	36.291	26.849
+728	1622975	3571	3583	3566	36.860	36.291	26.849
+729	1626877	3576	3581	3553	36.860	36.291	26.849
+730	1630497	3576	3579	3553	36.860	36.291	26.849
+731	1634383	3581	3583	3546	36.770	36.182	27.048
+732	1637988	3581	3583	3542	36.770	36.182	27.048
+733	1641594	3570	3584	3542	36.770	36.182	27.048
+734	1645501	3571	3586	3553	36.770	36.182	27.048
+735	1649100	3570	3586	3580	36.770	36.182	27.048
+736	1653003	3562	3577	3586	36.770	36.182	27.048
+737	1656608	3561	3577	3606	36.955	36.201	26.844
+738	1660510	3564	3569	3621	36.955	36.201	26.844
+739	1664112	3561	3569	3621	36.955	36.201	26.844
+740	1667725	3562	3570	3592	36.955	36.201	26.844
+741	1671621	3567	3573	3576	36.955	36.201	26.844
+742	1675224	3571	3573	3576	36.955	36.201	26.844
+743	1678830	3575	3575	3563	36.921	36.168	26.910
+744	1682737	3578	3576	3555	36.921	36.168	26.910
+745	1686330	3581	3576	3555	36.921	36.168	26.910
+746	1689940	3584	3579	3549	36.921	36.168	26.910
+747	1693841	3584	3572	3554	36.921	36.168	26.910
+748	1697447	3588	3572	3554	36.921	36.168	26.910
+749	1701352	3590	3566	3573	36.785	36.277	26.938
+750	1704952	3590	3566	3573	36.785	36.277	26.938
+751	1708558	3590	3560	3589	36.785	36.277	26.938
+752	1712459	3581	3561	3587	36.785	36.277	26.938
+753	1716065	3574	3566	3594	36.785	36.277	26.938
+754	1719967	3573	3572	3589	36.785	36.277	26.938
+755	1723573	3574	3575	3603	36.868	36.349	26.782
+756	1727482	3573	3577	3588	36.868	36.349	26.782
+757	1731076	3579	3577	3574	36.868	36.349	26.782
+758	1734684	3582	3583	3574	36.868	36.349	26.782
+759	1738583	3579	3578	3558	36.868	36.349	26.782
+760	1742189	3576	3578	3558	36.868	36.349	26.782
+761	1746092	3578	3586	3546	36.809	36.210	26.981
+762	1749698	3577	3586	3546	36.809	36.210	26.981
+763	1753305	3572	3583	3546	36.809	36.210	26.981
+764	1757207	3574	3589	3548	36.809	36.210	26.981
+765	1760812	3572	3589	3548	36.809	36.210	26.981
+766	1764415	3572	3589	3554	36.809	36.210	26.981
+767	1768316	3568	3584	3572	36.880	36.118	27.002
+768	1771928	3573	3584	3582	36.880	36.118	27.002
+769	1775533	3573	3579	3578	36.880	36.118	27.002
+770	1779444	3576	3559	3573	36.880	36.118	27.002
+771	1783032	3575	3559	3577	36.880	36.118	27.002
+772	1786935	3577	3549	3575	36.880	36.118	27.002
+773	1790548	3576	3549	3589	36.815	36.328	26.857
+774	1794440	3579	3553	3600	36.815	36.328	26.857
+775	1798047	3577	3553	3600	36.815	36.328	26.857
+776	1801651	3581	3564	3592	36.815	36.328	26.857
+777	1805559	3581	3574	3560	36.815	36.328	26.857
+778	1809157	3579	3574	3560	36.815	36.328	26.857
+779	1812761	3577	3578	3542	36.721	36.226	27.053
+780	1816662	3575	3583	3550	36.721	36.226	27.053
+781	1820268	3569	3583	3550	36.721	36.226	27.053
+782	1824169	3566	3583	3581	36.721	36.226	27.053
+783	1827773	3563	3583	3581	36.721	36.226	27.053
+784	1831381	3563	3574	3585	36.721	36.226	27.053
+785	1835280	3560	3570	3593	36.850	36.251	26.899
+786	1838891	3562	3572	3593	36.850	36.251	26.899
+787	1842497	3562	3570	3593	36.850	36.251	26.899
+788	1846398	3570	3573	3577	36.850	36.251	26.899
+789	1850002	3571	3577	3583	36.850	36.251	26.899
+790	1853607	3569	3573	3569	36.850	36.251	26.899
+791	1857509	3566	3569	3581	36.903	36.272	26.825
+792	1861122	3563	3572	3577	36.903	36.272	26.825
+793	1864716	3563	3568	3571	36.903	36.272	26.825
+794	1868618	3565	3571	3563	36.903	36.272	26.825
+795	1872221	3571	3577	3559	36.903	36.272	26.825
+796	1875828	3571	3580	3549	36.903	36.272	26.825
+797	1879729	3579	3579	3546	36.811	36.182	27.007
+798	1883343	3579	3583	3546	36.811	36.182	27.007
+799	1887237	3579	3585	3549	36.811	36.182	27.007
+800	1890843	3580	3585	3549	36.811	36.182	27.007
+801	1894446	3580	3582	3575	36.811	36.182	27.007
+802	1898351	3572	3572	3574	36.811	36.182	27.007
+803	1901953	3572	3564	3592	36.836	36.288	26.875
+804	1905854	3571	3562	3599	36.836	36.288	26.875
+805	1909459	3562	3561	3599	36.836	36.288	26.875
+806	1913064	3559	3567	3574	36.836	36.288	26.875
+807	1916964	3551	3575	3567	36.836	36.288	26.875
+808	1920570	3542	3582	3567	36.836	36.288	26.875
+809	1924176	3542	3584	3562	37.050	36.071	26.879
+810	1928077	3544	3583	3564	37.050	36.071	26.879
+811	1931682	3554	3580	3562	37.050	36.071	26.879
+812	1935285	3554	3579	3550	37.050	36.071	26.879
+813	1939185	3582	3577	3555	37.050	36.071	26.879
+814	1942790	3582	3570	3573	37.050	36.071	26.879
+815	1946695	3596	3562	3572	36.856	36.225	26.918
+816	1950300	3597	3557	3582	36.856	36.225	26.918
+817	1954201	3589	3558	3585	36.856	36.225	26.918
+818	1957804	3577	3558	3585	36.856	36.225	26.918
+819	1961415	3577	3563	3578	36.856	36.225	26.918
+820	1965311	3561	3577	3577	36.856	36.225	26.918
+821	1968918	3555	3578	3567	36.976	36.109	26.915
+822	1972521	3555	3577	3565	36.976	36.109	26.915
+823	1976425	3566	3569	3557	36.976	36.109	26.915
+824	1980026	3570	3567	3557	36.976	36.109	26.915
+825	1983633	3570	3566	3553	36.976	36.109	26.915
+826	1987532	3576	3568	3557	36.976	36.109	26.915
+827	1991143	3578	3570	3544	36.851	36.068	27.081
+828	1995045	3583	3575	3544	36.851	36.068	27.081
+829	1998644	3587	3575	3571	36.851	36.068	27.081
+830	2002546	3590	3560	3596	36.851	36.068	27.081
+831	2006155	3587	3560	3596	36.851	36.068	27.081
+832	2009758	3585	3558	3598	36.851	36.068	27.081
+833	2013671	3582	3554	3595	36.783	36.284	26.933
+834	2017262	3583	3554	3595	36.783	36.284	26.933
+835	2021168	3580	3556	3591	36.783	36.284	26.933
+836	2024772	3576	3574	3591	36.783	36.284	26.933
+837	2028373	3576	3580	3592	36.783	36.284	26.933
+838	2032274	3569	3585	3587	36.783	36.284	26.933
+839	2035881	3562	3586	3581	36.925	36.181	26.894
+840	2039486	3558	3593	3564	36.925	36.181	26.894
+841	2043388	3563	3579	3568	36.925	36.181	26.894
+842	2047004	3564	3575	3564	36.925	36.181	26.894
+843	2050597	3562	3574	3564	36.925	36.181	26.894
+844	2054500	3564	3567	3568	36.925	36.181	26.894
+845	2058105	3571	3567	3583	36.943	36.240	26.817
+846	2062006	3573	3572	3582	36.943	36.240	26.817
+847	2065611	3581	3572	3582	36.943	36.240	26.817
+848	2069220	3581	3572	3579	36.943	36.240	26.817
+849	2073115	3589	3573	3579	36.943	36.240	26.817
+850	2076720	3589	3573	3575	36.943	36.240	26.817
+851	2080324	3589	3570	3573	36.828	36.319	26.853
+852	2084229	3577	3574	3569	36.828	36.319	26.853
+853	2087827	3574	3573	3569	36.828	36.319	26.853
+854	2091436	3574	3576	3552	36.828	36.319	26.853
+855	2095335	3569	3585	3552	36.828	36.319	26.853
+856	2098944	3571	3596	3553	36.828	36.319	26.853
+857	2102845	3575	3597	3547	36.832	36.100	27.068
+858	2106453	3579	3601	3547	36.832	36.100	27.068
+859	2110351	3578	3596	3547	36.832	36.100	27.068
+860	2113955	3575	3582	3572	36.832	36.100	27.068
+861	2117859	3577	3560	3601	36.832	36.100	27.068
+862	2121462	3574	3552	3601	36.832	36.100	27.068
+863	2125069	3574	3544	3618	36.840	36.414	26.745
+864	2128971	3575	3555	3591	36.840	36.414	26.745
+865	2132873	3577	3566	3591	36.840	36.414	26.745
+866	2136478	3574	3577	3598	36.840	36.414	26.745
+867	2140083	3574	3587	3588	36.840	36.414	26.745
+868	2143983	3576	3597	3567	36.840	36.414	26.745
+869	2147589	3577	3589	3569	36.863	36.315	26.822
+870	2151194	3577	3588	3528	36.863	36.315	26.822
+871	2155091	3570	3584	3521	36.863	36.315	26.822
+872	2158701	3569	3585	3525	36.863	36.315	26.822
