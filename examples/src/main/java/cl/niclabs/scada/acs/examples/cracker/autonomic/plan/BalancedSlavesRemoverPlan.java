@@ -22,6 +22,7 @@ public class BalancedSlavesRemoverPlan extends Plan {
 
     private boolean sleeping = false;
     private long sleepStartTime = 0;
+    private boolean empty = false;
 
     public BalancedSlavesRemoverPlan() {
         subscribeTo(MinRespTimeRule.NAME);
@@ -63,7 +64,12 @@ public class BalancedSlavesRemoverPlan extends Plan {
                         }
                         // min solvers reached
                     }
-                    System.out.println("[WARNING] couldn't add remove to Solver" + pair.index);
+                    // System.out.println("[WARNING] couldn't remove slave from Solver" + pair.index);
+                }
+
+                if (!empty) {
+                    empty = true;
+                    System.out.println("[WARNING] Solvers are empty");
                 }
             }
         }
