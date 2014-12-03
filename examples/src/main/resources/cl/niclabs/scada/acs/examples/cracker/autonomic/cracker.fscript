@@ -175,18 +175,18 @@ action enable-remover(cracker) {
 }
 
 action phase1(cracker) {
-    add-slaves($this/child::Solver2, 2);
+    add-slaves($this/child::Solver0, 2);
+    add-slaves($this/child::Solver1, 1);
 }
 
 action phase2(cracker) {
-    add-slaves($this/child::Solver2, 3);
-    add-slaves($this/child::Solver1, 2);
+    remove-slaves($this/child::Solver0, 2);
+    add-slaves($this/child::Solver2, 2);
 }
 
 action phase3(cracker) {
-    remove-slaves($this/child::Solver2, 5);
-    remove-slaves($this/child::Solver1, 2);
-    add-slaves($this/child::Solver0, 5);
+    add-slaves($this/child::Solver1, 1);
+    add-slaves($this/child::Solver2, 3);
 }
 
 action enable-balanced-adder(cracker) {
