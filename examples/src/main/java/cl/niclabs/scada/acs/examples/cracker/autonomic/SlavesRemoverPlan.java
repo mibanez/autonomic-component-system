@@ -49,7 +49,7 @@ public class SlavesRemoverPlan extends Plan {
                 if (result.unwrap().intValue() > 1) {
                     executionCtrl.execute("remove-slave($this/child::Solver" + pair.index + ");");
                     goToSleep();
-                    System.out.println("[PLANS][SLAVES_REMOVER] Solver Removed from Solver" + pair.index + " now: " + (result.unwrap() -1));
+                    System.out.println("[ACTION] Slave removed from Solver" + pair.index + " (now there is " + (result.unwrap() -1) + ")");
                     return;
                 }
             }
