@@ -1,3 +1,4 @@
+
 function contains-name(slaveName, slaves) {
     for slave : $slaves {
         if ($slaveName == name($slave)) {
@@ -61,15 +62,13 @@ function get-last-used-name(slaves) {
     }
 }
 
+
 function slaves-number(solver) {
-    return size($solver/child::*[starts-with(name(.), "Slave")]);
+    size($solver/child::*[starts-with(name(.), "Slave")]);
 }
 
-action stopped-lifecycle-add-slaves(solver, number) {
 
-    if (state($solver) != "STOPPED") {
-        return false();
-    }
+action recursively-add-slaves(solver, number) {
 
     if ($number <= 0) {
         return true();
@@ -85,34 +84,35 @@ action stopped-lifecycle-add-slaves(solver, number) {
     bind($solver/child::Master/interface::multicast-slave-itf, $slave/interface::slave-itf);
     set-value($solver/child::Master/attribute::partitionsNumber, slaves-number($solver));
 
-    return stopped-lifecycle-add-slaves($solver, $number - 1);
+    return recursively-add-slaves($solver, $number - 1);
 }
 
 action add-slaves(solver, number) {
+
+    if (slaves-number($solver) + $number > 6) {
+        fail();
+    }
 
     solverState = state($solver);
     if ($solverState == "STARTED") {
         stop($solver);
     }
 
-    r = stopped-lifecycle-add-slaves($solver, $number);
+    recursively-add-slaves($solver, $number);
 
     if ($solverState == "STARTED") {
         start($solver);
     }
 
-    return $r;
+    return true();
 }
 
 action add-slave(solver) {
-    add-slaves($solver, 1);
+    return add-slaves($solver, 1);
 }
 
-action stopped-lifecycle-remove-slaves(solver, number) {
 
-    if (state($solver) != "STOPPED") {
-        return false();
-    }
+action recursively-remove-slaves(solver, number) {
 
     if ($number <= 0) {
         return true();
@@ -125,82 +125,29 @@ action stopped-lifecycle-remove-slaves(solver, number) {
     remove($solver, $toRemove);
     set-value($solver/child::Master/attribute::partitionsNumber, size($currentSlaves) - 1);
 
-    return stopped-lifecycle-remove-slaves($solver, $number - 1);
+    return recursively-remove-slaves($solver, $number - 1);
 }
 
 action remove-slaves(solver, number) {
+
+    if (slaves-number() - $number <= 0) {
+        fail();
+    }
 
     solverState = state($solver);
     if ($solverState == "STARTED") {
         stop($solver);
     }
 
-    r = stopped-lifecycle-remove-slaves($solver, $number);
+    recursively-remove-slaves($solver, $number);
 
     if ($solverState == "STARTED") {
         start($solver);
     }
 
-    return $r;
+    return true();
 }
 
 action remove-slave(solver) {
     remove-slaves($solver, 1);
-}
-
-
--- TEST ---------------------------
-
-action enable-balancer(cracker) {
-    set-state($cracker/metric::dummyDistributionPoint, "DISABLED");
-    set-state($cracker/metric::distributionPoint, "ENABLED");
-    set-state($cracker/rule::balanceState, "ENABLED");
-    set-state($cracker/plan::balanceUpdater, "ENABLED");
-}
-
-action enable-adder(cracker) {
-    set-state($cracker/rule::minRespTime, "DISABLED");
-    set-state($cracker/plan::slavesRemover, "DISABLED");
-
-    set-state($cracker/rule::maxRespTime, "ENABLED");
-    set-state($cracker/plan::slavesAdder, "ENABLED");
-}
-
-action enable-remover(cracker) {
-    set-state($cracker/rule::maxRespTime, "DISABLED");
-    set-state($cracker/plan::slavesAdder, "DISABLED");
-
-    set-state($cracker/rule::minRespTime, "ENABLED");
-    set-state($cracker/plan::slavesRemover, "ENABLED");
-}
-
-action phase1(cracker) {
-    add-slaves($this/child::Solver2, 2);
-}
-
-action phase2(cracker) {
-    add-slaves($this/child::Solver2, 3);
-    add-slaves($this/child::Solver1, 2);
-}
-
-action phase3(cracker) {
-    remove-slaves($this/child::Solver2, 5);
-    remove-slaves($this/child::Solver1, 2);
-    add-slaves($this/child::Solver0, 5);
-}
-
-action enable-balanced-adder(cracker) {
-    set-state($cracker/rule::minRespTime, "DISABLED");
-    set-state($cracker/plan::balancedSlavesRemover, "DISABLED");
-
-    set-state($cracker/rule::maxRespTime, "ENABLED");
-    set-state($cracker/plan::balancedSlavesAdder, "ENABLED");
-}
-
-action enable-balanced-remover(cracker) {
-    set-state($cracker/rule::maxRespTime, "DISABLED");
-    set-state($cracker/plan::balancedSlavesAdder, "DISABLED");
-
-    set-state($cracker/rule::minRespTime, "ENABLED");
-    set-state($cracker/plan::balancedSlavesRemover, "ENABLED");
 }

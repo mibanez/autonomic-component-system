@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker.autonomic;
+package cl.niclabs.scada.acs.examples.cracker.autonomic.plan;
 
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
@@ -6,6 +6,9 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControlle
 import cl.niclabs.scada.acs.component.controllers.planning.Plan;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.examples.cracker.CrackerConfig;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.DistributionPoint;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.DistributionPointMetric;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.rule.MinRespTimeRule;
 
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -47,13 +50,20 @@ public class BalancedSlavesRemoverPlan extends Plan {
                 queue.add(new Pair(2, 1 - y));
 
                 for (Pair pair : queue) {
-                    Wrapper<Double> result = executionCtrl.execute("slaves-number($this/child::Solver" + pair.index + ");");
-                    if (result.unwrap().intValue() > 1) {
-                        executionCtrl.execute("remove-slave($this/child::Solver" + pair.index + ");");
-                        goToSleep();
-                        System.out.println("[ACTION] Slave removed from Solver" + pair.index + " (now there is " + (result.unwrap() - 1) + ")");
-                        return;
+
+                    Wrapper<Boolean> removalResult = executionCtrl.execute(
+                            "remote-execute($this/sibling::Solver" + pair.index + ", \"remove-slave($this)\")"
+                    );
+
+                    if (removalResult.isValid()) {
+                        if (removalResult.unwrap()) {
+                            goToSleep();
+                            System.out.println("[ACTION] Slave removed on Solver" + pair.index);
+                            return;
+                        }
+                        // min solvers reached
                     }
+                    System.out.println("[WARNING] couldn't add remove to Solver" + pair.index);
                 }
             }
         }
@@ -69,18 +79,6 @@ public class BalancedSlavesRemoverPlan extends Plan {
             sleeping = false;
         }
         return sleeping;
-    }
-
-    private boolean areValidValues(Wrapper<Long> s1, Wrapper<Long> s2, Wrapper<Long> s3) {
-        if ( !( s1.isValid() && s2.isValid() && s3.isValid() ) ) {
-            String report = "\n" + s1.getMessage() + "\n" + s2.getMessage() + "\n" + s3.getMessage();
-            System.err.println("[WARNING] DistributionPoint fail: " + report);
-            return false;
-        } else if (s1.unwrap() <= 0 || s2.unwrap() <= 0 || s3.unwrap() <= 0) {
-            // avoid broken values
-            return false;
-        }
-        return true;
     }
 
     class Pair implements Comparable<Pair> {

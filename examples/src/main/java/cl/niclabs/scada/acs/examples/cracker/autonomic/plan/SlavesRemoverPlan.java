@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker.autonomic;
+package cl.niclabs.scada.acs.examples.cracker.autonomic.plan;
 
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
@@ -6,6 +6,8 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControlle
 import cl.niclabs.scada.acs.component.controllers.planning.Plan;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.examples.cracker.CrackerConfig;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.AvgRespTimeMetric;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.rule.MinRespTimeRule;
 import cl.niclabs.scada.acs.examples.cracker.solver.component.Solver;
 
 import java.util.PriorityQueue;
@@ -14,10 +16,6 @@ import java.util.Queue;
 public class SlavesRemoverPlan extends Plan {
 
     public static final String NAME = "slavesRemover";
-
-    private final String[] s1Path = new String[] { tesis.monitoring.components.Cracker.NAME, Solver.NAME + "-0" };
-    private final String[] s2Path = new String[] { tesis.monitoring.components.Cracker.NAME, Solver.NAME + "-1" };
-    private final String[] s3Path = new String[] { tesis.monitoring.components.Cracker.NAME, Solver.NAME + "-2" };
 
     private boolean sleeping = false;
     private long sleepStartTime = 0;
@@ -33,9 +31,9 @@ public class SlavesRemoverPlan extends Plan {
             return;
         }
 
-        Wrapper<Long> s1 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s1Path);
-        Wrapper<Long> s2 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s2Path);
-        Wrapper<Long> s3 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s3Path);
+        Wrapper<Long> s1 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, new String[] { Solver.NAME + "-0" });
+        Wrapper<Long> s2 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, new String[] { Solver.NAME + "-1" });
+        Wrapper<Long> s3 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, new String[] { Solver.NAME + "-2" });
 
         if (areValidValues(s1, s2, s3)) {
 
@@ -45,13 +43,20 @@ public class SlavesRemoverPlan extends Plan {
             queue.add(new Pair(2, s3.unwrap()));
 
             for (Pair pair : queue) {
-                Wrapper<Double> result = executionCtrl.execute("slaves-number($this/child::Solver" + pair.index + ");");
-                if (result.unwrap().intValue() > 1) {
-                    executionCtrl.execute("remove-slave($this/child::Solver" + pair.index + ");");
-                    goToSleep();
-                    System.out.println("[ACTION] Slave removed from Solver" + pair.index + " (now there is " + (result.unwrap() -1) + ")");
-                    return;
+
+                Wrapper<Boolean> removalResult = executionCtrl.execute(
+                        "remote-execute($this/sibling::Solver" + pair.index + ", \"remove-slave($this)\")"
+                );
+
+                if (removalResult.isValid()) {
+                    if (removalResult.unwrap()) {
+                        goToSleep();
+                        System.out.println("[ACTION] Slave removed on Solver" + pair.index);
+                        return;
+                    }
+                    // min solvers reached
                 }
+                System.out.println("[WARNING] couldn't add remove to Solver" + pair.index);
             }
         }
     }

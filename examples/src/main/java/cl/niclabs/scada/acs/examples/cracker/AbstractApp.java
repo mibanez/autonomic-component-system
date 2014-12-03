@@ -8,7 +8,13 @@ import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.planning.PlanningController;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
-import cl.niclabs.scada.acs.examples.cracker.autonomic.*;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.AvgRespTimeMetric;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.DistributionPointMetric;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.DummyDistributionPointMetric;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.plan.*;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.rule.BalanceStateRule;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.rule.MaxRespTimeRule;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.rule.MinRespTimeRule;
 import cl.niclabs.scada.acs.examples.cracker.solver.component.Solver;
 import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
@@ -43,11 +49,40 @@ public abstract class AbstractApp {
         Component crackerComp = adlFactory.newACSComponent(CRACKER_ADL, null);
         GCM.getNameController(crackerComp).setFcName("Cracker");
 
-        ExecutionController executionCtrl = ACSManager.getExecutionController(crackerComp);
+        // BALANCER
         PAContentController crackerContentCtrl = Utils.getPAContentController(crackerComp);
         Component balancerComp = crackerContentCtrl.getFcSubComponents()[0];
         GCM.getNameController(balancerComp).setFcName("Balancer");
 
+        MonitoringController BalancerMonitoringCtrl = ACSManager.getMonitoringController(balancerComp);
+        BalancerMonitoringCtrl.add(AvgRespTimeMetric.NAME, AvgRespTimeMetric.class);
+        BalancerMonitoringCtrl.add(DummyDistributionPointMetric.NAME, DummyDistributionPointMetric.class);
+        BalancerMonitoringCtrl.add(DistributionPointMetric.NAME, DistributionPointMetric.class);
+
+        AnalysisController BalancerAnalysisCtrl = ACSManager.getAnalysisController(balancerComp);
+        BalancerAnalysisCtrl.add(MaxRespTimeRule.NAME, MaxRespTimeRule.class);
+        BalancerAnalysisCtrl.add(MinRespTimeRule.NAME, MinRespTimeRule.class);
+        BalancerAnalysisCtrl.add(BalanceStateRule.NAME, BalanceStateRule.class);
+
+        PlanningController planningCtrl = ACSManager.getPlanningController(balancerComp);
+        planningCtrl.add(SlavesAdderPlan.NAME, SlavesAdderPlan.class);
+        planningCtrl.add(SlavesRemoverPlan.NAME, SlavesRemoverPlan.class);
+        planningCtrl.add(BalancedSlavesAdderPlan.NAME, BalancedSlavesAdderPlan.class);
+        planningCtrl.add(BalancedSlavesRemoverPlan.NAME, BalancedSlavesRemoverPlan.class);
+        planningCtrl.add(BalanceUpdaterPlan.NAME, BalanceUpdaterPlan.class);
+
+        ExecutionController executionCtrl = ACSManager.getExecutionController(balancerComp);
+        Wrapper<String[]> loadResult = executionCtrl.load(getBalancerScript());
+        if (loadResult.isValid()) {
+            for (String s : loadResult.unwrap()) {
+                System.out.println("Loaded on Balancer: " + s);
+            }
+        } else {
+            System.out.println("Can't load gcmscript libs: " + loadResult.getMessage());
+        }
+
+
+        // SOLVERS
         GCMApplication gcmApp = getGCMApplication();
         gcmApp.startDeployment();
         gcmApp.waitReady();
@@ -72,34 +107,19 @@ public abstract class AbstractApp {
                     solverComp.getFcInterface(Solver.NAME));
 
             ACSManager.getMonitoringController(solverComp).add(AvgRespTimeMetric.NAME, AvgRespTimeMetric.class);
-        }
-
-        MonitoringController monitoringCtrl = ACSManager.getMonitoringController(crackerComp);
-        monitoringCtrl.add(AvgRespTimeMetric.NAME, AvgRespTimeMetric.class);
-        monitoringCtrl.add(DummyDistributionPointMetric.NAME, DummyDistributionPointMetric.class);
-        monitoringCtrl.add(DistributionPointMetric.NAME, DistributionPointMetric.class);
-
-        AnalysisController analysisCtrl = ACSManager.getAnalysisController(crackerComp);
-        analysisCtrl.add(MaxRespTimeRule.NAME, MaxRespTimeRule.class);
-        analysisCtrl.add(MinRespTimeRule.NAME, MinRespTimeRule.class);
-        analysisCtrl.add(BalanceStateRule.NAME, BalanceStateRule.class);
-
-        PlanningController planningCtrl = ACSManager.getPlanningController(crackerComp);
-        planningCtrl.add(SlavesAdderPlan.NAME, SlavesAdderPlan.class);
-        planningCtrl.add(SlavesRemoverPlan.NAME, SlavesRemoverPlan.class);
-        planningCtrl.add(BalancedSlavesAdderPlan.NAME, BalancedSlavesAdderPlan.class);
-        planningCtrl.add(BalancedSlavesRemoverPlan.NAME, BalancedSlavesRemoverPlan.class);
-        planningCtrl.add(BalanceUpdaterPlan.NAME, BalanceUpdaterPlan.class);
-
-        Wrapper<String[]> loadResult = executionCtrl.load(getGCMScriptLib());
-
-        if (loadResult.isValid()) {
-            for (String s : loadResult.unwrap()) {
-                System.out.println("Loaded on Cracker: " + s);
+            ExecutionController solverExecutionCtrl = ACSManager.getExecutionController(solverComp);
+            loadResult = solverExecutionCtrl.load(getSolverScript());
+            if (loadResult.isValid()) {
+                for (String s : loadResult.unwrap()) {
+                    System.out.println("Loaded on Solver" + i +": " + s);
+                }
+            } else {
+                System.out.println("Can't load Solver" + i +": " + loadResult.getMessage());
             }
-        } else {
-            System.out.println("Can't load gcmscript libs: " + loadResult.getMessage());
         }
+
+
+
 
         ACSManager.enableRemoteMonitoring(crackerComp);
         Thread.sleep(3000);
@@ -115,6 +135,7 @@ public abstract class AbstractApp {
         }
     }
 
-    protected abstract String getGCMScriptLib();
+    protected abstract String getBalancerScript();
     protected abstract GCMApplication getGCMApplication();
+    protected abstract String getSolverScript();
 }

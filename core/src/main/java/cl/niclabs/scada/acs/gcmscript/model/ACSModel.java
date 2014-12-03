@@ -54,6 +54,8 @@ public class ACSModel extends GCMModel implements ACSNodeFactory {
         procedures.add(new PrintRulesFunction());
         procedures.add(new PrintPlansFunction());
 
+        procedures.add(new ACSRemoteExecuteAction());
+
         procedures.add(new ToStringFunction());
         procedures.add(new RangeFunction());
         procedures.add(new ACSNewAction());

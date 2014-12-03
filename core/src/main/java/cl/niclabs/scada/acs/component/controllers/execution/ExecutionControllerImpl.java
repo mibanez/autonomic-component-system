@@ -145,8 +145,8 @@ public class ExecutionControllerImpl extends AbstractPAComponentController imple
             return set;
         }
 
-        if (object instanceof Number) {
-            return (Number) object;
+        if (object instanceof Serializable) {
+            return (Serializable) object;
         }
 
         return object != null ? object.toString() : null;

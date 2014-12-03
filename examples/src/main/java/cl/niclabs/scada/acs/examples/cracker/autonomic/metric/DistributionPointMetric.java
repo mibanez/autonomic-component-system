@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker.autonomic;
+package cl.niclabs.scada.acs.examples.cracker.autonomic.metric;
 
 import cl.niclabs.scada.acs.component.controllers.monitoring.events.RecordEvent;
 import cl.niclabs.scada.acs.component.controllers.monitoring.metrics.Metric;
@@ -7,16 +7,11 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.records.RecordStore
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.examples.cracker.CrackerConfig;
 import cl.niclabs.scada.acs.examples.cracker.solver.component.Solver;
-import tesis.monitoring.components.Cracker;
 
 
 public class DistributionPointMetric extends Metric<DistributionPoint> {
 
     public static final String NAME = "distributionPoint";
-
-    protected final static String[] s1Path = new String[] { Cracker.NAME, Solver.NAME + "-0" };
-    protected final static String[] s2Path = new String[] { Cracker.NAME, Solver.NAME + "-1" };
-    protected final static String[] s3Path = new String[] { Cracker.NAME, Solver.NAME + "-2" };
 
     protected DistributionPoint lastPoint;
     protected String avgRespTimeMetric;
@@ -33,7 +28,7 @@ public class DistributionPointMetric extends Metric<DistributionPoint> {
         this.numberOfSkipped = CrackerConfig.SKIPPED_CALCULATIONS;
         this.avgRespTimeMetric = AvgRespTimeMetric.NAME;
 
-        subscribeTo(RecordEvent.RESPONSE_RECEIVED);
+        subscribeTo(RecordEvent.REQUEST_SERVICE_ENDED);
     }
 
     @Override
@@ -47,18 +42,18 @@ public class DistributionPointMetric extends Metric<DistributionPoint> {
         if (initTime <= 0) {
             initTime = System.currentTimeMillis();
             testLogCounter = 0;
-            System.out.println("[0] time,s1_time,s2_time,s3_time,s1_assignment,s2_assignment,s3_assignment");
+            System.out.println("request,time,s1_time,s2_time,s3_time,s1_assignment,s2_assignment,s3_assignment");
         }
 
-        Wrapper<Long> s1 = metricStore.getValue(avgRespTimeMetric, s1Path);
-        Wrapper<Long> s2 = metricStore.getValue(avgRespTimeMetric, s2Path);
-        Wrapper<Long> s3 = metricStore.getValue(avgRespTimeMetric, s3Path);
+        Wrapper<Long> s1 = metricStore.getValue(avgRespTimeMetric, new String[] { Solver.NAME + "-0" } );
+        Wrapper<Long> s2 = metricStore.getValue(avgRespTimeMetric, new String[] { Solver.NAME + "-1" } );
+        Wrapper<Long> s3 = metricStore.getValue(avgRespTimeMetric, new String[] { Solver.NAME + "-2" } );
 
         if (areValidValues(s1, s2, s3)) {
             if (shouldCalculate()) {
                 lastPoint = calculateNewPoint(lastPoint, s1.unwrap(), s2.unwrap(), s3.unwrap());
             }
-            String testLogMsg = "[" + ++testLogCounter + "] " + String.valueOf(System.currentTimeMillis() - initTime);
+            String testLogMsg = ++testLogCounter + "," + String.valueOf(System.currentTimeMillis() - initTime);
             testLogMsg += "," + s1.unwrap() + "," + s2.unwrap() + "," + s3.unwrap();
             System.out.println(testLogMsg + "," + lastPoint.asTestLog());
         }

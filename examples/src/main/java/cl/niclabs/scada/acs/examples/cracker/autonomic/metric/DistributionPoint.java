@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker.autonomic;
+package cl.niclabs.scada.acs.examples.cracker.autonomic.metric;
 
 
 import java.io.Serializable;

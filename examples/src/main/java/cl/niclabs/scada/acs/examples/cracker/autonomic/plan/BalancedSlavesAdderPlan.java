@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker.autonomic;
+package cl.niclabs.scada.acs.examples.cracker.autonomic.plan;
 
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.execution.ExecutionController;
@@ -6,8 +6,10 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControlle
 import cl.niclabs.scada.acs.component.controllers.planning.Plan;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.examples.cracker.CrackerConfig;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.DistributionPoint;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.DistributionPointMetric;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.rule.MaxRespTimeRule;
 
-import java.io.Serializable;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -62,31 +64,28 @@ public class BalancedSlavesAdderPlan extends Plan {
 
         for (Pair pair : queue) {
 
-            Wrapper<Double> nOfSlavesWrapper = executionCtrl.execute(getCountSlavesScript(pair.index));
+            Wrapper<Boolean> additionResult = executionCtrl.execute(
+                    "remote-execute($this/sibling::Solver" + pair.index + ", \"add-slave($this)\")"
+            );
 
-            if (!nOfSlavesWrapper.isValid()) {
-                System.out.println("[WARNING] couldn't count the number of slaves.");
-            } else if (nOfSlavesWrapper.unwrap() < maxNOfSlaves) {
-
-                Wrapper<Serializable> additionResult = executionCtrl.execute(getAddSlaveScript(pair.index));
-                if (!additionResult.isValid()) {
-                    System.out.println("[WARNING] couldn't add slave to Solver" + pair.index);
-                } else {
+            if (additionResult.isValid()) {
+                if (additionResult.unwrap()) {
                     goToSleep();
-                    System.out.println("[ACTION] Slave added on Solver" + pair.index
-                            + " (now there is " + (nOfSlavesWrapper.unwrap() + 1) + " slaves).");
+                    System.out.println("[ACTION] Slave added on Solver" + pair.index);
                     return;
                 }
+                // max solvers reached
             }
+            System.out.println("[WARNING] couldn't add slave to Solver" + pair.index);
         }
     }
 
     private String getAddSlaveScript(int solverIndex) {
-        return String.format("add-slave($this/child::Solver%d);", solverIndex);
+        return String.format("add-slave($this/sibling::Solver%d);", solverIndex);
     }
 
     private String getCountSlavesScript(int solverIndex) {
-        return String.format("slaves-number($this/child::Solver%d);", solverIndex);
+        return String.format("slaves-number($this/sibling::Solver%d);", solverIndex);
     }
 
     private void goToSleep() {
@@ -101,17 +100,6 @@ public class BalancedSlavesAdderPlan extends Plan {
         return sleeping;
     }
 
-    private boolean areValidValues(Wrapper<Long> s1, Wrapper<Long> s2, Wrapper<Long> s3) {
-        if ( !( s1.isValid() && s2.isValid() && s3.isValid() ) ) {
-            String report = "\n" + s1.getMessage() + "\n" + s2.getMessage() + "\n" + s3.getMessage();
-            System.err.println("[WARNING] DistributionPoint fail: " + report);
-            return false;
-        } else if (s1.unwrap() <= 0 || s2.unwrap() <= 0 || s3.unwrap() <= 0) {
-            // avoid broken values
-            return false;
-        }
-        return true;
-    }
 
     class Pair implements Comparable<Pair> {
         int index;
@@ -122,7 +110,7 @@ public class BalancedSlavesAdderPlan extends Plan {
         }
         @Override
         public int compareTo(Pair o) {
-            double d = (time - o.index);
+            double d = (time - o.time);
             return d > 0 ? 1 : d < 0 ? -1 : 0;  // NOTE THIS
         }
     }

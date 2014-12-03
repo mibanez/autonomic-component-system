@@ -1,10 +1,12 @@
-package cl.niclabs.scada.acs.examples.cracker.autonomic;
+package cl.niclabs.scada.acs.examples.cracker.autonomic.rule;
 
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
 import cl.niclabs.scada.acs.component.controllers.analysis.Rule;
 import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringController;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.examples.cracker.CrackerConfig;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.DistributionPoint;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.DistributionPointMetric;
 
 public class BalanceStateRule extends Rule {
 

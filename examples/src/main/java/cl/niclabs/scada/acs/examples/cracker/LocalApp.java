@@ -8,8 +8,13 @@ import org.objectweb.proactive.gcmdeployment.GCMVirtualNode;
 public class LocalApp extends AbstractApp {
 
     @Override
-    protected String getGCMScriptLib() {
-        return LocalApp.class.getResource("/cl/niclabs/scada/acs/examples/cracker/autonomic/cracker.fscript").getPath();
+    protected String getBalancerScript() {
+        return LocalApp.class.getResource("/cl/niclabs/scada/acs/examples/cracker/autonomic/balancer.fscript").getPath();
+    }
+
+    @Override
+    protected String getSolverScript() {
+        return LocalApp.class.getResource("/cl/niclabs/scada/acs/examples/cracker/autonomic/solver.fscript").getPath();
     }
 
     @Override

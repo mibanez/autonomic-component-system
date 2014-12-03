@@ -1,0 +1,54 @@
+
+action enable-balancer(balancer) {
+    set-state($balancer/metric::dummyDistributionPoint, "DISABLED");
+    set-state($balancer/metric::distributionPoint, "ENABLED");
+    set-state($balancer/rule::balanceState, "ENABLED");
+    set-state($balancer/plan::balanceUpdater, "ENABLED");
+}
+
+action enable-adder(balancer) {
+    set-state($balancer/rule::minRespTime, "DISABLED");
+    set-state($balancer/plan::slavesRemover, "DISABLED");
+
+    set-state($balancer/rule::maxRespTime, "ENABLED");
+    set-state($balancer/plan::slavesAdder, "ENABLED");
+}
+
+action enable-remover(balancer) {
+    set-state($balancer/rule::maxRespTime, "DISABLED");
+    set-state($balancer/plan::slavesAdder, "DISABLED");
+
+    set-state($balancer/rule::minRespTime, "ENABLED");
+    set-state($balancer/plan::slavesRemover, "ENABLED");
+}
+
+action phase1(balancer) {
+    remote-execute($balancer/sibling::Solver2, "add-slaves($this, 2)");
+}
+
+action phase2(balancer) {
+    remote-execute($balancer/sibling::Solver2, "add-slaves($this, 3)");
+    remote-execute($balancer/sibling::Solver1, "add-slaves($this, 2)");
+}
+
+action phase3(balancer) {
+    remote-execute($balancer/sibling::Solver2, "remove-slaves($this, 5)");
+    remote-execute($balancer/sibling::Solver1, "remove-slaves($this, 2)");
+    remote-execute($balancer/sibling::Solver0, "add-slaves($this, 5)");
+}
+
+action enable-balanced-adder(balancer) {
+    set-state($balancer/rule::minRespTime, "DISABLED");
+    set-state($balancer/plan::balancedSlavesRemover, "DISABLED");
+
+    set-state($balancer/rule::maxRespTime, "ENABLED");
+    set-state($balancer/plan::balancedSlavesAdder, "ENABLED");
+}
+
+action enable-balanced-remover(balancer) {
+    set-state($balancer/rule::maxRespTime, "DISABLED");
+    set-state($balancer/plan::balancedSlavesAdder, "DISABLED");
+
+    set-state($balancer/rule::minRespTime, "ENABLED");
+    set-state($balancer/plan::balancedSlavesRemover, "ENABLED");
+}

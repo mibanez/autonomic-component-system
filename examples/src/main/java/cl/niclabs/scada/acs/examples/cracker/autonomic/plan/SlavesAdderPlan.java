@@ -1,4 +1,4 @@
-package cl.niclabs.scada.acs.examples.cracker.autonomic;
+package cl.niclabs.scada.acs.examples.cracker.autonomic.plan;
 
 
 import cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm;
@@ -7,9 +7,10 @@ import cl.niclabs.scada.acs.component.controllers.monitoring.MonitoringControlle
 import cl.niclabs.scada.acs.component.controllers.planning.Plan;
 import cl.niclabs.scada.acs.component.controllers.utils.Wrapper;
 import cl.niclabs.scada.acs.examples.cracker.CrackerConfig;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.metric.AvgRespTimeMetric;
+import cl.niclabs.scada.acs.examples.cracker.autonomic.rule.MaxRespTimeRule;
 import cl.niclabs.scada.acs.examples.cracker.solver.component.Solver;
 
-import java.io.Serializable;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -20,10 +21,6 @@ import static cl.niclabs.scada.acs.component.controllers.analysis.ACSAlarm.VIOLA
 public class SlavesAdderPlan extends Plan {
 
     public static final String NAME = "slavesAdder";
-
-    private final String[] s1Path = new String[] { tesis.monitoring.components.Cracker.NAME, Solver.NAME + "-0" };
-    private final String[] s2Path = new String[] { tesis.monitoring.components.Cracker.NAME, Solver.NAME + "-1" };
-    private final String[] s3Path = new String[] { tesis.monitoring.components.Cracker.NAME, Solver.NAME + "-2" };
 
     private boolean sleeping = false;
     private long sleepStartTime = 0;
@@ -48,9 +45,9 @@ public class SlavesAdderPlan extends Plan {
                 return;
             }
 
-            Wrapper<Long> s1 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s1Path);
-            Wrapper<Long> s2 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s2Path);
-            Wrapper<Long> s3 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, s3Path);
+            Wrapper<Long> s1 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, new String[] { Solver.NAME + "-0" });
+            Wrapper<Long> s2 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, new String[] { Solver.NAME + "-1" });
+            Wrapper<Long> s3 = monitorCtrl.getValue(AvgRespTimeMetric.NAME, new String[] { Solver.NAME + "-2" });
 
             if (areValidValues(s1, s2, s3)) {
 
@@ -68,31 +65,20 @@ public class SlavesAdderPlan extends Plan {
 
         for (Pair pair : queue) {
 
-            Wrapper<Double> nOfSlavesWrapper = executionCtrl.execute(getCountSlavesScript(pair.index));
+            Wrapper<Boolean> additionResult = executionCtrl.execute(
+                    "remote-execute($this/sibling::Solver" + pair.index + ", \"add-slave($this)\")"
+            );
 
-            if (!nOfSlavesWrapper.isValid()) {
-                System.out.println("[WARNING] couldn't count the number of slaves.");
-            } else if (nOfSlavesWrapper.unwrap() < maxNOfSlaves) {
-
-                Wrapper<Serializable> additionResult = executionCtrl.execute(getAddSlaveScript(pair.index));
-                if (!additionResult.isValid()) {
-                    System.out.println("[WARNING] couldn't add slave to Solver" + pair.index);
-                } else {
+            if (additionResult.isValid()) {
+                if (additionResult.unwrap()) {
                     goToSleep();
-                    System.out.println("[ACTION] Slave added on Solver" + pair.index
-                            + " (now there is " + (nOfSlavesWrapper.unwrap() + 1) + " slaves).");
+                    System.out.println("[ACTION] Slave added on Solver" + pair.index);
                     return;
                 }
+                // max solvers reached
             }
+            System.out.println("[WARNING] couldn't add slave to Solver" + pair.index);
         }
-    }
-
-    private String getAddSlaveScript(int solverIndex) {
-        return String.format("add-slave($this/child::Solver%d);", solverIndex);
-    }
-
-    private String getCountSlavesScript(int solverIndex) {
-        return String.format("slaves-number($this/child::Solver%d);", solverIndex);
     }
 
     private void goToSleep() {

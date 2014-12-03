@@ -17,15 +17,23 @@ public class HerculesApp extends AbstractApp {
     }
 
     @Override
-    protected String getGCMScriptLib() {
+    protected String getBalancerScript() {
         return "/user/mibanez/memoria/autonomic-component-system/examples/src/main/resources/"
-            + "cl/niclabs/scada/acs/examples/cracker/autonomic/cracker.fscript";
+            + "cl/niclabs/scada/acs/examples/cracker/autonomic/balancer.fscript";
+    }
+
+    @Override
+    protected String getSolverScript() {
+        return "/user/mibanez/memoria/autonomic-component-system/examples/src/main/resources/"
+                + "cl/niclabs/scada/acs/examples/cracker/autonomic/solver.fscript";
     }
 
     @Override
     protected GCMApplication getGCMApplication() {
         return herculesApp;
     }
+
+
 
     public static void main(String[] args) throws Exception {
         (new HerculesApp()).run();
