@@ -122,7 +122,8 @@ public class BalancedSlavesAdderPlan extends Plan {
         }
         @Override
         public int compareTo(Pair o) {
-            return (int) (time- o.index);  // NOTE THIS
+            double d = (time - o.index);
+            return d > 0 ? 1 : d < 0 ? -1 : 0;  // NOTE THIS
         }
     }
 }
