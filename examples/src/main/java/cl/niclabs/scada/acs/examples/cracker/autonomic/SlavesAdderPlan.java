@@ -80,7 +80,7 @@ public class SlavesAdderPlan extends Plan {
                 } else {
                     goToSleep();
                     System.out.println("[ACTION] Slave added on Solver" + pair.index
-                            + " (now there is " + (queue.size() + 1) + " slaves).");
+                            + " (now there is " + (nOfSlavesWrapper.unwrap() + 1) + " slaves).");
                     return;
                 }
             }
