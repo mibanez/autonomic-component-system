@@ -87,6 +87,8 @@ public abstract class AbstractApp {
         PlanningController planningCtrl = ACSManager.getPlanningController(crackerComp);
         planningCtrl.add(SlavesAdderPlan.NAME, SlavesAdderPlan.class);
         planningCtrl.add(SlavesRemoverPlan.NAME, SlavesRemoverPlan.class);
+        planningCtrl.add(BalancedSlavesAdderPlan.NAME, BalancedSlavesAdderPlan.class);
+        planningCtrl.add(BalancedSlavesRemoverPlan.NAME, BalancedSlavesRemoverPlan.class);
         planningCtrl.add(BalanceUpdaterPlan.NAME, BalanceUpdaterPlan.class);
 
         Wrapper<String[]> loadResult = executionCtrl.load(getGCMScriptLib());

@@ -188,3 +188,19 @@ action phase3(cracker) {
     remove-slaves($this/child::Solver1, 2);
     add-slaves($this/child::Solver0, 5);
 }
+
+action enable-balanced-adder(cracker) {
+    set-state($cracker/rule::minRespTime, "DISABLED");
+    set-state($cracker/plan::balancedSlavesRemover, "DISABLED");
+
+    set-state($cracker/rule::maxRespTime, "ENABLED");
+    set-state($cracker/plan::balancedSlavesAdder, "ENABLED");
+}
+
+action enable-balanced-remover(cracker) {
+    set-state($cracker/rule::maxRespTime, "DISABLED");
+    set-state($cracker/plan::balancedSlavesAdder, "DISABLED");
+
+    set-state($cracker/rule::minRespTime, "ENABLED");
+    set-state($cracker/plan::balancedSlavesRemover, "ENABLED");
+}
