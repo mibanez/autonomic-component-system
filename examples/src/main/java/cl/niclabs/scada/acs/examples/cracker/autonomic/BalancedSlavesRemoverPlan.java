@@ -92,7 +92,8 @@ public class BalancedSlavesRemoverPlan extends Plan {
         }
         @Override
         public int compareTo(Pair o) {
-            return (int) (o.time - time); // NOTE THIS
+            double d = (o.time - time);
+            return d > 0 ? 1 : d < 0 ? -1 : 0; // NOTE THIS
         }
     }
 }
